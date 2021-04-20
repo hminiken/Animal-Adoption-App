@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 
 class NewProfile extends StatefulWidget {
-  static const routeName = '/select_location_screen';
+  static const routeName = '/new_profile_screen';
   @override
   NewProfileState createState() => NewProfileState();
 }
