@@ -2,8 +2,8 @@ import 'package:animal_adoption_app/classes/theme.dart';
 import 'package:flutter/material.dart';
 
 class UpdateStatus extends StatefulWidget {
-  // static const routeName = '/select_location_screen';
-  static const routeName = '/';
+  static const routeName = '/update_status_screen';
+  // static const routeName = '/';
   @override
   UpdateStatusState createState() => UpdateStatusState();
 }
@@ -84,7 +84,7 @@ class UpdateStatusState extends State<UpdateStatus> {
                         child: Text("Go"),
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
-                            primary: colRed, // background
+                            primary: colDarkBlue, // background
                             onPrimary: Colors.white, // foreground
                             textStyle: TextStyle(
                                 fontSize: 24, fontWeight: FontWeight.bold)),
