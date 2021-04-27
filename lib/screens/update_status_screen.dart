@@ -16,7 +16,7 @@ class UpdateStatusState extends State<UpdateStatus> {
 
   var dropdownItems = ['Available', 'Pending', 'Not Available', 'Adopted'];
 
-  var currentVal = "Select Status";
+  var currentVal = null;
   var currentPet = "Lassie";
   var currentStatus = "Available";
 
@@ -24,7 +24,8 @@ class UpdateStatusState extends State<UpdateStatus> {
     return Scaffold(
         //  appBar: cuddlerAppBar(context, 'Select a Location'),
         appBar: AppBar(
-          title: const Center(child: Text('Change the Status of Your Pet')),
+          title: Text('Change the Status of Your Pet'),
+          centerTitle: true,
         ),
         body: Padding(
             padding: const EdgeInsets.all(30),
