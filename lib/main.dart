@@ -4,8 +4,8 @@ import 'app.dart';
 
 void main() {
   SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp, 
-    DeviceOrientation.landscapeLeft, 
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.landscapeLeft,
     DeviceOrientation.landscapeRight
   ]);
   SystemChrome.setSystemUIOverlayStyle(
