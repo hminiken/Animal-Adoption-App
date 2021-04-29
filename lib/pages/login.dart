@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter_login/flutter_login.dart';
@@ -163,8 +162,8 @@ class Login extends StatelessWidget {
     final double fSize,
     TextAlign spacing,
     ) {
-    return Padding( 
-      padding: EdgeInsets.all(20.0), 
+    return Padding(
+      padding: EdgeInsets.all(20.0),
       child: Stack(
         children: <Widget>[
           // Stroked text as border.
