@@ -49,7 +49,7 @@ class _DashboardScreenState extends State<Dashboard>
       //  signOutBtn,
       //],
       title: Text(
-        'Cuddler', 
+        'Cuddler',
         style: TextStyle(
           fontFamily: 'Solway',
           fontSize: 32.0,
