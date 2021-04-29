@@ -7,7 +7,7 @@ class LandingButton extends StatelessWidget{
   final String displayText;
   final Widget page;
 
-  @override 
+  @override
   Widget build(BuildContext context) {
     return RawMaterialButton(
       fillColor: Constants.fadedOrange,
