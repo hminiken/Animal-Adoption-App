@@ -35,14 +35,16 @@ class Login extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
       body: LayoutBuilder(builder: loginLayout),
     );
   }
 
   Widget loginLayout(BuildContext context, BoxConstraints constraints) =>
-    constraints.maxWidth < 500 ? verticalLogin(context) : horizontalLogin(context);
+      constraints.maxWidth < 500
+          ? verticalLogin(context)
+          : horizontalLogin(context);
 
   Widget verticalLogin(BuildContext context) {
     return FlutterLogin(
@@ -73,7 +75,8 @@ class Login extends StatelessWidget {
         goBackButton: 'GO BACK',
         confirmPasswordError: 'No match!',
         recoverPasswordIntro: 'Enter your email',
-        recoverPasswordDescription: 'We will send you a link to recover your password',
+        recoverPasswordDescription:
+            'We will send you a link to recover your password',
         recoverPasswordSuccess: 'Password rescued successfully',
       ),
       emailValidator: (value) {
@@ -114,7 +117,6 @@ class Login extends StatelessWidget {
     );
   }
 
-
   Widget horizontalLogin(BuildContext context) {
     return Stack(
       children: [
@@ -126,29 +128,20 @@ class Login extends StatelessWidget {
             Expanded(
               flex: 1,
               child: _textBox(
-                'Welcome to Cuddler',
-                'Courgette',
-                38.0,
-                TextAlign.center
-              ),
+                  'Welcome to Cuddler', 'Courgette', 38.0, TextAlign.center),
+            ),
+            Expanded(
+              flex: 1,
+              child: _textBox('Please turn your screen in order to log in',
+                  'Solway', 30.0, TextAlign.center),
             ),
             Expanded(
               flex: 1,
               child: _textBox(
-                'Please turn your screen in order to log in',
-                'Solway',
-                30.0,
-                TextAlign.center
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: _textBox(
-                'After signing in, you can enjoy all screen orientations',
-                'Solway',
-                30.0,
-                TextAlign.center
-              ),
+                  'After signing in, you can enjoy all screen orientations',
+                  'Solway',
+                  30.0,
+                  TextAlign.center),
             ),
           ],
         ),
@@ -161,7 +154,7 @@ class Login extends StatelessWidget {
     final String fontFam,
     final double fSize,
     TextAlign spacing,
-    ) {
+  ) {
     return Padding(
       padding: EdgeInsets.all(20.0),
       child: Stack(
@@ -173,9 +166,9 @@ class Login extends StatelessWidget {
               fontFamily: fontFam,
               fontSize: fSize,
               foreground: Paint()
-              ..style = PaintingStyle.stroke
-              ..strokeWidth = 2
-              ..color = Colors.black,
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 2
+                ..color = Colors.black,
             ),
             textAlign: spacing,
           ),

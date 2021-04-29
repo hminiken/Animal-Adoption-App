@@ -4,7 +4,6 @@ import '../widgets/background.dart';
 import '../widgets/landingButton.dart';
 import '../widgets/transition_route_observer.dart';
 
-
 class Dashboard extends StatefulWidget {
   static const routeName = '/dashboard';
 
@@ -39,7 +38,6 @@ class _DashboardScreenState extends State<Dashboard>
   //   routeObserver.unsubscribe(this);
   //   super.dispose();
   // }
-
 
   AppBar _buildAppBar(ThemeData theme) {
     return AppBar(
@@ -80,10 +78,12 @@ class _DashboardScreenState extends State<Dashboard>
 
   final String adopt = 'Adopt a Pet';
   final String list = 'List a Pet';
-  
+
   Widget layoutLanding(BuildContext context, BoxConstraints constraints) =>
-    constraints.maxWidth < 500 ? verticalLanding(context) : horizontalLanding(context);
-      
+      constraints.maxWidth < 500
+          ? verticalLanding(context)
+          : horizontalLanding(context);
+
   Widget verticalLanding(BuildContext context) {
     return Center(
       child: Column(
@@ -100,10 +100,9 @@ class _DashboardScreenState extends State<Dashboard>
             child: Text(
               'Cuddler',
               style: TextStyle(
-                fontFamily: 'Courgette',
-                fontSize: 38.0,
-                color: Constants.deepBlue
-              ),
+                  fontFamily: 'Courgette',
+                  fontSize: 38.0,
+                  color: Constants.deepBlue),
             ),
           ),
           Expanded(
@@ -145,45 +144,44 @@ class _DashboardScreenState extends State<Dashboard>
     );
   }
 
-   Widget horizontalLanding(BuildContext context) {
+  Widget horizontalLanding(BuildContext context) {
     return Center(
       child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: 80.0,
-                  child: Image.asset('images/blueHeartLogo.png'),
-                ),
-                SizedBox(width: 20.0),
-                Text(
-                  'Cuddler',
-                  style: TextStyle(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 80.0,
+                child: Image.asset('images/blueHeartLogo.png'),
+              ),
+              SizedBox(width: 20.0),
+              Text(
+                'Cuddler',
+                style: TextStyle(
                     fontFamily: 'Courgette',
                     fontSize: 38.0,
-                    color: Constants.deepBlue
-                  ),
-                ),
-              ],
-            ),
-            Expanded(
-              //flex: 2,
-              child: Text(
-                'Please choose an option',
-                style: TextStyle(
-                  fontFamily: 'Hanuman',
-                  fontSize: 30.0,
-                ),
-                textAlign: TextAlign.right,
+                    color: Constants.deepBlue),
               ),
+            ],
+          ),
+          Expanded(
+            //flex: 2,
+            child: Text(
+              'Please choose an option',
+              style: TextStyle(
+                fontFamily: 'Hanuman',
+                fontSize: 30.0,
+              ),
+              textAlign: TextAlign.right,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-               Expanded(
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
                 //flex: 1,
                 child: LandingButton(
                   displayText: list,
@@ -206,4 +204,3 @@ class _DashboardScreenState extends State<Dashboard>
     );
   }
 }
-

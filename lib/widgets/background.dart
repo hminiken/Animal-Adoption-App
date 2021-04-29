@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import '../models/constants.dart';
 
-class Background extends StatelessWidget{
-
+class Background extends StatelessWidget {
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return ShaderMask(
       shaderCallback: (rect) {
         return LinearGradient(
@@ -19,7 +18,7 @@ class Background extends StatelessWidget{
           ],
         ).createShader(Rect.fromLTRB(0, 0, rect.width, rect.height));
       },
-      child:  Container(
+      child: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage('images/geometric-background.png'),

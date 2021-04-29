@@ -13,7 +13,8 @@ class App extends StatelessWidget {
         // brightness: Brightness.dark,
         primaryColor: Constants.tealBlue,
         accentColor: Constants.tealBlue,
-        textSelectionTheme: TextSelectionThemeData(cursorColor: Constants.fadedOrange),
+        textSelectionTheme:
+            TextSelectionThemeData(cursorColor: Constants.fadedOrange),
         textTheme: TextTheme(
           headline3: TextStyle(
             fontFamily: 'DellaRespira',
