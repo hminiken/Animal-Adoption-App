@@ -13,12 +13,12 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardScreenState extends State<Dashboard>
     with SingleTickerProviderStateMixin, TransitionRouteAware {
-  Future<bool> _goToLogin(BuildContext context) {
-    return Navigator.of(context)
-        .pushReplacementNamed('/')
-        // we dont want to pop the screen, just replace it completely
-        .then((_) => false);
-  }
+//   Future<bool> _goToLogin(BuildContext context) {
+//     return Navigator.of(context)
+//         .pushReplacementNamed('/')
+//         // we dont want to pop the screen, just replace it completely
+//         .then((_) => false);
+//   }
 
   final routeObserver = TransitionRouteObserver<PageRoute>();
   @override
