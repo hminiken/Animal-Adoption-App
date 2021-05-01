@@ -15,7 +15,9 @@ class _ListsState extends State<Lists> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(primarySwatch: Colors.teal, fontFamily: GoogleFonts.gabriela().fontFamily),
+      theme: ThemeData(
+          primarySwatch: Colors.teal,
+          fontFamily: GoogleFonts.gabriela().fontFamily),
       home: DefaultTabController(
         length: 3,
         child: Scaffold(
