@@ -3,6 +3,7 @@ import 'models/constants.dart';
 import 'pages/dashboard.dart';
 import 'pages/login.dart';
 import 'widgets/transition_route_observer.dart';
+import 'pages/lists.dart';
 
 class App extends StatelessWidget {
   @override
@@ -48,6 +49,7 @@ class App extends StatelessWidget {
       routes: {
         Login.routeName: (context) => Login(),
         Dashboard.routeName: (context) => Dashboard(),
+        'lists': (context) => Lists(),
       },
     );
   }

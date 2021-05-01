@@ -93,6 +93,7 @@ class Details extends StatelessWidget {
     );
   }
 
+  //Display image of animal
   Widget displayImage() {
     return Container(
         padding: EdgeInsets.all(15),
