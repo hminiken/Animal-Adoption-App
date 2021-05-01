@@ -6,16 +6,11 @@ import 'package:animal_adoption_app/screens/update_status_screen.dart';
 import 'package:animal_adoption_app/screens/user_profile_screen.dart';
 import 'package:animal_adoption_app/screens/temp_home.dart';
 import 'package:flutter/material.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:sentry/sentry.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 
 class Cuddler extends StatefulWidget {
-  static Future<void> reportError(dynamic error, dynamic stackTrace) async {
-    final sentryId =
-        await Sentry.captureException(error, stackTrace: stackTrace);
-  }
+  static Future<void> reportError(dynamic error, dynamic stackTrace) async {}
 
   static final routes = {
     NewProfile.routeName: (context) => NewProfile(),

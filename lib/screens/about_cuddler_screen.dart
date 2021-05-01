@@ -1,6 +1,4 @@
 import 'package:animal_adoption_app/classes/theme.dart';
-import 'package:animal_adoption_app/widgets/global_widgets.dart';
-import 'package:animal_adoption_app/widgets/user_profile_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
