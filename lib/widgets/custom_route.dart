@@ -4,10 +4,10 @@ import '../pages/login.dart';
 class FadePageRoute<T> extends MaterialPageRoute<T> {
   FadePageRoute({
     @required WidgetBuilder builder,
-    @required RouteSettings settings,
+    //@required RouteSettings settings,
   }) : super(
           builder: builder,
-          settings: settings,
+          //settings: settings,
         );
 
   @override
