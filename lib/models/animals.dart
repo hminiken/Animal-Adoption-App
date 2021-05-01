@@ -4,8 +4,10 @@ class Animals {
   bool disposition1;
   bool disposition2;
   bool disposition3;
+  String breed;
   String email;
   String name;
+  String contactName;
   String phone;
   String sex;
   String url;

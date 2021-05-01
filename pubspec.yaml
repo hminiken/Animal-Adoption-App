@@ -23,17 +23,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_analytics:
-  cloud_firestore: 
-  firebase_storage: 
-  firebase_core:
-  image_picker: 
-  intl: ^0.15.7
-  location: 
-  test: 
-  hexcolor: 
-  permission_handler: 
-  sentry_flutter: ^4.0.6
+
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
@@ -42,6 +33,19 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  image_picker: 
+  cloud_firestore: 
+  firebase_storage: 
+  firebase_core:
+  intl: ^0.15.7
+  location: 
+  test: 
+  firebase_analytics:
+  hexcolor: 
+  permission_handler: 
+  sentry_flutter: ^4.0.6
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -53,6 +57,7 @@ flutter:
     - assets/images/faded-background.png
     - assets/images/background.jpg
     - assets/images/circleLogo.png
+    - assets/images/profileImgPlaceholder.png
     - google_fonts/
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
