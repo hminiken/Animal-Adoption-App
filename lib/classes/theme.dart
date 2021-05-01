@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 Color colDarkBlue = Color(0xFF264653);
 Color colTeal = Color(0xFF2A9D8F);

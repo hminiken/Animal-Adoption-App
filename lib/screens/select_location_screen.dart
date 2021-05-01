@@ -1,7 +1,5 @@
 import 'package:animal_adoption_app/classes/theme.dart';
 import 'package:animal_adoption_app/models/constants.dart';
-import 'package:animal_adoption_app/widgets/global_widgets.dart';
-import 'package:animal_adoption_app/widgets/new_profile_widgets.dart';
 import 'package:flutter/material.dart';
 
 class SelectLocation extends StatefulWidget {
@@ -17,7 +15,7 @@ class SelectLocationState extends State<SelectLocation> {
     super.initState();
   }
 
-  var currentVal = null;
+  var currentVal = '';
 
   Widget build(BuildContext context) {
     return Scaffold(

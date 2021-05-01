@@ -1,7 +1,7 @@
 import 'package:animal_adoption_app/classes/theme.dart';
 import 'package:animal_adoption_app/models/animals.dart';
-import 'package:animal_adoption_app/models/constants.dart';
 import 'package:animal_adoption_app/widgets/global_widgets.dart';
+import 'package:animal_adoption_app/widgets/new_profile_widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -10,15 +10,8 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
 
-import 'package:flutter/material.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:location/location.dart';
-import 'package:flutter/services.dart';
-
 class NewProfile extends StatefulWidget {
   static const routeName = '/new_profile_screen';
-  // static const routeName = '/';
   @override
   NewProfileState createState() => NewProfileState();
 }
@@ -30,13 +23,15 @@ class NewProfileState extends State<NewProfile> {
   }
 
   final formKey = GlobalKey<FormState>();
-
   var petCategories = ["Dog", "Cat", "Other"];
   var sexDropDown = ["Male", "Female"];
-  var currentVal = null;
-  var breedCurValue = null;
-  var sexCurValue = null;
+  var currentVal = '';
+  var breedCurValue = '';
+  var sexCurValue = '';
 
+  File image;
+  final picker = ImagePicker();
+  Animals newAnimal = new Animals();
   bool isGoodAnimals = false, isGoodChildren = false, isMustLeash = false;
 
   void isGoodAnimalsChanged(bool value) =>
@@ -46,24 +41,6 @@ class NewProfileState extends State<NewProfile> {
       setState(() => isGoodChildren = value);
 
   void isMustLeashChanged(bool value) => setState(() => isMustLeash = value);
-
-  File image;
-  final picker = ImagePicker();
-
-  List<String> getBreedList(currentVal) {
-    var dropdownList;
-    if (currentVal == 'Dog') {
-      dropdownList = Constants().dogBreeds;
-    } else if (currentVal == 'Cat') {
-      dropdownList = Constants().catBreeds;
-    } else if (currentVal == 'Other') {
-      dropdownList = Constants().otherBreeds;
-    } else {
-      dropdownList = [''];
-    }
-
-    return dropdownList;
-  }
 
   void selectImage() async {
     try {
@@ -84,22 +61,10 @@ class NewProfileState extends State<NewProfile> {
     }
   }
 
-  Animals newAnimal = new Animals();
-  // String collection = 'animals';
-
   uploadNewPetProfile() async {
     print("Uploading our content");
-    var collection;
 
-    if (currentVal == 'Dog') {
-      collection = 'dogs';
-    } else if (currentVal == 'Cat') {
-      collection = 'cats';
-    } else if (currentVal == 'Other') {
-      collection = 'others';
-    } else {
-      collection = 'animals';
-    }
+    var collection = getCollection(currentVal);
 
     newAnimal.breed = breedCurValue;
     newAnimal.sex = sexCurValue;
@@ -126,60 +91,6 @@ class NewProfileState extends State<NewProfile> {
       'url': url,
       'sex': newAnimal.sex,
     });
-
-    // storage.ref().getDownloadURL().then((url) => {
-
-    // });
-
-    print("wait");
-    // Navigator.of(context).pop();
-  }
-
-  showAlertDialog(BuildContext context, title, message) {
-    // set up the button
-    Widget okButton = FlatButton(
-      child: Text("OK"),
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text(title),
-      content: Text(message),
-      actions: [
-        okButton,
-      ],
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
-  Widget setUploadImage(BuildContext context) {
-    if (image == null) {
-      return Image.asset(
-        "assets/images/profileImgPlaceholder.png",
-
-        // height: 125.0,
-        height: MediaQuery.of(context).size.width / 3,
-        fit: BoxFit.cover,
-      );
-    } else {
-      return Image.file(
-        image,
-
-        // height: 125.0,
-        height: MediaQuery.of(context).size.width / 3,
-        fit: BoxFit.cover,
-      );
-    }
   }
 
   @override
@@ -478,18 +389,14 @@ class NewProfileState extends State<NewProfile> {
                                         RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20),
-                                ))
-                                // foreground
-                                // textStyle:
-                                //     TextStyle(fontSize: 24, fontWeight: FontWeight.bold)
-                                ),
+                                ))),
                           ),
                           SizedBox(height: 15),
                           Container(
                             child: ClipRRect(
                               // borderRadius: BorderRadius.circular(80.0),
 
-                              child: setUploadImage(context),
+                              child: setUploadImage(context, image),
                             ),
                           ),
                           SizedBox(height: 15),
@@ -497,60 +404,6 @@ class NewProfileState extends State<NewProfile> {
 
                     SizedBox(height: 30),
 
-                    // Container(
-                    //   child: Align(
-                    //       alignment: Alignment.centerLeft,
-                    //       child:
-                    //           centerText(context, 'Pet Information', Colors.white, 24)),
-                    //   color: colYellow,
-                    //   padding: EdgeInsets.all(10),
-                    // ),
-                    // Padding(
-                    //     padding: const EdgeInsets.all(10),
-                    //     child: Column(children: [
-                    //       centerText(
-                    //           context, 'Please select up to 5 images', Colors.black, 14),
-                    //     ])),
-
-                    // SizedBox(height: 70),
-                    //
-                    // SizedBox(
-                    //   width: double.infinity,
-                    //   height: 40,
-                    //   child: Semantics(
-                    //     child: ElevatedButton(
-                    //       child: Text("Submit"),
-                    //       onPressed: () async {
-                    //         if (image == null) {
-                    //           showAlertDialog(context, 'Missing Photo',
-                    //               'Please upload an image of your pet to proceed');
-                    //         } else if (currentVal == null) {
-                    //           showAlertDialog(context, 'Missing Category',
-                    //               'Please choose your pet\'s category');
-                    //         } else if (breedCurValue == null) {
-                    //           showAlertDialog(context, 'Missing Breed',
-                    //               'Please choose your pet\'s breed');
-                    //         } else if (sexCurValue == null) {
-                    //           showAlertDialog(context, 'Missing Sex',
-                    //               'Please choose the sex of your pet');
-                    //         }
-                    //         if (formKey.currentState.validate()) {
-                    //           formKey.currentState.save();
-                    //           uploadNewPetProfile();
-                    //           Navigator.of(context).pop();
-                    //         }
-                    //       },
-                    //       style: ElevatedButton.styleFrom(
-                    //           primary: colDarkBlue, // background
-                    //           onPrimary: Colors.white, // foreground
-                    //           textStyle: TextStyle(
-                    //               fontSize: 24, fontWeight: FontWeight.bold)),
-                    //     ),
-                    //     button: true,
-                    //     enabled: true,
-                    //     onTapHint: 'View Animals',
-                    //   ),
-                    // ),
                     SizedBox(height: 70),
                   ],
                 ))),
