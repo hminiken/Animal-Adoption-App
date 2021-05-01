@@ -1,9 +1,9 @@
-import 'package:animal_adoption_app/my_flutter_app_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:animal_adoption_app/pages/details.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../my_flutter_app_icons.dart';
+import 'details.dart';
 
 //List screen Widget
 class Lists extends StatefulWidget {

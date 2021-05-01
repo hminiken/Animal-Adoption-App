@@ -49,7 +49,7 @@ class App extends StatelessWidget {
       routes: {
         Login.routeName: (context) => Login(),
         Dashboard.routeName: (context) => Dashboard(),
-        'lists': (context) => Lists(),
+        '/Lists': (context) => Lists(),
       },
     );
   }
