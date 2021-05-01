@@ -1,4 +1,5 @@
 import 'package:animal_adoption_app/classes/theme.dart';
+import 'package:animal_adoption_app/screens/about_cuddler_screen.dart';
 import 'package:animal_adoption_app/screens/new_profile_screen.dart';
 import 'package:animal_adoption_app/screens/select_location_screen.dart';
 import 'package:animal_adoption_app/screens/update_status_screen.dart';
@@ -21,6 +22,7 @@ class Cuddler extends StatefulWidget {
     SelectLocation.routeName: (context) => SelectLocation(),
     UpdateStatus.routeName: (context) => UpdateStatus(),
     UserProfile.routeName: (context) => UserProfile(),
+    AboutCuddler.routeName: (context) => AboutCuddler(),
     tempHome.routeName: (context) => tempHome()
   };
 

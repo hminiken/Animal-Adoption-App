@@ -1,5 +1,6 @@
 import 'package:animal_adoption_app/classes/theme.dart';
 import 'package:animal_adoption_app/models/animals.dart';
+import 'package:animal_adoption_app/widgets/global_widgets.dart';
 import 'package:animal_adoption_app/widgets/new_profile_widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -91,6 +92,20 @@ class NewProfileState extends State<NewProfile> {
     });
   }
 
+  int _count = 0;
+  List<String> _listImages = [
+    "assets/images/sampleCat.jpg",
+    "assets/images/circleLogo.png",
+    "assets/images/background.jpg",
+  ];
+
+  void _addImages() {
+    setState(() {
+      _listImages.add(_listImages[_count % 3]);
+      ++_count;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,186 +115,212 @@ class NewProfileState extends State<NewProfile> {
       ),
 
       // === Pet Information ===
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: SingleChildScrollView(
-            child: Column(
-          children: [
-            SizedBox(height: 15),
-            Align(
+      body: SingleChildScrollView(
+          child: Column(
+        children: [
+          Container(
+            child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text('Pet Information: ',
-                    style: Theme.of(context).textTheme.headline5)),
-            SizedBox(height: 15),
-
-            FormField<String>(
-              builder: (FormFieldState<String> state) {
-                return InputDecorator(
-                  decoration: InputDecoration(
-                      // labelStyle: textStyle,
-                      errorStyle:
-                          TextStyle(color: Colors.redAccent, fontSize: 14.0),
-                      labelText: 'Pet Category',
-                      hintText: 'Please select expense',
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0))),
-                  isEmpty: currentVal == '',
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      value: currentVal,
-                      isDense: true,
-                      onChanged: (String newValue) {
-                        setState(() {
-                          currentVal = newValue;
-                          state.didChange(newValue);
-                        });
-                      },
-                      items: petCategories.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                );
-              },
-            ),
-
-            SizedBox(height: 10),
-            TextFormField(
-                onSaved: (value) {
-                  newAnimal.name = value;
-                },
-                decoration: InputDecoration(
-                  labelText: 'Pet Name',
-                  border: OutlineInputBorder(),
-                )),
-            SizedBox(height: 10),
-            TextFormField(
-                onSaved: (value) {
-                  // newAnimal.name = value;
-                  // missing field for breed
-                },
-                decoration: InputDecoration(
-                  labelText: 'Breed',
-                  border: OutlineInputBorder(),
-                )),
-            SizedBox(height: 10),
-            TextFormField(
-                onSaved: (value) {
-                  newAnimal.age = int.parse(value);
-                },
-                decoration: InputDecoration(
-                  labelText: 'Age',
-                  border: OutlineInputBorder(),
-                )),
-            SizedBox(height: 10),
-            TextFormField(
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                minLines: 2,
-                onSaved: (value) {
-                  newAnimal.about = value;
-                },
-                decoration: InputDecoration(
-                    labelText: 'Pet Bio', border: OutlineInputBorder())),
-            SizedBox(height: 10),
-            Align(
-                alignment: Alignment.centerLeft,
-                child: Text('Pet Disposition: ',
-                    style: Theme.of(context).textTheme.headline6)),
-            CheckboxListTile(
-                value: isGoodAnimals,
-                onChanged: isGoodAnimalsChanged,
-                title: new Text("Good with other animals"),
-                controlAffinity: ListTileControlAffinity.leading,
-                activeColor: colRed),
-            CheckboxListTile(
-                value: isGoodChildren,
-                onChanged: isGoodChildrenChanged,
-                title: new Text("Good with children"),
-                controlAffinity: ListTileControlAffinity.leading,
-                activeColor: colRed),
-            CheckboxListTile(
-                value: isMustLeash,
-                onChanged: isMustLeashChanged,
-                title: new Text("Animal must be leashed at all times"),
-                controlAffinity: ListTileControlAffinity.leading,
-                activeColor: colRed),
-
-            // ==== USER INFORMATIon =====
-            SizedBox(height: 15),
-            Align(
-                alignment: Alignment.centerLeft,
-                child: Text('Your Information: ',
-                    style: Theme.of(context).textTheme.headline5)),
-
-            SizedBox(height: 10),
-            TextFormField(
-                onSaved: (value) {
-                  // newAnimal.n = value;
-                  // //Missing owner name for contact
-                },
-                decoration: InputDecoration(
-                  labelText: 'Your Name',
-                  border: OutlineInputBorder(),
-                )),
-            SizedBox(height: 10),
-            TextFormField(
-                onSaved: (value) {
-                  newAnimal.phone = value;
-                },
-                decoration: InputDecoration(
-                  labelText: 'Phone #',
-                  border: OutlineInputBorder(),
-                )),
-            SizedBox(height: 10),
-            TextFormField(
-                onSaved: (value) {
-                  newAnimal.email = value;
-                },
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
-                )),
-            SizedBox(height: 30),
-
-            SizedBox(
-              width: double.infinity,
-              height: 40,
-              child: Semantics(
-                child: ElevatedButton(
-                  child: Text("Submit"),
-                  onPressed: () async {
-                    if (formKey.currentState.validate()) {
-                      formKey.currentState.save();
-                      uploadNewPetProfile();
-                      Navigator.of(context).pop();
-                    }
+                child:
+                    centerText(context, 'Pet Information', Colors.white, 24)),
+            color: colYellow,
+            padding: EdgeInsets.all(10),
+          ),
+          Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(children: [
+                SizedBox(height: 10),
+                FormField<String>(
+                  builder: (FormFieldState<String> state) {
+                    return InputDecorator(
+                      decoration: InputDecoration(
+                          // labelStyle: textStyle,
+                          errorStyle: TextStyle(
+                              color: Colors.redAccent, fontSize: 14.0),
+                          labelText: 'Pet Category',
+                          hintText: 'Please select expense',
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0))),
+                      isEmpty: currentVal == '',
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          value: currentVal,
+                          isDense: true,
+                          onChanged: (String newValue) {
+                            setState(() {
+                              currentVal = newValue;
+                              state.didChange(newValue);
+                            });
+                          },
+                          items: petCategories.map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    );
                   },
-                  style: ElevatedButton.styleFrom(
-                      primary: colDarkBlue, // background
-                      onPrimary: Colors.white, // foreground
-                      textStyle:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                 ),
-                button: true,
-                enabled: true,
-                onTapHint: 'View Animals',
+                SizedBox(height: 25),
+                TextFormField(
+                    onSaved: (value) {
+                      newAnimal.name = value;
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Pet Name',
+                      border: OutlineInputBorder(),
+                    )),
+                SizedBox(height: 25),
+                TextFormField(
+                    onSaved: (value) {
+                      // newAnimal.name = value;
+                      // missing field for breed
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Breed',
+                      border: OutlineInputBorder(),
+                    )),
+                SizedBox(height: 25),
+                TextFormField(
+                    onSaved: (value) {
+                      newAnimal.age = int.parse(value);
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Age',
+                      border: OutlineInputBorder(),
+                    )),
+                SizedBox(height: 25),
+                TextFormField(
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    minLines: 2,
+                    onSaved: (value) {
+                      newAnimal.about = value;
+                    },
+                    decoration: InputDecoration(
+                        labelText: 'Pet Bio', border: OutlineInputBorder())),
+                SizedBox(height: 25),
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('Pet Disposition: ',
+                        style: Theme.of(context).textTheme.headline6)),
+                CheckboxListTile(
+                    value: isGoodAnimals,
+                    onChanged: isGoodAnimalsChanged,
+                    title: new Text("Good with other animals"),
+                    controlAffinity: ListTileControlAffinity.leading,
+                    activeColor: colRed),
+                CheckboxListTile(
+                    value: isGoodChildren,
+                    onChanged: isGoodChildrenChanged,
+                    title: new Text("Good with children"),
+                    controlAffinity: ListTileControlAffinity.leading,
+                    activeColor: colRed),
+                CheckboxListTile(
+                    value: isMustLeash,
+                    onChanged: isMustLeashChanged,
+                    title: new Text("Animal must be leashed at all times"),
+                    controlAffinity: ListTileControlAffinity.leading,
+                    activeColor: colRed),
+              ])),
+          // ==== USER INFORMATIon =====
+          SizedBox(height: 15),
+          Container(
+            child: Align(
+                alignment: Alignment.centerLeft,
+                child:
+                    centerText(context, 'Your Information', Colors.white, 24)),
+            color: colYellow,
+            padding: EdgeInsets.all(10),
+          ),
+          Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(children: [
+                SizedBox(height: 25),
+                TextFormField(
+                    onSaved: (value) {
+                      // newAnimal.n = value;
+                      // //Missing owner name for contact
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Your Name',
+                      border: OutlineInputBorder(),
+                    )),
+                SizedBox(height: 25),
+                TextFormField(
+                    onSaved: (value) {
+                      newAnimal.phone = value;
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Phone #',
+                      border: OutlineInputBorder(),
+                    )),
+                SizedBox(height: 25),
+                TextFormField(
+                    onSaved: (value) {
+                      newAnimal.email = value;
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                      border: OutlineInputBorder(),
+                    )),
+                SizedBox(height: 30),
+              ])),
+
+          // Container(
+          //   child: Align(
+          //       alignment: Alignment.centerLeft,
+          //       child:
+          //           centerText(context, 'Pet Information', Colors.white, 24)),
+          //   color: colYellow,
+          //   padding: EdgeInsets.all(10),
+          // ),
+          // Padding(
+          //     padding: const EdgeInsets.all(10),
+          //     child: Column(children: [
+          //       centerText(
+          //           context, 'Please select up to 5 images', Colors.black, 14),
+          //     ])),
+
+          // SizedBox(height: 70),
+
+          SizedBox(
+            width: double.infinity,
+            height: 40,
+            child: Semantics(
+              child: ElevatedButton(
+                child: Text("Submit"),
+                onPressed: () async {
+                  if (formKey.currentState.validate()) {
+                    formKey.currentState.save();
+                    uploadNewPetProfile();
+                    Navigator.of(context).pop();
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                    primary: colDarkBlue, // background
+                    onPrimary: Colors.white, // foreground
+                    textStyle:
+                        TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
               ),
+              button: true,
+              enabled: true,
+              onTapHint: 'View Animals',
             ),
-            SizedBox(height: 70),
-          ],
-        )),
-      ),
+          ),
+          SizedBox(height: 70),
+        ],
+      )),
 
 // == Floating Action Button ==
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Semantics(
         child: new FloatingActionButton(
             onPressed: () {
               selectImage();
+              // _addImages();
             },
             tooltip: 'Upload a new picture',
             backgroundColor: colRed,
