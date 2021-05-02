@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "60663637932",
+    "project_id": "cuddler-bd524",
+    "storage_bucket": "cuddler-bd524.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:60663637932:android:d5be8ff629f62fabdd3c09",
+        "android_client_info": {
+          "package_name": "com.example.animal_adoption_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "60663637932-ua8oo5uo56de9t90hhpqnojug98vse5i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBU2fiHUueE_D5lR4DiD6aOtjybRV4vvU8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "60663637932-ua8oo5uo56de9t90hhpqnojug98vse5i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
