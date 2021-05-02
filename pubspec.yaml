@@ -23,9 +23,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_login: ^1.0.14
-  intl: ^0.16.1
-  hexcolor: ^2.0.0
+  flutter_login: ^1.1.0
+  #intl: ^0.16.1
+  #hexcolor: ^2.0.0
   # dummy package to test https://github.com/NearHuscarl/flutter_login/issues/35
   # provider: ^5.0.0
   cloud_firestore: ^1.0.6
