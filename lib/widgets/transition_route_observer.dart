@@ -17,7 +17,6 @@ class TransitionRouteObserver<R extends TransitionRoute<dynamic>>
         _listeners.putIfAbsent(route, () => <TransitionRouteAware>{});
     if (subscribers.add(routeAware)) {
       routeAware.didPush();
-      //Future.delayed(route!.transitionDuration, () {
       Future.delayed(route.transitionDuration, () {
         routeAware.didPushAfterTransition();
       });
