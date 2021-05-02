@@ -113,7 +113,8 @@ class Login extends StatelessWidget {
         print('Name: $name');
         return _recoverPassword(name);
       },
-      showDebugButtons: true,
+      //change to true when debugging 
+      showDebugButtons: false,
     );
   }
 
