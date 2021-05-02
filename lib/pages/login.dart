@@ -60,7 +60,7 @@ class Login extends StatelessWidget {
         pageColorDark: Constants.tealBlue,
         titleStyle: TextStyle(
           color: Constants.deepBlue,
-          fontFamily: 'DMSerifDisplay',
+          fontFamily: 'Courgette',
           letterSpacing: 2,
         ),
       ),
