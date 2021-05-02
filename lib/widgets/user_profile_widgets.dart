@@ -54,7 +54,7 @@ Widget buildListItem(BuildContext context, int index) {
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       child: Container(
           decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(color: Colors.grey[300]))),
+              border: Border(bottom: BorderSide(color: (Colors.grey[300])!))),
           child: ListTile(
             title: Text(
               profileOptions[index],

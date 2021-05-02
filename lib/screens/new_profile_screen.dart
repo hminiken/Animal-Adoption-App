@@ -29,9 +29,24 @@ class NewProfileState extends State<NewProfile> {
   var breedCurValue = '';
   var sexCurValue = '';
 
-  File image;
+  File image = new File('assets/images/profileImgPlaceholder.png');
   final picker = ImagePicker();
-  Animals newAnimal = new Animals();
+  Animals newAnimal = new Animals(
+    about: '',
+    age: 0,
+    contactName: '',
+    disposition1: false,
+    disposition2: false,
+    disposition3: false,
+    breed: '',
+    email: '',
+    favorite: false,
+    name: '',
+    phone: '',
+    sex: '',
+    url: '',
+  );
+
   bool isGoodAnimals = false, isGoodChildren = false, isMustLeash = false;
 
   void isGoodAnimalsChanged(bool value) =>
@@ -69,13 +84,22 @@ class NewProfileState extends State<NewProfile> {
     newAnimal.breed = breedCurValue;
     newAnimal.sex = sexCurValue;
 
+    // FirebaseStorage storage = FirebaseStorage.instance;
+    // Reference ref = storage.ref().child("image" + DateTime.now().toString());
+    // UploadTask uploadTask = ref.putFile(image);
+
+    // final TaskSnapshot downloadUrl = (await uploadTask);
+
+    // final String url = await downloadUrl.ref.getDownloadURL();
     FirebaseStorage storage = FirebaseStorage.instance;
-    Reference ref = storage.ref().child("image" + DateTime.now().toString());
+    String url;
+    Reference ref = storage.ref().child("image1" + DateTime.now().toString());
     UploadTask uploadTask = ref.putFile(image);
-
-    final TaskSnapshot downloadUrl = (await uploadTask);
-
-    final String url = await downloadUrl.ref.getDownloadURL();
+    uploadTask.whenComplete(() {
+      url = ref.getDownloadURL() as String;
+    }).catchError((onError) {
+      print(onError);
+    });
 
     FirebaseFirestore.instance.collection(collection).add({
       'about': newAnimal.about,
@@ -137,10 +161,10 @@ class NewProfileState extends State<NewProfile> {
                                   child: DropdownButton<String>(
                                     value: currentVal,
                                     isDense: true,
-                                    onChanged: (String newValue) {
+                                    onChanged: (String? newValue) {
                                       setState(() {
-                                        currentVal = newValue;
-                                        breedCurValue = null;
+                                        currentVal = newValue!;
+                                        breedCurValue = 'null';
                                         getBreedList(currentVal);
                                         state.didChange(newValue);
                                       });
@@ -175,9 +199,9 @@ class NewProfileState extends State<NewProfile> {
                                   child: DropdownButton<String>(
                                     value: breedCurValue,
                                     isDense: true,
-                                    onChanged: (String breedNewValue) {
+                                    onChanged: (String? breedNewValue) {
                                       setState(() {
-                                        breedCurValue = breedNewValue;
+                                        breedCurValue = breedNewValue!;
                                         state.didChange(breedNewValue);
                                       });
                                     },
@@ -212,9 +236,9 @@ class NewProfileState extends State<NewProfile> {
                                   child: DropdownButton<String>(
                                     value: sexCurValue,
                                     isDense: true,
-                                    onChanged: (String sexNewValue) {
+                                    onChanged: (String? sexNewValue) {
                                       setState(() {
-                                        sexCurValue = sexNewValue;
+                                        sexCurValue = sexNewValue!;
                                         state.didChange(sexNewValue);
                                       });
                                     },
@@ -232,10 +256,10 @@ class NewProfileState extends State<NewProfile> {
                           SizedBox(height: 25),
                           TextFormField(
                               onSaved: (value) {
-                                newAnimal.name = value;
+                                newAnimal.name = value!;
                               },
                               validator: (value) {
-                                if (value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return 'Please enter the number of items';
                                 } else {
                                   return null;
@@ -248,10 +272,10 @@ class NewProfileState extends State<NewProfile> {
                           SizedBox(height: 25),
                           TextFormField(
                               onSaved: (value) {
-                                newAnimal.age = int.parse(value);
+                                newAnimal.age = int.parse(value!);
                               },
                               validator: (value) {
-                                if (value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return 'Please enter the number of items';
                                 } else {
                                   return null;
@@ -267,10 +291,10 @@ class NewProfileState extends State<NewProfile> {
                               maxLines: null,
                               minLines: 2,
                               onSaved: (value) {
-                                newAnimal.about = value;
+                                newAnimal.about = value!;
                               },
                               validator: (value) {
-                                if (value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return 'Please enter the number of items';
                                 } else {
                                   return null;
@@ -287,19 +311,25 @@ class NewProfileState extends State<NewProfile> {
                                       Theme.of(context).textTheme.headline6)),
                           CheckboxListTile(
                               value: isGoodAnimals,
-                              onChanged: isGoodAnimalsChanged,
+                              onChanged: (bool? value) {
+                                setState(() => isGoodAnimals = value!);
+                              },
                               title: new Text("Good with other animals"),
                               controlAffinity: ListTileControlAffinity.leading,
                               activeColor: colRed),
                           CheckboxListTile(
                               value: isGoodChildren,
-                              onChanged: isGoodChildrenChanged,
+                              onChanged: (bool? value) {
+                                setState(() => isGoodChildren = value!);
+                              },
                               title: new Text("Good with children"),
                               controlAffinity: ListTileControlAffinity.leading,
                               activeColor: colRed),
                           CheckboxListTile(
                               value: isMustLeash,
-                              onChanged: isMustLeashChanged,
+                              onChanged: (bool? value) {
+                                setState(() => isMustLeash = value!);
+                              },
                               title: new Text(
                                   "Animal must be leashed at all times"),
                               controlAffinity: ListTileControlAffinity.leading,
@@ -321,10 +351,10 @@ class NewProfileState extends State<NewProfile> {
                           SizedBox(height: 25),
                           TextFormField(
                               onSaved: (value) {
-                                newAnimal.contactName = value;
+                                newAnimal.contactName = value!;
                               },
                               validator: (value) {
-                                if (value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return 'Please enter the number of items';
                                 } else {
                                   return null;
@@ -337,10 +367,10 @@ class NewProfileState extends State<NewProfile> {
                           SizedBox(height: 25),
                           TextFormField(
                               onSaved: (value) {
-                                newAnimal.phone = value;
+                                newAnimal.phone = value!;
                               },
                               validator: (value) {
-                                if (value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return 'Please enter the number of items';
                                 } else {
                                   return null;
@@ -353,10 +383,10 @@ class NewProfileState extends State<NewProfile> {
                           SizedBox(height: 25),
                           TextFormField(
                               onSaved: (value) {
-                                newAnimal.email = value;
+                                newAnimal.email = value!;
                               },
                               validator: (value) {
-                                if (value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return 'Please enter the number of items';
                                 } else {
                                   return null;
@@ -416,18 +446,18 @@ class NewProfileState extends State<NewProfile> {
               if (image == null) {
                 showAlertDialog(context, 'Missing Photo',
                     'Please upload an image of your pet to proceed');
-              } else if (currentVal == null) {
+              } else if (currentVal == '') {
                 showAlertDialog(context, 'Missing Category',
                     'Please choose your pet\'s category');
-              } else if (breedCurValue == null) {
+              } else if (breedCurValue == '') {
                 showAlertDialog(context, 'Missing Breed',
                     'Please choose your pet\'s breed');
-              } else if (sexCurValue == null) {
+              } else if (sexCurValue == '') {
                 showAlertDialog(context, 'Missing Sex',
                     'Please choose the sex of your pet');
               }
-              if (formKey.currentState.validate()) {
-                formKey.currentState.save();
+              if (formKey.currentState!.validate()) {
+                formKey.currentState!.save();
                 uploadNewPetProfile();
                 Navigator.of(context).pop();
               }

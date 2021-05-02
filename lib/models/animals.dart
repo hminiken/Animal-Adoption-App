@@ -4,23 +4,27 @@ class Animals {
   bool disposition1;
   bool disposition2;
   bool disposition3;
-  String breed;
   String email;
   String name;
   String contactName;
   String phone;
   String sex;
   String url;
+  bool favorite;
+  String breed;
 
   Animals(
-      {this.about,
-      this.age,
-      this.disposition1,
-      this.disposition2,
-      this.disposition3,
-      this.email,
-      this.name,
-      this.phone,
-      this.sex,
-      this.url});
+      {required this.about,
+      required this.age,
+      required this.disposition1,
+      required this.disposition2,
+      required this.disposition3,
+      required this.email,
+      required this.name,
+      required this.phone,
+      required this.contactName,
+      required this.sex,
+      required this.url,
+      required this.breed,
+      required this.favorite});
 }
