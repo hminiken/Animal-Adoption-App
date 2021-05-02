@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/constants.dart';
 
 class LandingButton extends StatelessWidget {
-  LandingButton({@required this.displayText, @required this.page});
+  LandingButton({required this.displayText, required this.page});
   //final GestureTapCallback onPressed;
   final String displayText;
   final Widget page;

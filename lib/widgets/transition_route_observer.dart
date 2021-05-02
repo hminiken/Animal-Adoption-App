@@ -13,12 +13,11 @@ class TransitionRouteObserver<R extends TransitionRoute<dynamic>>
   /// to [route], e.g. when [route] is covered by another route or when [route]
   /// is popped off the [Navigator] stack.
   void subscribe(TransitionRouteAware routeAware, R route) {
-    assert(route != null);
     final subscribers =
         _listeners.putIfAbsent(route, () => <TransitionRouteAware>{});
     if (subscribers.add(routeAware)) {
       routeAware.didPush();
-      Future.delayed(route!.transitionDuration, () {
+      Future.delayed(route.transitionDuration, () {
         routeAware.didPushAfterTransition();
       });
     }
@@ -36,7 +35,7 @@ class TransitionRouteObserver<R extends TransitionRoute<dynamic>>
   }
 
   @override
-  void didPop(Route<dynamic> route, Route<dynamic> previousRoute) {
+  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
     if (route is R && previousRoute is R) {
       final previousSubscribers = _listeners[previousRoute]?.toList();
 
@@ -46,7 +45,7 @@ class TransitionRouteObserver<R extends TransitionRoute<dynamic>>
         }
       }
 
-      final subscribers = _listeners[route as R]?.toList();
+      final subscribers = _listeners[route]?.toList();
 
       if (subscribers != null) {
         for (var routeAware in subscribers) {
@@ -57,7 +56,7 @@ class TransitionRouteObserver<R extends TransitionRoute<dynamic>>
   }
 
   @override
-  void didPush(Route<dynamic> route, Route<dynamic> previousRoute) {
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
     if (route is R && previousRoute is R) {
       final previousSubscribers = _listeners[previousRoute];
 
