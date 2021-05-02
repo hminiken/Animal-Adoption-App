@@ -23,7 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_login: ^1.1.0
+  flutter_login: ^2.0.0-nullsafety.0
   #intl: ^0.16.1
   #hexcolor: ^2.0.0
   # dummy package to test https://github.com/NearHuscarl/flutter_login/issues/35
