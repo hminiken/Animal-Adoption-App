@@ -7,7 +7,7 @@ class FadePageRoute<T> extends MaterialPageRoute<T> {
     RouteSettings? settings,
   }) : super(
           builder: builder,
-          //settings: settings,
+          settings: settings,
         );
 
   @override
