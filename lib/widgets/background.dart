@@ -12,8 +12,8 @@ class Background extends StatelessWidget {
           stops: [0.1, 0.3, 0.7, 0.9],
           colors: [
             Colors.white,
-            Colors.teal[100],
-            Colors.teal[300],
+            (Colors.teal[100])!,
+            (Colors.teal[300])!,
             Constants.tealBlue,
           ],
         ).createShader(Rect.fromLTRB(0, 0, rect.width, rect.height));
