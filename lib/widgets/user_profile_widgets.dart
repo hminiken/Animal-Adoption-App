@@ -1,6 +1,6 @@
 import 'package:cuddler/classes/theme.dart';
-import 'package:cuddler/screens/update_status_screen.dart';
-import 'package:cuddler/screens/about_cuddler_screen.dart';
+import 'package:cuddler/pages/update_status_screen.dart';
+import 'package:cuddler/pages/about_cuddler_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cuddler/widgets/global_widgets.dart';

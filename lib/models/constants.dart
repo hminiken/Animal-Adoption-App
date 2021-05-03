@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Constants {
   var dogBreeds = [
     'Retriever (Labrador)',
@@ -102,10 +104,7 @@ class Constants {
     'Wisconsin',
     'Wyoming'
   ];
-}
-import 'package:flutter/material.dart';
 
-class Constants {
   static const String appName = 'Cuddler';
   static const String logoTag = 'animals logo';
   static const String titleTag = 'title';
