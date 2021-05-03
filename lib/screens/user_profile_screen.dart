@@ -1,5 +1,5 @@
-import 'package:animal_adoption_app/classes/theme.dart';
-import 'package:animal_adoption_app/widgets/user_profile_widgets.dart';
+import 'package:cuddler/classes/theme.dart';
+import 'package:cuddler/widgets/user_profile_widgets.dart';
 import 'package:flutter/material.dart';
 
 class UserProfile extends StatefulWidget {

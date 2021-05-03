@@ -1,15 +1,15 @@
-import 'package:animal_adoption_app/classes/theme.dart';
-import 'package:animal_adoption_app/screens/about_cuddler_screen.dart';
-import 'package:animal_adoption_app/screens/new_profile_screen.dart';
-import 'package:animal_adoption_app/screens/select_location_screen.dart';
-import 'package:animal_adoption_app/screens/update_status_screen.dart';
-import 'package:animal_adoption_app/screens/user_profile_screen.dart';
-import 'package:animal_adoption_app/screens/temp_home.dart';
+import 'classes/theme.dart';
+import 'screens/about_cuddler_screen.dart';
+import 'screens/new_profile_screen.dart';
+import 'screens/select_location_screen.dart';
+import 'screens/update_status_screen.dart';
+import 'screens/user_profile_screen.dart';
+import 'screens/temp_home.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
+// import 'package:firebase_analytics/firebase_analytics.dart';
+// import 'package:firebase_analytics/observer.dart';
 
-class Cuddler extends StatefulWidget {
+class App extends StatefulWidget {
   static Future<void> reportError(dynamic error, dynamic stackTrace) async {}
 
   static final routes = {
@@ -22,14 +22,10 @@ class Cuddler extends StatefulWidget {
   };
 
   @override
-  CuddlerState createState() => CuddlerState();
+  AppState createState() => AppState();
 }
 
-class CuddlerState extends State<Cuddler> {
-  static FirebaseAnalytics analytics = FirebaseAnalytics();
-  static FirebaseAnalyticsObserver observer =
-      FirebaseAnalyticsObserver(analytics: analytics);
-
+class AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -39,8 +35,7 @@ class CuddlerState extends State<Cuddler> {
       theme: ThemeData(
         primaryColor: colTeal,
       ),
-      routes: Cuddler.routes,
-      navigatorObservers: <NavigatorObserver>[observer],
+      routes: App.routes,
       debugShowCheckedModeBanner: false,
     );
   }

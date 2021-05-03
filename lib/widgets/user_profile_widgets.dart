@@ -1,9 +1,9 @@
-import 'package:animal_adoption_app/classes/theme.dart';
-import 'package:animal_adoption_app/screens/about_cuddler_screen.dart';
-import 'package:animal_adoption_app/screens/update_status_screen.dart';
+import 'package:cuddler/classes/theme.dart';
+import 'package:cuddler/screens/update_status_screen.dart';
+import 'package:cuddler/screens/about_cuddler_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:animal_adoption_app/widgets/global_widgets.dart';
+import 'package:cuddler/widgets/global_widgets.dart';
 
 void pushViewEntry(BuildContext context, String routeName) {
   Navigator.of(context).pushNamed(

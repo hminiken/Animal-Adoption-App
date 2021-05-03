@@ -1,5 +1,5 @@
-import 'package:animal_adoption_app/classes/theme.dart';
-import 'package:animal_adoption_app/models/constants.dart';
+import 'package:cuddler/classes/theme.dart';
+import 'package:cuddler/models/constants.dart';
 import 'package:flutter/material.dart';
 
 class SelectLocation extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:animal_adoption_app/models/constants.dart';
+import 'package:cuddler/models/constants.dart';
 import 'package:flutter/material.dart';
 
 bool isGoodAnimals = false, isGoodChildren = false, isMustLeash = false;

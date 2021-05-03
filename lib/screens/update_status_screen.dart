@@ -1,4 +1,4 @@
-import 'package:animal_adoption_app/classes/theme.dart';
+import 'package:cuddler/classes/theme.dart';
 import 'package:flutter/material.dart';
 
 class UpdateStatus extends StatefulWidget {

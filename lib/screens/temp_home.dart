@@ -1,9 +1,9 @@
-import 'package:animal_adoption_app/classes/theme.dart';
+import 'package:cuddler/classes/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:animal_adoption_app/screens/new_profile_screen.dart';
-import 'package:animal_adoption_app/screens/select_location_screen.dart';
-import 'package:animal_adoption_app/screens/update_status_screen.dart';
-import 'package:animal_adoption_app/screens/user_profile_screen.dart';
+import 'package:cuddler/screens/new_profile_screen.dart';
+import 'package:cuddler/screens/select_location_screen.dart';
+import 'package:cuddler/screens/update_status_screen.dart';
+import 'package:cuddler/screens/user_profile_screen.dart';
 
 class tempHome extends StatefulWidget {
   // static const routeName = '/update_status_screen';
