@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/constants.dart';
+import 'new_profile_screen.dart';
 import '../widgets/background.dart';
 import '../widgets/landingButton.dart';
 import '../widgets/transition_route_observer.dart';
@@ -128,14 +129,14 @@ class _DashboardScreenState extends State<Dashboard>
           Expanded(
             child: LandingButton(
               displayText: list,
-              page: Placeholder(),
+              page: NewProfile(),
             ),
           ),
           SizedBox(height: 40.0),
           Expanded(
             child: LandingButton(
               displayText: adopt,
-              page: Placeholder(),
+              page: SelectLocation(),
             ),
           ),
           SizedBox(height: 80.0),
@@ -185,7 +186,7 @@ class _DashboardScreenState extends State<Dashboard>
                 //flex: 1,
                 child: LandingButton(
                   displayText: list,
-                  page: Placeholder(),
+                  page: NewProfile(),
                 ),
               ),
               SizedBox(width: 20.0),
@@ -193,7 +194,7 @@ class _DashboardScreenState extends State<Dashboard>
                 //flex: 1,
                 child: LandingButton(
                   displayText: adopt,
-                  page: Placeholder(),
+                  page: SelectLocation(),
                 ),
               ),
             ],
