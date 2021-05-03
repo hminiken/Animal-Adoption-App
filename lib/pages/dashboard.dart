@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/constants.dart';
 import 'new_profile_screen.dart';
+import 'select_location_screen.dart';
 import '../widgets/background.dart';
 import '../widgets/landingButton.dart';
 import '../widgets/transition_route_observer.dart';
