@@ -63,6 +63,10 @@ flutter:
     - assets/images/background.jpg
     - assets/images/circleLogo.png
     - assets/images/profileImgPlaceholder.png
+    - images/blueHeartLogo.png
+    - images/circleLogo.png
+    - images/geometric-background.png
+    - images/triangular-background.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -75,6 +79,25 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-
+  fonts:
+    - family: Courgette
+      fonts:
+        - asset: fonts/Courgette-Regular.ttf
+    - family: DellaRespira
+      fonts:
+        - asset: fonts/DellaRespira-Regular.ttf
+    - family: Hanuman
+      fonts:
+        - asset: fonts/Hanuman-Regular.ttf 
+    - family: JosefinSlab
+      fonts:
+        - asset: fonts/JosefinSlab-Regular.ttf
+    - family: Solway
+      fonts:
+        - asset: fonts/Solway-Regular.ttf
+    - family: MyFlutterApp
+      fonts:
+        - asset: assets/icons/MyFlutterApp.ttf
+  #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

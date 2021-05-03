@@ -1,42 +1,56 @@
-import 'classes/theme.dart';
-import 'screens/about_cuddler_screen.dart';
-import 'screens/new_profile_screen.dart';
-import 'screens/select_location_screen.dart';
-import 'screens/update_status_screen.dart';
-import 'screens/user_profile_screen.dart';
-import 'screens/temp_home.dart';
 import 'package:flutter/material.dart';
-// import 'package:firebase_analytics/firebase_analytics.dart';
-// import 'package:firebase_analytics/observer.dart';
+import 'models/constants.dart';
+import 'pages/dashboard.dart';
+import 'pages/login.dart';
+import 'widgets/transition_route_observer.dart';
+import 'pages/lists.dart';
 
-class App extends StatefulWidget {
-  static Future<void> reportError(dynamic error, dynamic stackTrace) async {}
-
-  static final routes = {
-    NewProfile.routeName: (context) => NewProfile(),
-    SelectLocation.routeName: (context) => SelectLocation(),
-    UpdateStatus.routeName: (context) => UpdateStatus(),
-    UserProfile.routeName: (context) => UserProfile(),
-    AboutCuddler.routeName: (context) => AboutCuddler(),
-    tempHome.routeName: (context) => tempHome()
-  };
-
-  @override
-  AppState createState() => AppState();
-}
-
-class AppState extends State<App> {
+class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Welcome to Cuddler',
-      //  color: CuddlerPalette.cuddlerPalette[300],
-      //   theme: CuddlerThemeData,
+      title: 'Cuddler',
       theme: ThemeData(
-        primaryColor: colTeal,
+        // brightness: Brightness.dark,
+        primaryColor: Constants.tealBlue,
+        accentColor: Constants.tealBlue,
+        textSelectionTheme:
+            TextSelectionThemeData(cursorColor: Constants.fadedOrange),
+        textTheme: TextTheme(
+          headline3: TextStyle(
+            fontFamily: 'DellaRespira',
+            fontSize: 50.0,
+            color: Constants.deepBlue,
+          ),
+          button: TextStyle(
+            fontFamily: 'Hanuman',
+          ),
+          caption: TextStyle(
+            fontFamily: 'JosefinSlab',
+            fontSize: 12.0,
+            fontWeight: FontWeight.normal,
+            color: Constants.deepBlue,
+          ),
+          headline1: TextStyle(fontFamily: 'Courgette'),
+          headline2: TextStyle(fontFamily: 'Hanuman'),
+          headline4: TextStyle(fontFamily: 'Solway'),
+          headline5: TextStyle(fontFamily: 'Solway'),
+          headline6: TextStyle(fontFamily: 'Solway'),
+          subtitle1: TextStyle(fontFamily: 'Solway'),
+          bodyText1: TextStyle(fontFamily: 'Solway'),
+          bodyText2: TextStyle(fontFamily: 'Solway'),
+          subtitle2: TextStyle(fontFamily: 'JosefinSlab'),
+          overline: TextStyle(fontFamily: 'JosefinSlab'),
+        ),
       ),
-      routes: App.routes,
-      debugShowCheckedModeBanner: false,
+      home: Login(),
+      navigatorObservers: [TransitionRouteObserver()],
+      initialRoute: Login.routeName,
+      routes: {
+        Login.routeName: (context) => Login(),
+        Dashboard.routeName: (context) => Dashboard(),
+        '/Lists': (context) => Lists(),
+      },
     );
   }
 }
