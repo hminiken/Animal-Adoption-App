@@ -15,7 +15,7 @@ class SelectLocationState extends State<SelectLocation> {
     super.initState();
   }
 
-  var currentVal = '';
+  var currentVal = 'Alabama';
 
   Widget build(BuildContext context) {
     return Scaffold(

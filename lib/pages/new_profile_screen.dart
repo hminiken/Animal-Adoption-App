@@ -26,9 +26,9 @@ class NewProfileState extends State<NewProfile> {
   final formKey = GlobalKey<FormState>();
   var petCategories = ["Dog", "Cat", "Other"];
   var sexDropDown = ["Male", "Female"];
-  var currentVal = '';
-  var breedCurValue = '';
-  var sexCurValue = '';
+  String currentVal = 'Dog';
+  var breedCurValue = 'Poodle';
+  var sexCurValue = 'Male';
 
   File image = new File('assets/images/profileImgPlaceholder.png');
   final picker = ImagePicker();
