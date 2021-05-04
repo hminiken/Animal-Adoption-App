@@ -5,11 +5,9 @@ import 'package:cuddler/models/animals.dart';
 import 'package:cuddler/widgets/global_widgets.dart';
 import 'package:cuddler/widgets/new_profile_widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:permission_handler/permission_handler.dart';
 
 class NewProfile extends StatefulWidget {
   static const routeName = '/new_profile_screen';
@@ -92,7 +90,7 @@ class NewProfileState extends State<NewProfile> {
     // final TaskSnapshot downloadUrl = (await uploadTask);
 
     // final String url = await downloadUrl.ref.getDownloadURL();
-    FirebaseStorage storage = FirebaseStorage.instance;
+    // FirebaseStorage storage = FirebaseStorage.instance;
     // Reference ref = storage.ref().child("image1" + DateTime.now().toString());
     // UploadTask uploadTask = ref.putFile(image);
 
@@ -443,7 +441,7 @@ class NewProfileState extends State<NewProfile> {
         floatingActionButton: Semantics(
           child: new FloatingActionButton.extended(
             onPressed: () {
-              if (image == null) {
+              if (image == File("assets/images/profileImgPlaceholder.png")) {
                 showAlertDialog(context, 'Missing Photo',
                     'Please upload an image of your pet to proceed');
               } else if (currentVal == '') {

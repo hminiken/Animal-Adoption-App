@@ -15,7 +15,7 @@ Widget buildNewProfileTextField(BuildContext context, String label) {
 }
 
 Widget setUploadImage(BuildContext context, File image) {
-  if (image == null) {
+  if (image == File("assets/images/profileImgPlaceholder.png")) {
     return Image.asset(
       "assets/images/profileImgPlaceholder.png",
 
@@ -26,7 +26,6 @@ Widget setUploadImage(BuildContext context, File image) {
   } else {
     return Image.file(
       image,
-
       // height: 125.0,
       height: MediaQuery.of(context).size.width / 3,
       fit: BoxFit.cover,
