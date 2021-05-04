@@ -1,3 +1,4 @@
+import 'package:cuddler/pages/user_profile_screen.dart';
 import 'package:flutter/material.dart';
 import '../models/constants.dart';
 import 'new_profile_screen.dart';
@@ -26,6 +27,13 @@ class _DashboardScreenState extends State<Dashboard>
   @override
   void initState() {
     super.initState();
+  }
+
+  void pushViewEntry(BuildContext context, String routeName) {
+    Navigator.of(context).pushNamed(
+      routeName,
+      // arguments:
+    );
   }
 
   // @override
@@ -60,6 +68,20 @@ class _DashboardScreenState extends State<Dashboard>
       elevation: 0,
       textTheme: theme.accentTextTheme,
       iconTheme: theme.accentIconTheme,
+      actions: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(right: 20.0),
+          child: GestureDetector(
+            onTap: () {
+              pushViewEntry(context, UserProfile.routeName);
+            },
+            child: Icon(
+              Icons.person,
+              size: 26.0,
+            ),
+          ),
+        )
+      ],
     );
   }
 

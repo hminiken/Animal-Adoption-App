@@ -58,7 +58,7 @@ Widget buildListItem(BuildContext context, int index) {
           child: ListTile(
             title: Text(
               profileOptions[index],
-              style: textTheme.subtitle2,
+              style: textTheme.subtitle1,
             ),
             onTap: () => pushViewEntry(context, optionRoute[index]),
           )));
