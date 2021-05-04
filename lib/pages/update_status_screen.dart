@@ -16,7 +16,7 @@ class UpdateStatusState extends State<UpdateStatus> {
 
   var dropdownItems = ['Available', 'Pending', 'Not Available', 'Adopted'];
 
-  var currentVal = '';
+  var currentVal = 'Available';
   var currentPet = "Lassie";
   var currentStatus = "Available";
 

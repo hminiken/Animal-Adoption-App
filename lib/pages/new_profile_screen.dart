@@ -46,6 +46,7 @@ class NewProfileState extends State<NewProfile> {
     phone: '',
     sex: '',
     url: '',
+    location: ''
   );
 
   bool isGoodAnimals = false, isGoodChildren = false, isMustLeash = false;
@@ -93,10 +94,12 @@ class NewProfileState extends State<NewProfile> {
 
     // final String url = await downloadUrl.ref.getDownloadURL();
     FirebaseStorage storage = FirebaseStorage.instance;
-    Reference ref = storage.ref().child("image1" + DateTime.now().toString());
-    UploadTask uploadTask = ref.putFile(image);
+    // Reference ref = storage.ref().child("image1" + DateTime.now().toString());
+    // UploadTask uploadTask = ref.putFile(image);
 
-    final String url = await ref.getDownloadURL();
+    final String url = 'myimg'; //await ref.getDownloadURL();
+
+    newAnimal.favorite = false;
 
     FirebaseFirestore.instance.collection(collection).add({
       'about': newAnimal.about,
@@ -111,6 +114,7 @@ class NewProfileState extends State<NewProfile> {
       'phone': newAnimal.phone,
       'url': url,
       'sex': newAnimal.sex,
+      'favorite': newAnimal.favorite
     });
   }
 

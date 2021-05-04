@@ -59,7 +59,7 @@ class App extends StatelessWidget {
         UpdateStatus.routeName: (context) => UpdateStatus(),
         UserProfile.routeName: (context) => UserProfile(),
         AboutCuddler.routeName: (context) => AboutCuddler(),
-        '/Lists': (context) => Lists(),
+        Lists.routeName: (context) => Lists(),
       },
     );
   }

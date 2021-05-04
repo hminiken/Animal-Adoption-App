@@ -1,5 +1,6 @@
 import 'package:cuddler/classes/theme.dart';
 import 'package:cuddler/models/constants.dart';
+import 'package:cuddler/pages/lists.dart';
 import 'package:flutter/material.dart';
 
 class SelectLocation extends StatefulWidget {
@@ -13,6 +14,13 @@ class SelectLocationState extends State<SelectLocation> {
   @override
   void initState() {
     super.initState();
+  }
+
+ void pushViewEntry(BuildContext context, String routeName) {
+    Navigator.of(context).pushNamed(
+      routeName,
+      // arguments:
+    );
   }
 
   var currentVal = 'Alabama';
@@ -172,7 +180,9 @@ class SelectLocationState extends State<SelectLocation> {
           ),
           icon: const Icon(Icons.favorite_rounded),
           // backgroundColor: colDarkBlue,
-          onPressed: () {},
+          onPressed: () {
+            pushViewEntry(context, Lists.routeName);
+          },
 
           style: ButtonStyle(
               backgroundColor:

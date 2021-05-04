@@ -2,11 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../my_flutter_app_icons.dart';
+import '../widgets/my_flutter_app_icons.dart';
 import 'details.dart';
 
 //List screen Widget
 class Lists extends StatefulWidget {
+  static const routeName = '/lists_page';
+
   @override
   _ListsState createState() => _ListsState();
 }
@@ -14,11 +16,13 @@ class Lists extends StatefulWidget {
 class _ListsState extends State<Lists> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-          primarySwatch: Colors.teal,
-          fontFamily: GoogleFonts.gabriela().fontFamily),
-      home: DefaultTabController(
+    // return MaterialApp(
+    //   theme: ThemeData(
+    //       primarySwatch: Colors.teal,
+    //       fontFamily: GoogleFonts.gabriela().fontFamily),
+    //   home: 
+      
+      return DefaultTabController(
         length: 3,
         child: Scaffold(
           appBar: AppBar(
@@ -40,8 +44,8 @@ class _ListsState extends State<Lists> {
             ],
           ),
         ),
-      ),
-    );
+      );
+    
   }
 }
 
@@ -77,7 +81,7 @@ class DogsList extends StatelessWidget {
                                     about: post['about'],
                                     name: post['name'],
                                     disposition1: post['disposition1'],
-                                    dispoisition2: post['disposition2'],
+                                    disposition2: post['disposition2'],
                                     disposition3: post['disposition3'],
                                     phone: post['phone'],
                                     email: post['email'],
@@ -142,7 +146,7 @@ class CatsList extends StatelessWidget {
                                     about: post['about'],
                                     name: post['name'],
                                     disposition1: post['disposition1'],
-                                    dispoisition2: post['disposition2'],
+                                    disposition2: post['disposition2'],
                                     disposition3: post['disposition3'],
                                     phone: post['phone'],
                                     email: post['email'],
@@ -208,7 +212,7 @@ class OthersList extends StatelessWidget {
                                     about: post['about'],
                                     name: post['name'],
                                     disposition1: post['disposition1'],
-                                    dispoisition2: post['disposition2'],
+                                    disposition2: post['disposition2'],
                                     disposition3: post['disposition3'],
                                     phone: post['phone'],
                                     email: post['email'],

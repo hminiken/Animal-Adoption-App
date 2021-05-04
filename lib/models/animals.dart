@@ -12,6 +12,7 @@ class Animals {
   String url;
   bool favorite;
   String breed;
+  String location;
 
   Animals(
       {required this.about,
@@ -26,5 +27,6 @@ class Animals {
       required this.sex,
       required this.url,
       required this.breed,
-      required this.favorite});
+      required this.favorite,
+      required this.location});
 }
