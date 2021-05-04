@@ -43,8 +43,8 @@ class Constants {
     'Turtle',
     'Snake',
     'Crab',
-    'Guinea Pig' 
-    'Other - Please Specify'
+    'Guinea Pig'
+        'Other - Please Specify'
   ];
 
   var statesList = [
