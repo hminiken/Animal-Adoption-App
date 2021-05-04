@@ -23,5 +23,4 @@ void main() async {
   );
   runApp(App());
   await Firebase.initializeApp();
-
 }

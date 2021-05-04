@@ -33,21 +33,20 @@ class NewProfileState extends State<NewProfile> {
   File image = new File('assets/images/profileImgPlaceholder.png');
   final picker = ImagePicker();
   Animals newAnimal = new Animals(
-    about: '',
-    age: 0,
-    contactName: '',
-    disposition1: false,
-    disposition2: false,
-    disposition3: false,
-    breed: '',
-    email: '',
-    favorite: false,
-    name: '',
-    phone: '',
-    sex: '',
-    url: '',
-    location: ''
-  );
+      about: '',
+      age: 0,
+      contactName: '',
+      disposition1: false,
+      disposition2: false,
+      disposition3: false,
+      breed: '',
+      email: '',
+      favorite: false,
+      name: '',
+      phone: '',
+      sex: '',
+      url: '',
+      location: '');
 
   bool isGoodAnimals = false, isGoodChildren = false, isMustLeash = false;
 

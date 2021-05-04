@@ -16,7 +16,7 @@ class SelectLocationState extends State<SelectLocation> {
     super.initState();
   }
 
- void pushViewEntry(BuildContext context, String routeName) {
+  void pushViewEntry(BuildContext context, String routeName) {
     Navigator.of(context).pushNamed(
       routeName,
       // arguments:

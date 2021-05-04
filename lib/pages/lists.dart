@@ -20,32 +20,31 @@ class _ListsState extends State<Lists> {
     //   theme: ThemeData(
     //       primarySwatch: Colors.teal,
     //       fontFamily: GoogleFonts.gabriela().fontFamily),
-    //   home: 
-      
-      return DefaultTabController(
-        length: 3,
-        child: Scaffold(
-          appBar: AppBar(
-            bottom: TabBar(
-              tabs: [
-                Tab(icon: Icon(MyFlutterApp.dog)),
-                Tab(icon: Icon(MyFlutterApp.cat)),
-                Tab(icon: Icon(MyFlutterApp.pastafarianism)),
-              ],
-            ),
-            title: Text('Cuddler'),
-            centerTitle: true,
-          ),
-          body: TabBarView(
-            children: [
-              DogsList(),
-              CatsList(),
-              OthersList(),
+    //   home:
+
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          bottom: TabBar(
+            tabs: [
+              Tab(icon: Icon(MyFlutterApp.dog)),
+              Tab(icon: Icon(MyFlutterApp.cat)),
+              Tab(icon: Icon(MyFlutterApp.pastafarianism)),
             ],
           ),
+          title: Text('Cuddler'),
+          centerTitle: true,
         ),
-      );
-    
+        body: TabBarView(
+          children: [
+            DogsList(),
+            CatsList(),
+            OthersList(),
+          ],
+        ),
+      ),
+    );
   }
 }
 
