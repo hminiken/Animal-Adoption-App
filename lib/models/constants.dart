@@ -42,6 +42,8 @@ class Constants {
     'Hamster',
     'Turtle',
     'Snake',
+    'Crab',
+    'Guinea Pig' 
     'Other - Please Specify'
   ];
 
