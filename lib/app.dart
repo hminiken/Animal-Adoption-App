@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'models/constants.dart';
 import 'pages/dashboard.dart';
 import 'pages/login.dart';
+import 'pages/about_cuddler_screen.dart';
+import 'pages/new_profile_screen.dart';
+import 'pages/select_location_screen.dart';
+import 'pages/update_status_screen.dart';
+import 'pages/user_profile_screen.dart';
 import 'widgets/transition_route_observer.dart';
 import 'pages/lists.dart';
 
@@ -49,7 +54,12 @@ class App extends StatelessWidget {
       routes: {
         Login.routeName: (context) => Login(),
         Dashboard.routeName: (context) => Dashboard(),
-        '/Lists': (context) => Lists(),
+        NewProfile.routeName: (context) => NewProfile(),
+        SelectLocation.routeName: (context) => SelectLocation(),
+        UpdateStatus.routeName: (context) => UpdateStatus(),
+        UserProfile.routeName: (context) => UserProfile(),
+        AboutCuddler.routeName: (context) => AboutCuddler(),
+        Lists.routeName: (context) => Lists(),
       },
     );
   }

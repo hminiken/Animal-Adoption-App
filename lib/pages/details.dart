@@ -9,7 +9,7 @@ class Details extends StatelessWidget {
   final String about;
   final String name;
   final bool disposition1;
-  final bool dispoisition2;
+  final bool disposition2;
   final bool disposition3;
   final String email;
   final String phone;
@@ -25,7 +25,7 @@ class Details extends StatelessWidget {
       required this.email,
       required this.phone,
       required this.disposition1,
-      required this.dispoisition2,
+      required this.disposition2,
       required this.disposition3})
       : super(key: key);
 
@@ -106,57 +106,57 @@ class Details extends StatelessWidget {
   }
 
   Widget showName() {
-    return Wrap(
+    return Row(
       children: [
         Text('$name',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
       ],
+      mainAxisAlignment: MainAxisAlignment.start,
     );
   }
 
   Widget showAge() {
-    return Wrap(
+    return Row(
       children: [
         Text('Age: ', style: TextStyle(fontWeight: FontWeight.bold)),
         Text('$age')
       ],
+      mainAxisAlignment: MainAxisAlignment.start,
     );
   }
 
   Widget showGender() {
-    return Wrap(
+    return Row(
       children: [
         Text('Gender: ', style: TextStyle(fontWeight: FontWeight.bold)),
         Text('$sex')
       ],
+      mainAxisAlignment: MainAxisAlignment.start,
     );
   }
 
   Widget showDisposition() {
-    return Wrap(
+    return Row(
       children: [
         Text(
           'Disposition: ',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         disposition1 ? Text('A kind disposition. ') : Text(''),
-<<<<<<< Updated upstream
-        dispoisition2 ? Text('A sad disposition. ') : Text(''),
-        disposition3 ? Text('A mean disposition. ') : Text('')
-=======
         disposition2 ? Text('A sad disposition. ') : Text(''),
-        disposition3 ? Text('A mean disposition. ') : Text(''),
->>>>>>> Stashed changes
+        disposition3 ? Text('A mean disposition. ') : Text('')
       ],
+      mainAxisAlignment: MainAxisAlignment.start,
     );
   }
 
   Widget showAbout() {
-    return Wrap(
+    return Row(
       children: [
         Text('About: ', style: TextStyle(fontWeight: FontWeight.bold)),
         Text('$about')
       ],
+      mainAxisAlignment: MainAxisAlignment.start,
     );
   }
 }

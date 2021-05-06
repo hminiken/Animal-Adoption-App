@@ -1,5 +1,8 @@
+import 'package:cuddler/pages/user_profile_screen.dart';
 import 'package:flutter/material.dart';
 import '../models/constants.dart';
+import 'new_profile_screen.dart';
+import 'select_location_screen.dart';
 import '../widgets/background.dart';
 import '../widgets/landingButton.dart';
 import '../widgets/transition_route_observer.dart';
@@ -24,6 +27,13 @@ class _DashboardScreenState extends State<Dashboard>
   @override
   void initState() {
     super.initState();
+  }
+
+  void pushViewEntry(BuildContext context, String routeName) {
+    Navigator.of(context).pushNamed(
+      routeName,
+      // arguments:
+    );
   }
 
   // @override
@@ -58,6 +68,20 @@ class _DashboardScreenState extends State<Dashboard>
       elevation: 0,
       textTheme: theme.accentTextTheme,
       iconTheme: theme.accentIconTheme,
+      actions: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(right: 20.0),
+          child: GestureDetector(
+            onTap: () {
+              pushViewEntry(context, UserProfile.routeName);
+            },
+            child: Icon(
+              Icons.person,
+              size: 26.0,
+            ),
+          ),
+        )
+      ],
     );
   }
 
@@ -128,14 +152,14 @@ class _DashboardScreenState extends State<Dashboard>
           Expanded(
             child: LandingButton(
               displayText: list,
-              page: Placeholder(),
+              page: NewProfile(),
             ),
           ),
           SizedBox(height: 40.0),
           Expanded(
             child: LandingButton(
               displayText: adopt,
-              page: Placeholder(),
+              page: SelectLocation(),
             ),
           ),
           SizedBox(height: 80.0),
@@ -185,7 +209,7 @@ class _DashboardScreenState extends State<Dashboard>
                 //flex: 1,
                 child: LandingButton(
                   displayText: list,
-                  page: Placeholder(),
+                  page: NewProfile(),
                 ),
               ),
               SizedBox(width: 20.0),
@@ -193,7 +217,7 @@ class _DashboardScreenState extends State<Dashboard>
                 //flex: 1,
                 child: LandingButton(
                   displayText: adopt,
-                  page: Placeholder(),
+                  page: SelectLocation(),
                 ),
               ),
             ],
