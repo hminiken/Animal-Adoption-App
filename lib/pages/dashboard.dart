@@ -1,5 +1,6 @@
 import 'package:cuddler/pages/user_profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../models/constants.dart';
 import 'new_profile_screen.dart';
 import 'select_location_screen.dart';
@@ -16,12 +17,8 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardScreenState extends State<Dashboard>
     with SingleTickerProviderStateMixin, TransitionRouteAware {
-//   Future<bool> _goToLogin(BuildContext context) {
-//     return Navigator.of(context)
-//         .pushReplacementNamed('/')
-//         // we dont want to pop the screen, just replace it completely
-//         .then((_) => false);
-//   }
+  
+  final user = FirebaseAuth.instance.currentUser!;
 
   final routeObserver = TransitionRouteObserver<PageRoute>();
   @override
@@ -40,7 +37,7 @@ class _DashboardScreenState extends State<Dashboard>
   // void didChangeDependencies() {
   //   super.didChangeDependencies();
   //   routeObserver.subscribe(
-  //       this, ModalRoute.of(context) as PageRoute<dynamic>);
+  //       this, ModalRoute.of(context) as PageRoute<dynamic?>);
   // }
 
   // @override
@@ -51,11 +48,8 @@ class _DashboardScreenState extends State<Dashboard>
 
   AppBar _buildAppBar(ThemeData theme) {
     return AppBar(
-      toolbarHeight: 100.0,
-      //leading: ,
-      //actions: <Widget>[
-      //  signOutBtn,
-      //],
+      toolbarHeight: 50.0,
+      automaticallyImplyLeading: false,
       title: Text(
         'Cuddler',
         style: TextStyle(
@@ -130,12 +124,12 @@ class _DashboardScreenState extends State<Dashboard>
             ),
           ),
           Expanded(
-            //flex: 3,
+            flex: 1,
             child: Text(
-              'Let\'s get started',
+              'Welcome, ${user.email}',
               style: TextStyle(
                 fontFamily: 'Courgette',
-                fontSize: 38.0,
+                fontSize: 20.0,
               ),
             ),
           ),
@@ -144,8 +138,9 @@ class _DashboardScreenState extends State<Dashboard>
             child: Text(
               'Please choose an option',
               style: TextStyle(
-                fontFamily: 'Hanuman',
+                fontFamily: 'Courgette',
                 fontSize: 30.0,
+                color: Colors.black,
               ),
             ),
           ),
@@ -196,7 +191,7 @@ class _DashboardScreenState extends State<Dashboard>
             child: Text(
               'Please choose an option',
               style: TextStyle(
-                fontFamily: 'Hanuman',
+                fontFamily: 'Courgette',
                 fontSize: 30.0,
               ),
               textAlign: TextAlign.right,

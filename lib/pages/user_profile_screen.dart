@@ -10,6 +10,14 @@ class UserProfile extends StatefulWidget {
 }
 
 class UserProfileState extends State<UserProfile> {
+  Future<bool> _goToLogin(BuildContext context) {
+    //save session state?
+    return Navigator.of(context)
+        .pushReplacementNamed('/')
+        // we dont want to pop the screen, just replace it completely
+        .then((_) => false);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -34,7 +42,7 @@ class UserProfileState extends State<UserProfile> {
       floatingActionButton: Semantics(
         child: FloatingActionButton.extended(
           onPressed: () {
-            // Add your onPressed code here!
+            _goToLogin(context);
           },
           label: const Text('Log Out'),
           icon: const Icon(Icons.logout),
