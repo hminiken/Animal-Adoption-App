@@ -19,17 +19,22 @@ class Login extends StatelessWidget {
 
   Future<String?> _loginUser(LoginData data) {
     return Future.delayed(loginTime).then((_) async {
-      var result = await FirebaseFirestore.instance.collection('users')
-      .where('email', isEqualTo: data.name).get();
+      var result = await FirebaseFirestore.instance
+          .collection('users')
+          .where('email', isEqualTo: data.name)
+          .get();
       if (result.docs.isEmpty) {
         return 'Username does not exist';
       }
-      var passwordText = await FirebaseFirestore.instance.collection('users')
-      .where('password', isEqualTo: data.password).get();
+      var passwordText = await FirebaseFirestore.instance
+          .collection('users')
+          .where('password', isEqualTo: data.password)
+          .get();
       if (passwordText.docs.isEmpty) {
         return 'Password does not match';
       }
-      _auth.signInWithEmailAndPassword(email: data.name, password: data.password);
+      _auth.signInWithEmailAndPassword(
+          email: data.name, password: data.password);
       return null;
     });
   }
@@ -45,19 +50,19 @@ class Login extends StatelessWidget {
 
   void _register(LoginData loginData) async {
     final firebaseUser = (await _auth.createUserWithEmailAndPassword(
-        email: loginData.name,
-        password: loginData.password,
-    )).user;
+      email: loginData.name,
+      password: loginData.password,
+    ))
+        .user;
     //FirebaseFirestore.instance.collection('users').add({
-    FirebaseFirestore.instance.collection('users').doc(firebaseUser!.uid).set(
-    {
+    FirebaseFirestore.instance.collection('users').doc(firebaseUser!.uid).set({
       'fName': loginData.name,
       'email': loginData.name,
       'password': loginData.password,
       'accountType': 1,
       'profileImgURL': 'blank_profile.png',
       'userLocation': null
-    }).then((_){
+    }).then((_) {
       print("success!");
     });
   }
@@ -103,8 +108,8 @@ class Login extends StatelessWidget {
         goBackButton: 'GO BACK',
         confirmPasswordError: 'No match!',
         recoverPasswordIntro: 'Enter your email',
-        recoverPasswordDescription: 
-        'We will send you a link to recover your password',
+        recoverPasswordDescription:
+            'We will send you a link to recover your password',
         recoverPasswordSuccess: 'Password rescued successfully',
       ),
       emailValidator: (value) {

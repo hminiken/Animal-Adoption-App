@@ -17,7 +17,6 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardScreenState extends State<Dashboard>
     with SingleTickerProviderStateMixin, TransitionRouteAware {
-  
   final user = FirebaseAuth.instance.currentUser!;
 
   final routeObserver = TransitionRouteObserver<PageRoute>();
