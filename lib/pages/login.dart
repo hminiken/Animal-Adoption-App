@@ -60,7 +60,7 @@ class Login extends StatelessWidget {
         pageColorDark: Constants.tealBlue,
         titleStyle: TextStyle(
           color: Constants.deepBlue,
-          fontFamily: 'DMSerifDisplay',
+          fontFamily: 'Courgette',
           letterSpacing: 2,
         ),
       ),
@@ -113,7 +113,7 @@ class Login extends StatelessWidget {
         print('Name: $name');
         return _recoverPassword(name);
       },
-      //change to true when debugging 
+      //change to true when debugging
       showDebugButtons: false,
     );
   }
