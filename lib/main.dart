@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'app.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.landscapeLeft,
@@ -18,6 +19,6 @@ void main() async {
           SystemUiOverlayStyle.dark.systemNavigationBarColor,
     ),
   );
-  runApp(App());
   await Firebase.initializeApp();
+  runApp(App());
 }
