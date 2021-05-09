@@ -1,15 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:cuddler/classes/theme.dart';
-import 'package:cuddler/models/animals.dart';
-import 'package:cuddler/widgets/global_widgets.dart';
-import 'package:cuddler/widgets/new_profile_widgets.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
-
 class userInfo extends StatefulWidget {
   static const routeName = '/update-user-info';
   @override

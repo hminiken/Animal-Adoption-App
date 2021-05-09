@@ -32,6 +32,9 @@ class NewProfileState extends State<NewProfile> {
   var breedCurValue = '';
   var sexCurValue = 'Male';
 
+  //unique user id. Need to add later to "fetch" this from current login session
+  String uid = 'I1tRDK1UeCV3kyeUbU9jjUj7NoX2';
+
   List<String> getBreedList(currentVal) {
     var dropdownList;
     if (currentVal == 'Dog') {
