@@ -106,37 +106,34 @@ class Details extends StatelessWidget {
   }
 
   Widget showName() {
-    return Row(
+    return Wrap(
       children: [
         Text('$name',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
       ],
-      mainAxisAlignment: MainAxisAlignment.start,
     );
   }
 
   Widget showAge() {
-    return Row(
+    return Wrap(
       children: [
         Text('Age: ', style: TextStyle(fontWeight: FontWeight.bold)),
         Text('$age')
       ],
-      mainAxisAlignment: MainAxisAlignment.start,
     );
   }
 
   Widget showGender() {
-    return Row(
+    return Wrap(
       children: [
         Text('Gender: ', style: TextStyle(fontWeight: FontWeight.bold)),
         Text('$sex')
       ],
-      mainAxisAlignment: MainAxisAlignment.start,
     );
   }
 
   Widget showDisposition() {
-    return Row(
+    return Wrap(
       children: [
         Text(
           'Disposition: ',
@@ -146,17 +143,15 @@ class Details extends StatelessWidget {
         disposition2 ? Text('A sad disposition. ') : Text(''),
         disposition3 ? Text('A mean disposition. ') : Text('')
       ],
-      mainAxisAlignment: MainAxisAlignment.start,
     );
   }
 
   Widget showAbout() {
-    return Row(
+    return Wrap(
       children: [
         Text('About: ', style: TextStyle(fontWeight: FontWeight.bold)),
         Text('$about')
       ],
-      mainAxisAlignment: MainAxisAlignment.start,
     );
   }
 }

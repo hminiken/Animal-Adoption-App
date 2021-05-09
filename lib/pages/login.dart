@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter_login/flutter_login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'dashboard.dart';
 import '../models/constants.dart';
 import '../models/users.dart';
@@ -12,15 +14,27 @@ class Login extends StatelessWidget {
   static const routeName = '/auth';
 
   Duration get loginTime => Duration(milliseconds: timeDilation.ceil() * 2250);
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  //final user = FirebaseAuth.instance.currentUser!;
 
   Future<String?> _loginUser(LoginData data) {
-    return Future.delayed(loginTime).then((_) {
-      if (!mockUsers.containsKey(data.name)) {
+    return Future.delayed(loginTime).then((_) async {
+      var result = await FirebaseFirestore.instance
+          .collection('users')
+          .where('email', isEqualTo: data.name)
+          .get();
+      if (result.docs.isEmpty) {
         return 'Username does not exist';
       }
-      if (mockUsers[data.name] != data.password) {
+      var passwordText = await FirebaseFirestore.instance
+          .collection('users')
+          .where('password', isEqualTo: data.password)
+          .get();
+      if (passwordText.docs.isEmpty) {
         return 'Password does not match';
       }
+      _auth.signInWithEmailAndPassword(
+          email: data.name, password: data.password);
       return null;
     });
   }
@@ -31,6 +45,25 @@ class Login extends StatelessWidget {
         return 'Username does not exist';
       }
       return null;
+    });
+  }
+
+  void _register(LoginData loginData) async {
+    final firebaseUser = (await _auth.createUserWithEmailAndPassword(
+      email: loginData.name,
+      password: loginData.password,
+    ))
+        .user;
+    //FirebaseFirestore.instance.collection('users').add({
+    FirebaseFirestore.instance.collection('users').doc(firebaseUser!.uid).set({
+      'fName': loginData.name,
+      'email': loginData.name,
+      'password': loginData.password,
+      'accountType': 1,
+      'profileImgURL': 'blank_profile.png',
+      'userLocation': null
+    }).then((_) {
+      print("success!");
     });
   }
 
@@ -55,7 +88,7 @@ class Login extends StatelessWidget {
       theme: LoginTheme(
         primaryColor: Constants.tealBlue,
         accentColor: Constants.fadedOrange,
-        errorColor: Constants.fadedYellow,
+        errorColor: Constants.redOrange,
         pageColorLight: Constants.redOrange,
         pageColorDark: Constants.tealBlue,
         titleStyle: TextStyle(
@@ -87,20 +120,21 @@ class Login extends StatelessWidget {
       },
       passwordValidator: (value) {
         if (value!.isEmpty) {
-          return 'Password is empty';
+          return 'Password must be at least 6 characters long';
         }
         return null;
       },
-      onLogin: (loginData) {
+      onLogin: (loginData) async {
         print('Login info');
         print('Name: ${loginData.name}');
         print('Password: ${loginData.password}');
         return _loginUser(loginData);
       },
-      onSignup: (loginData) {
+      onSignup: (loginData) async {
         print('Signup info');
         print('Name: ${loginData.name}');
         print('Password: ${loginData.password}');
+        _register(loginData);
         return _loginUser(loginData);
       },
       onSubmitAnimationCompleted: () {
