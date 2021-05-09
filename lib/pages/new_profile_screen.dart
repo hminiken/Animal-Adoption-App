@@ -1,3 +1,5 @@
+import 'package:cuddler/models/constants.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cuddler/classes/theme.dart';
@@ -8,6 +10,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+
+import 'package:permission_handler/permission_handler.dart';
 
 class NewProfile extends StatefulWidget {
   static const routeName = '/new_profile_screen';
@@ -25,10 +29,29 @@ class NewProfileState extends State<NewProfile> {
   var petCategories = ["Dog", "Cat", "Other"];
   var sexDropDown = ["Male", "Female"];
   String currentVal = 'Dog';
-  var breedCurValue = 'Poodle';
+  var breedCurValue = '';
   var sexCurValue = 'Male';
 
+  List<String> getBreedList(currentVal) {
+    var dropdownList;
+    if (currentVal == 'Dog') {
+      dropdownList = Constants().dogBreeds;
+      // breedCurValue = '';
+    } else if (currentVal == 'Cat') {
+      dropdownList = Constants().catBreeds;
+      // breedCurValue = '';
+    } else if (currentVal == 'Other') {
+      dropdownList = Constants().otherBreeds;
+      // breedCurValue = '';
+    } else {
+      dropdownList = [''];
+    }
+
+    return dropdownList;
+  }
+
   File image = new File('assets/images/profileImgPlaceholder.png');
+  File defaultImage = new File('assets/images/profileImgPlaceholder.png');
   final picker = ImagePicker();
   Animals newAnimal = new Animals(
       about: '',
@@ -57,22 +80,22 @@ class NewProfileState extends State<NewProfile> {
   void isMustLeashChanged(bool value) => setState(() => isMustLeash = value);
 
   void selectImage() async {
-    // try {
-    //   var _permissionGranted = await Permission.storage.request();
-    //   if (_permissionGranted.isUndetermined) {
-    //     _permissionGranted = await Permission.storage.request();
-    //     if (_permissionGranted.isDenied) {
-    //       print('Location service permission not granted. Returning.');
-    //       return;
-    //     }
-    //   }
-    //   final pickedFile = await picker.getImage(source: ImageSource.gallery);
-    //   setState(() {
-    //     image = File(pickedFile.path);
-    //   });
-    // } on PlatformException catch (e) {
-    //   print('Error: ${e.toString()}, code: ${e.code}');
-    // }
+    try {
+      var _permissionGranted = await Permission.storage.request();
+      if (_permissionGranted.isDenied) {
+        _permissionGranted = await Permission.storage.request();
+        if (_permissionGranted.isPermanentlyDenied) {
+          print('Location service permission not granted. Returning.');
+          return;
+        }
+      }
+      final pickedFile = await picker.getImage(source: ImageSource.gallery);
+      setState(() {
+        image = File(pickedFile!.path);
+      });
+    } on PlatformException catch (e) {
+      print('Error: ${e.toString()}, code: ${e.code}');
+    }
   }
 
   uploadNewPetProfile() async {
@@ -83,18 +106,19 @@ class NewProfileState extends State<NewProfile> {
     newAnimal.breed = breedCurValue;
     newAnimal.sex = sexCurValue;
 
-    // FirebaseStorage storage = FirebaseStorage.instance;
-    // Reference ref = storage.ref().child("image" + DateTime.now().toString());
-    // UploadTask uploadTask = ref.putFile(image);
+    FirebaseStorage storage = FirebaseStorage.instance;
+    Reference ref = storage.ref().child("image" + DateTime.now().toString());
+    UploadTask uploadTask = ref.putFile(image);
 
-    // final TaskSnapshot downloadUrl = (await uploadTask);
+    final TaskSnapshot downloadUrl = (await uploadTask);
 
-    // final String url = await downloadUrl.ref.getDownloadURL();
+    final String url = await downloadUrl.ref.getDownloadURL();
+
     // FirebaseStorage storage = FirebaseStorage.instance;
     // Reference ref = storage.ref().child("image1" + DateTime.now().toString());
     // UploadTask uploadTask = ref.putFile(image);
 
-    final String url = 'myimg'; //await ref.getDownloadURL();
+    // final String url = 'myimg'; //await ref.getDownloadURL();
 
     newAnimal.favorite = false;
 
@@ -162,7 +186,7 @@ class NewProfileState extends State<NewProfile> {
                                     onChanged: (String? newValue) {
                                       setState(() {
                                         currentVal = newValue!;
-                                        breedCurValue = 'null';
+                                        breedCurValue = '';
                                         getBreedList(currentVal);
                                         state.didChange(newValue);
                                       });
@@ -258,7 +282,7 @@ class NewProfileState extends State<NewProfile> {
                               },
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return 'Please enter the number of items';
+                                  return 'Please Enter Pet Name';
                                 } else {
                                   return null;
                                 }
@@ -274,7 +298,7 @@ class NewProfileState extends State<NewProfile> {
                               },
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return 'Please enter the number of items';
+                                  return 'Please enter pet age';
                                 } else {
                                   return null;
                                 }
@@ -293,7 +317,7 @@ class NewProfileState extends State<NewProfile> {
                               },
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return 'Please enter the number of items';
+                                  return 'Please enter some info about your pet';
                                 } else {
                                   return null;
                                 }
@@ -353,7 +377,7 @@ class NewProfileState extends State<NewProfile> {
                               },
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return 'Please enter the number of items';
+                                  return 'Please enter your name';
                                 } else {
                                   return null;
                                 }
@@ -369,7 +393,7 @@ class NewProfileState extends State<NewProfile> {
                               },
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return 'Please enter the number of items';
+                                  return 'Please enter your phone';
                                 } else {
                                   return null;
                                 }
@@ -385,7 +409,7 @@ class NewProfileState extends State<NewProfile> {
                               },
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return 'Please enter the number of items';
+                                  return 'Please enter your email';
                                 } else {
                                   return null;
                                 }
@@ -441,7 +465,7 @@ class NewProfileState extends State<NewProfile> {
         floatingActionButton: Semantics(
           child: new FloatingActionButton.extended(
             onPressed: () {
-              if (image == File("assets/images/profileImgPlaceholder.png")) {
+              if (image.path == defaultImage.path) {
                 showAlertDialog(context, 'Missing Photo',
                     'Please upload an image of your pet to proceed');
               } else if (currentVal == '') {
@@ -460,7 +484,7 @@ class NewProfileState extends State<NewProfile> {
                 Navigator.of(context).pop();
               }
             },
-            tooltip: 'Upload a new picture',
+            tooltip: 'Upload your Pet',
             backgroundColor: colDarkBlue,
             label: const Text('Upload your Pet'),
             icon: const Icon(

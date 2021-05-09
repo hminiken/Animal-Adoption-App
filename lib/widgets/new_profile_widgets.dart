@@ -60,21 +60,6 @@ showAlertDialog(BuildContext context, title, message) {
   );
 }
 
-List<String> getBreedList(currentVal) {
-  var dropdownList;
-  if (currentVal == 'Dog') {
-    dropdownList = Constants().dogBreeds;
-  } else if (currentVal == 'Cat') {
-    dropdownList = Constants().catBreeds;
-  } else if (currentVal == 'Other') {
-    dropdownList = Constants().otherBreeds;
-  } else {
-    dropdownList = [''];
-  }
-
-  return dropdownList;
-}
-
 String getCollection(String currentVal) {
   var collection;
 

@@ -1,5 +1,5 @@
 class CuddlerUser {
-  String profileImgURL, fName, email, password, userLocaiton;
+  String profileImgURL, fName, email, password, userLocation;
   int userID, accountType; //e.g. admin = 0, shelter = 1, regular =2
   // Timestamp entryDate;
 
