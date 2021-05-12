@@ -1,6 +1,5 @@
 import 'package:cuddler/classes/theme.dart';
 import 'package:cuddler/pages/dashboard.dart';
-import 'package:cuddler/pages/update_status_screen.dart';
 import 'package:cuddler/pages/user_listed_pets.dart';
 import 'package:cuddler/pages/about_cuddler_screen.dart';
 import 'package:flutter/cupertino.dart';
