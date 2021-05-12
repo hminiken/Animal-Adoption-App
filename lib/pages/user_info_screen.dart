@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class userInfo extends StatefulWidget {
+class UserInfo extends StatefulWidget {
   static const routeName = '/update-user-info';
   @override
-  userInfoState createState() => userInfoState();
+  UserInfoState createState() => UserInfoState();
 }
 
-class userInfoState extends State<userInfo> {
+class UserInfoState extends State<UserInfo> {
   @override
   void initState() {
     super.initState();

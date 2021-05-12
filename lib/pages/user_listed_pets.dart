@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/my_flutter_app_icons.dart';
-import 'details.dart';
 
 String uid = 'I1tRDK1UeCV3kyeUbU9jjUj7NoX2';
 
