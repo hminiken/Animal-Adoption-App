@@ -5,6 +5,7 @@ import 'pages/login.dart';
 import 'pages/about_cuddler_screen.dart';
 import 'pages/new_profile_screen.dart';
 import 'pages/select_location_screen.dart';
+import 'pages/user_listed_pets.dart';
 import 'pages/update_status_screen.dart';
 import 'pages/user_profile_screen.dart';
 import 'widgets/transition_route_observer.dart';
@@ -50,7 +51,8 @@ class App extends StatelessWidget {
       ),
       home: Login(),
       navigatorObservers: [TransitionRouteObserver()],
-      initialRoute: Login.routeName,
+      // initialRoute: Login.routeName,
+      initialRoute: Dashboard.routeName,
       routes: {
         Login.routeName: (context) => Login(),
         Dashboard.routeName: (context) => Dashboard(),
@@ -59,6 +61,7 @@ class App extends StatelessWidget {
         UpdateStatus.routeName: (context) => UpdateStatus(),
         UserProfile.routeName: (context) => UserProfile(),
         AboutCuddler.routeName: (context) => AboutCuddler(),
+        UserListed.routeName: (context) => UserListed(),
         Lists.routeName: (context) => Lists(),
       },
     );

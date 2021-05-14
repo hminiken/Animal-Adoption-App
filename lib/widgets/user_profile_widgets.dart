@@ -1,6 +1,6 @@
 import 'package:cuddler/classes/theme.dart';
 import 'package:cuddler/pages/dashboard.dart';
-import 'package:cuddler/pages/update_status_screen.dart';
+import 'package:cuddler/pages/user_listed_pets.dart';
 import 'package:cuddler/pages/about_cuddler_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +19,7 @@ final List<String> profileOptions = [
   'About Cuddler™'
 ];
 final List<String> optionRoute = [
-  UpdateStatus.routeName,
+  UserListed.routeName,
   Dashboard.routeName,
   AboutCuddler.routeName,
 ]; //last two are place holders, screens not created yet

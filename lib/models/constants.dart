@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class Constants {
   var dogBreeds = [
+    '',
     'Retriever (Labrador)',
     'French Bulldog',
     'German Shepherd Dog',
@@ -21,6 +22,7 @@ class Constants {
   ];
 
   var catBreeds = [
+    '',
     'Domestic Shorthair',
     'American Shorthair',
     'Domestic Longhair',
@@ -35,6 +37,7 @@ class Constants {
   ];
 
   var otherBreeds = [
+    '',
     'Rabbit',
     'Bird',
     'Fish',
@@ -43,8 +46,8 @@ class Constants {
     'Turtle',
     'Snake',
     'Crab',
-    'Guinea Pig'
-        'Other - Please Specify'
+    'Guinea Pig',
+    'Other - Please Specify'
   ];
 
   var statesList = [

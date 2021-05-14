@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:cuddler/models/constants.dart';
 import 'package:flutter/material.dart';
 
 bool isGoodAnimals = false, isGoodChildren = false, isMustLeash = false;
@@ -58,21 +57,6 @@ showAlertDialog(BuildContext context, title, message) {
       return alert;
     },
   );
-}
-
-List<String> getBreedList(currentVal) {
-  var dropdownList;
-  if (currentVal == 'Dog') {
-    dropdownList = Constants().dogBreeds;
-  } else if (currentVal == 'Cat') {
-    dropdownList = Constants().catBreeds;
-  } else if (currentVal == 'Other') {
-    dropdownList = Constants().otherBreeds;
-  } else {
-    dropdownList = [''];
-  }
-
-  return dropdownList;
 }
 
 String getCollection(String currentVal) {

@@ -2,6 +2,16 @@ import 'package:cuddler/classes/theme.dart';
 import 'package:cuddler/models/constants.dart';
 import 'package:cuddler/pages/lists.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:location/location.dart' as location;
+import 'package:geocoding/geocoding.dart';
+
+class LocationArguments {
+  // final File image;
+  String location, status;
+
+  LocationArguments(this.location, this.status);
+}
 
 class SelectLocation extends StatefulWidget {
   static const routeName = '/select_location_screen';
@@ -16,11 +26,43 @@ class SelectLocationState extends State<SelectLocation> {
     super.initState();
   }
 
-  void pushViewEntry(BuildContext context, String routeName) {
-    Navigator.of(context).pushNamed(
-      routeName,
-      // arguments:
-    );
+  void pushViewEntry(BuildContext context, String location, status) {
+    Navigator.of(context).pushNamed(Lists.routeName,
+        arguments: LocationArguments(location, status));
+  }
+
+  void retrieveLocation() async {
+    var locationService = location.Location();
+    try {
+      var _serviceEnabled = await locationService.serviceEnabled();
+      if (!_serviceEnabled) {
+        _serviceEnabled = await locationService.requestService();
+        if (!_serviceEnabled) {
+          print('Failed to enable service. Returning.');
+          Navigator.of(context).pop();
+          return;
+        }
+      }
+
+      var _permissionGranted = await locationService.hasPermission();
+      if (_permissionGranted == location.PermissionStatus.denied) {
+        _permissionGranted = await locationService.requestPermission();
+        if (_permissionGranted != location.PermissionStatus.granted) {
+          print('Location service permission not granted. Returning.');
+          Navigator.of(context).pop();
+          return;
+        }
+      }
+      location.LocationData locationData = await locationService.getLocation();
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+          locationData.latitude!, locationData.longitude!);
+      print(placemarks);
+      setState(() {
+        currentVal = placemarks[0].administrativeArea!;
+      });
+    } on PlatformException catch (e) {
+      print('Error: ${e.toString()}, code: ${e.code}');
+    }
   }
 
   var currentVal = 'Alabama';
@@ -118,15 +160,23 @@ class SelectLocationState extends State<SelectLocation> {
             alignment: Alignment.center,
             child: Text('and find your next pet!',
                 style: Theme.of(context).textTheme.subtitle1)),
-        SizedBox(height: 15),
+        SizedBox(height: 40),
         ElevatedButton.icon(
           label: const Text(
             'Use My Current Location',
-            style: TextStyle(fontSize: 16),
+            style: TextStyle(
+              fontSize: 20,
+            ),
           ),
-          icon: const Icon(Icons.location_on),
+          icon: const Icon(
+            Icons.location_on,
+            size: 25,
+          ),
+
           // backgroundColor: colDarkBlue,
-          onPressed: () {},
+          onPressed: () {
+            retrieveLocation();
+          },
 
           style: ButtonStyle(
               backgroundColor:
@@ -135,7 +185,9 @@ class SelectLocationState extends State<SelectLocation> {
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
-              ))
+              )),
+              padding: MaterialStateProperty.all(
+                  EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5))
               // foreground
               // textStyle:
               //     TextStyle(fontSize: 24, fontWeight: FontWeight.bold)
@@ -147,7 +199,8 @@ class SelectLocationState extends State<SelectLocation> {
             child: Text('Choose Manually Instead',
                 style: Theme.of(context).textTheme.subtitle1)),
         SizedBox(
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery.of(context).size.width / 3 +
+                MediaQuery.of(context).size.width / 3,
             child: DropdownButtonFormField(
               items: Constants().statesList.map((String category) {
                 return new DropdownMenuItem(
@@ -159,9 +212,10 @@ class SelectLocationState extends State<SelectLocation> {
                       ],
                     ));
               }).toList(),
-              onChanged: (newValue) {
-                // do other stuff with _category
-                //  setState(() => _category = newValue);
+              onChanged: (String? newValue) {
+                setState(() {
+                  currentVal = newValue!;
+                });
               },
               value: currentVal,
               decoration: InputDecoration(
@@ -181,7 +235,7 @@ class SelectLocationState extends State<SelectLocation> {
           icon: const Icon(Icons.favorite_rounded),
           // backgroundColor: colDarkBlue,
           onPressed: () {
-            pushViewEntry(context, Lists.routeName);
+            pushViewEntry(context, currentVal, "Available");
           },
 
           style: ButtonStyle(
@@ -250,7 +304,9 @@ class SelectLocationState extends State<SelectLocation> {
                 ),
                 icon: const Icon(Icons.location_on),
                 // backgroundColor: colDarkBlue,
-                onPressed: () {},
+                onPressed: () {
+                  retrieveLocation();
+                },
 
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(
@@ -305,7 +361,9 @@ class SelectLocationState extends State<SelectLocation> {
                 ),
                 icon: const Icon(Icons.favorite_rounded),
                 // backgroundColor: colDarkBlue,
-                onPressed: () {},
+                onPressed: () {
+                  pushViewEntry(context, currentVal, "Available");
+                },
 
                 style: ButtonStyle(
                     backgroundColor:
