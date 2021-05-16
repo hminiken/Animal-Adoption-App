@@ -3,8 +3,12 @@ import 'models/constants.dart';
 import 'pages/dashboard.dart';
 import 'pages/login.dart';
 import 'pages/about_cuddler_screen.dart';
+import 'pages/daily_feed.dart';
+import 'package:cuddler/pages/email_preferences.dart';
+
 import 'pages/new_profile_screen.dart';
 import 'pages/select_location_screen.dart';
+import 'pages/user_info_screen.dart';
 import 'pages/user_listed_pets.dart';
 import 'pages/update_status_screen.dart';
 import 'pages/user_profile_screen.dart';
@@ -51,8 +55,8 @@ class App extends StatelessWidget {
       ),
       home: Login(),
       navigatorObservers: [TransitionRouteObserver()],
-      // initialRoute: Login.routeName,
-      initialRoute: Dashboard.routeName,
+      initialRoute: Login.routeName,
+      // initialRoute: Dashboard.routeName,
       routes: {
         Login.routeName: (context) => Login(),
         Dashboard.routeName: (context) => Dashboard(),
@@ -63,6 +67,9 @@ class App extends StatelessWidget {
         AboutCuddler.routeName: (context) => AboutCuddler(),
         UserListed.routeName: (context) => UserListed(),
         Lists.routeName: (context) => Lists(),
+        UserInfo.routeName: (context) => UserInfo(),
+        EmailPreferences.routeName: (context) => EmailPreferences(),
+        DailyFeed.routeName: (context) => DailyFeed(),
       },
     );
   }

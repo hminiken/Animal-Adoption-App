@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../models/constants.dart';
 import 'new_profile_screen.dart';
+import 'daily_feed.dart';
 import 'select_location_screen.dart';
 import '../widgets/background.dart';
 import '../widgets/landingButton.dart';
@@ -17,7 +18,7 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardScreenState extends State<Dashboard>
     with SingleTickerProviderStateMixin, TransitionRouteAware {
-  final user = FirebaseAuth.instance.currentUser!;
+  final user = FirebaseAuth.instance.currentUser;
 
   final routeObserver = TransitionRouteObserver<PageRoute>();
   @override
@@ -95,6 +96,7 @@ class _DashboardScreenState extends State<Dashboard>
 
   final String adopt = 'Adopt a Pet';
   final String list = 'List a Pet';
+  final String dailyFeed = 'Daily Feed';
 
   Widget layoutLanding(BuildContext context, BoxConstraints constraints) =>
       constraints.maxWidth < 500
@@ -125,7 +127,8 @@ class _DashboardScreenState extends State<Dashboard>
           Expanded(
             flex: 1,
             child: Text(
-              'Welcome, ${user.email}',
+              // 'Welcome, ${user.email}',
+              'Welcome, ',
               style: TextStyle(
                 fontFamily: 'Courgette',
                 fontSize: 20.0,
@@ -145,16 +148,19 @@ class _DashboardScreenState extends State<Dashboard>
           ),
           Expanded(
             child: LandingButton(
-              displayText: list,
-              page: NewProfile(),
-            ),
+                displayText: list,
+                page: NewProfile(),
+                icon: Icons.upload_rounded),
           ),
           SizedBox(height: 40.0),
           Expanded(
             child: LandingButton(
-              displayText: adopt,
-              page: SelectLocation(),
-            ),
+                displayText: adopt, page: SelectLocation(), icon: Icons.pets),
+          ),
+          SizedBox(height: 40.0),
+          Expanded(
+            child: LandingButton(
+                displayText: dailyFeed, page: DailyFeed(), icon: Icons.list),
           ),
           SizedBox(height: 80.0),
         ],
@@ -202,9 +208,9 @@ class _DashboardScreenState extends State<Dashboard>
               Expanded(
                 //flex: 1,
                 child: LandingButton(
-                  displayText: list,
-                  page: NewProfile(),
-                ),
+                    displayText: list,
+                    page: NewProfile(),
+                    icon: Icons.upload_rounded),
               ),
               SizedBox(width: 20.0),
               Expanded(
@@ -212,6 +218,15 @@ class _DashboardScreenState extends State<Dashboard>
                 child: LandingButton(
                   displayText: adopt,
                   page: SelectLocation(),
+                  icon: Icons.pets,
+                ),
+              ),
+              Expanded(
+                //flex: 1,
+                child: LandingButton(
+                  displayText: dailyFeed,
+                  page: DailyFeed(),
+                  icon: Icons.list,
                 ),
               ),
             ],

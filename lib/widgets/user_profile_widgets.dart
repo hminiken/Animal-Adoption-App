@@ -1,10 +1,12 @@
 import 'package:cuddler/classes/theme.dart';
-import 'package:cuddler/pages/dashboard.dart';
 import 'package:cuddler/pages/user_listed_pets.dart';
 import 'package:cuddler/pages/about_cuddler_screen.dart';
+import 'package:cuddler/pages/email_preferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cuddler/widgets/global_widgets.dart';
+
+import '../pages/user_info_screen.dart';
 
 void pushViewEntry(BuildContext context, String routeName) {
   Navigator.of(context).pushNamed(
@@ -16,11 +18,13 @@ void pushViewEntry(BuildContext context, String routeName) {
 final List<String> profileOptions = [
   'View My Listed Pets',
   'Edit My Information',
+  'Email Preferences',
   'About Cuddler™'
 ];
 final List<String> optionRoute = [
   UserListed.routeName,
-  Dashboard.routeName,
+  UserInfo.routeName,
+  EmailPreferences.routeName,
   AboutCuddler.routeName,
 ]; //last two are place holders, screens not created yet
 
