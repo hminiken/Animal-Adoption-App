@@ -17,12 +17,6 @@ class Lists extends StatefulWidget {
 class _ListsState extends State<Lists> {
   @override
   Widget build(BuildContext context) {
-    // return MaterialApp(
-    //   theme: ThemeData(
-    //       primarySwatch: Colors.teal,
-    //       fontFamily: GoogleFonts.gabriela().fontFamily),
-    //   home:
-    //
 
     final LocationArguments args =
         ModalRoute.of(context)!.settings.arguments as LocationArguments;
@@ -152,6 +146,7 @@ class _DogsListState extends State<DogsList> {
                                       disposition3: post['disposition3'],
                                       phone: post['phone'],
                                       email: post['email'],
+                                      location: post['location'],
                                     )));
                       },
                       leading: Icon(MyFlutterApp.dog),
@@ -275,6 +270,7 @@ class _CatsListState extends State<CatsList> {
                                       disposition3: post['disposition3'],
                                       phone: post['phone'],
                                       email: post['email'],
+                                      location: post['location'],
                                     )));
                       },
                       leading: Icon(MyFlutterApp.dog),
@@ -399,6 +395,7 @@ class _OthersListState extends State<OthersList> {
                                       disposition3: post['disposition3'],
                                       phone: post['phone'],
                                       email: post['email'],
+                                      location: post['location'],
                                     )));
                       },
                       leading: Icon(MyFlutterApp.dog),

@@ -13,6 +13,7 @@ class Details extends StatelessWidget {
   final bool disposition3;
   final String email;
   final String phone;
+  final String location;
 
   //Constructor to pass data from the list screen for the details screen
   const Details(
@@ -24,6 +25,7 @@ class Details extends StatelessWidget {
       required this.name,
       required this.email,
       required this.phone,
+      required this.location,
       required this.disposition1,
       required this.disposition2,
       required this.disposition3})
@@ -63,9 +65,15 @@ class Details extends StatelessWidget {
           Flexible(
               child: Column(children: [
             showName(),
+            SizedBox(height: 5),
             showAge(),
+            SizedBox(height: 5),
             showGender(),
+            SizedBox(height: 5),
+            showLocation(),
+            SizedBox(height: 5),
             showDisposition(),
+            SizedBox(height: 5),
             showAbout(),
           ])),
         ])),
@@ -86,6 +94,8 @@ class Details extends StatelessWidget {
         SizedBox(height: 5),
         showGender(),
         SizedBox(height: 5),
+        showLocation(),
+        SizedBox(height: 5),
         showDisposition(),
         SizedBox(height: 5),
         showAbout()
@@ -98,11 +108,18 @@ class Details extends StatelessWidget {
     return Container(
         padding: EdgeInsets.all(15),
         child: Image.network(
-          'https://www.sftravel.com/sites/sftravel.prod.acquia-sites.com/files/field/image/dog.jpg',
+          url,
           loadingBuilder: (context, child, progress) {
             return progress == null ? child : LinearProgressIndicator();
           },
         ));
+  }
+
+  Widget showLocation() {
+    return Wrap(children: [
+      Text('Location: ', style: TextStyle(fontWeight: FontWeight.bold)),
+      Text('$location')
+    ],);
   }
 
   Widget showName() {
