@@ -14,6 +14,8 @@ class Details extends StatelessWidget {
   final String email;
   final String phone;
   final String location;
+  final String status;
+  final String breed;
 
   //Constructor to pass data from the list screen for the details screen
   const Details(
@@ -26,6 +28,8 @@ class Details extends StatelessWidget {
       required this.email,
       required this.phone,
       required this.location,
+      required this.status,
+      required this.breed,
       required this.disposition1,
       required this.disposition2,
       required this.disposition3})
@@ -58,8 +62,7 @@ class Details extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(15),
       child: Column(children: [
-        Expanded(
-            child: Row(children: [
+        Row(children: [
           Flexible(fit: FlexFit.tight, child: displayImage()),
           Spacer(),
           Flexible(
@@ -70,13 +73,17 @@ class Details extends StatelessWidget {
             SizedBox(height: 5),
             showGender(),
             SizedBox(height: 5),
+            showBreed(),
+            SizedBox(height: 5),
             showLocation(),
             SizedBox(height: 5),
             showDisposition(),
             SizedBox(height: 5),
             showAbout(),
+            SizedBox(height: 5),
+            showStatus()
           ])),
-        ])),
+        ]),
         DetailsButton(email, phone)
       ]),
     );
@@ -94,11 +101,15 @@ class Details extends StatelessWidget {
         SizedBox(height: 5),
         showGender(),
         SizedBox(height: 5),
+        showBreed(),
+        SizedBox(height: 5),
         showLocation(),
         SizedBox(height: 5),
         showDisposition(),
         SizedBox(height: 5),
-        showAbout()
+        showAbout(),
+        SizedBox(height: 5),
+        showStatus()
       ]),
     );
   }
@@ -115,11 +126,31 @@ class Details extends StatelessWidget {
         ));
   }
 
+  Widget showStatus() {
+    return Wrap(
+      children: [
+        Text('Status: ', style: TextStyle(fontWeight: FontWeight.bold)),
+        Text('$status')
+      ],
+    );
+  }
+
+  Widget showBreed() {
+    return Wrap(
+      children: [
+        Text('Breed: ', style: TextStyle(fontWeight: FontWeight.bold)),
+        Text('$breed')
+      ],
+    );
+  }
+
   Widget showLocation() {
-    return Wrap(children: [
-      Text('Location: ', style: TextStyle(fontWeight: FontWeight.bold)),
-      Text('$location')
-    ],);
+    return Wrap(
+      children: [
+        Text('Location: ', style: TextStyle(fontWeight: FontWeight.bold)),
+        Text('$location')
+      ],
+    );
   }
 
   Widget showName() {

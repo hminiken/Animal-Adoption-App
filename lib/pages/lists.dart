@@ -147,6 +147,8 @@ class _DogsListState extends State<DogsList> {
                                       phone: post['phone'],
                                       email: post['email'],
                                       location: post['location'],
+                                      status: post['status'],
+                                      breed: post['breed'],
                                     )));
                       },
                       leading: Icon(MyFlutterApp.dog),
@@ -271,6 +273,8 @@ class _CatsListState extends State<CatsList> {
                                       phone: post['phone'],
                                       email: post['email'],
                                       location: post['location'],
+                                      status: post['status'],
+                                      breed: post['breed'],
                                     )));
                       },
                       leading: Icon(MyFlutterApp.dog),
@@ -396,6 +400,8 @@ class _OthersListState extends State<OthersList> {
                                       phone: post['phone'],
                                       email: post['email'],
                                       location: post['location'],
+                                      status: post['status'],
+                                      breed: post['breed'],
                                     )));
                       },
                       leading: Icon(MyFlutterApp.dog),
