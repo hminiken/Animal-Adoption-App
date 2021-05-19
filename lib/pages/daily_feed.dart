@@ -4,6 +4,32 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/constants.dart';
 
+QuerySnapshot? getUserProfile(String userEmail) {
+  // FirebaseFirestore.instance
+  //     .collection('users')
+  //     .where("email", isEqualTo: userEmail)
+  //     .limit(1)
+  //     .get()
+  //     .then((QuerySnapshot querySnapshot) {
+  //   querySnapshot.docs.forEach((doc) {
+  //     print(doc["email"]);
+  //     print(doc["userLocation"]);
+  //     print(doc["likedDogs"]);
+  //   });
+  // });
+
+  FirebaseFirestore.instance
+      .collection('users')
+      .where("email", isEqualTo: userEmail)
+      .limit(1)
+      .get()
+      .then((QuerySnapshot querySnapshot) {
+    return querySnapshot;
+  });
+
+  return null;
+}
+
 class DailyFeed extends StatefulWidget {
   static const routeName = '/daily-feed';
   @override
@@ -35,7 +61,41 @@ class DailyFeedState extends State<DailyFeed> {
       });
     });
 
+    final curUser = FirebaseAuth.instance.currentUser!;
+
+    var userNews = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(curUser.uid)
+        .update({
+          'newsFeed': entries,
+        })
+        .then((value) => print("User Updated"))
+        .catchError((error) => print("Failed to update user: $error"));
+
     setState(() {});
+  }
+
+  void deleteItem(index) {
+    /*
+  By implementing this method, it ensures that upon being dismissed from our widget tree, 
+  the item is removed from our list of items and our list is updated, hence
+  preventing the "Dismissed widget still in widget tree error" when we reload.
+  */
+
+    setState(() {
+      entries.removeAt(index);
+    });
+
+    final curUser = FirebaseAuth.instance.currentUser!;
+
+    var userNews = FirebaseFirestore.instance
+        .collection('users')
+        .doc(curUser.uid)
+        .update({
+          'newsFeed': entries,
+        })
+        .then((value) => print("User Updated"))
+        .catchError((error) => print("Failed to update user: $error"));
   }
 
   var user;
@@ -150,36 +210,43 @@ class DailyFeedState extends State<DailyFeed> {
   Widget buildListItem(BuildContext context, int index) {
     var textTheme = Theme.of(context).textTheme;
 
-    return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-        child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(5)),
-              // border: Border(bottom: BorderSide(color: (Colors.grey[300])!))),
-              // border: Border.all(
-              //   color: Colors.grey[200]!,
-              // ),
-              boxShadow: [
-                BoxShadow(
-                  blurRadius: 7,
-                  color: Colors.grey.withOpacity(0.5),
-                  offset: Offset(0, 4),
-                  spreadRadius: 7,
-                )
-              ],
-            ),
-            child: ListTile(
-              title: Text(
-                entries[index] + "\n",
-                style: textTheme.subtitle1,
-              ),
-              subtitle: Text(
-                content[index] + "\n",
-              ),
-              contentPadding: EdgeInsets.all(20),
-              trailing: Text("May 14"),
-              // onTap: () => pushViewEntry(context, optionRoute[index]),
-            )));
+    return Dismissible(
+        key: ObjectKey(entries[index]),
+        child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+            child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  // border: Border(bottom: BorderSide(color: (Colors.grey[300])!))),
+                  // border: Border.all(
+                  //   color: Colors.grey[200]!,
+                  // ),
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 7,
+                      color: Colors.grey.withOpacity(0.5),
+                      offset: Offset(0, 4),
+                      spreadRadius: 7,
+                    )
+                  ],
+                ),
+                child: ListTile(
+                  title: Text(
+                    entries[index] + "\n",
+                    style: textTheme.subtitle1,
+                  ),
+                  subtitle: Text(
+                    content[index] + "\n",
+                  ),
+                  contentPadding: EdgeInsets.all(20),
+
+                  trailing: Text("May 14"),
+                  // onTap: () => pushViewEntry(context, optionRoute[index]),
+                ))),
+        onDismissed: (direction) {
+          var item = entries.elementAt(index);
+          deleteItem(index);
+        });
   }
 }

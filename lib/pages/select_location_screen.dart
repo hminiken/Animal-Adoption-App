@@ -1,4 +1,3 @@
-import 'package:cuddler/classes/theme.dart';
 import 'package:cuddler/models/constants.dart';
 import 'package:cuddler/pages/lists.dart';
 import 'package:flutter/material.dart';
@@ -139,7 +138,7 @@ class SelectLocationState extends State<SelectLocation> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(200),
             border: Border.all(
-              color: colDarkBlue,
+              color: Constants.deepBlue,
               width: 5,
             ),
           ),
@@ -173,14 +172,14 @@ class SelectLocationState extends State<SelectLocation> {
             size: 25,
           ),
 
-          // backgroundColor: colDarkBlue,
+          // backgroundColor: Constants.deepBlue,
           onPressed: () {
             retrieveLocation();
           },
 
           style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all<Color>(colDarkBlue), // background
+              backgroundColor: MaterialStateProperty.all<Color>(
+                  Constants.deepBlue), // background
               foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
@@ -233,14 +232,14 @@ class SelectLocationState extends State<SelectLocation> {
             style: TextStyle(fontSize: 20),
           ),
           icon: const Icon(Icons.favorite_rounded),
-          // backgroundColor: colDarkBlue,
+          // backgroundColor: Constants.deepBlue,
           onPressed: () {
             pushViewEntry(context, currentVal, "Available");
           },
 
           style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all<Color>(colRed), // background
+              backgroundColor: MaterialStateProperty.all<Color>(
+                  Constants.redOrange), // background
               foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
@@ -267,7 +266,7 @@ class SelectLocationState extends State<SelectLocation> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(200),
               border: Border.all(
-                color: colDarkBlue,
+                color: Constants.deepBlue,
                 width: 5,
               ),
             ),
@@ -303,14 +302,14 @@ class SelectLocationState extends State<SelectLocation> {
                   style: TextStyle(fontSize: 16),
                 ),
                 icon: const Icon(Icons.location_on),
-                // backgroundColor: colDarkBlue,
+                // backgroundColor: Constants.deepBlue,
                 onPressed: () {
                   retrieveLocation();
                 },
 
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(
-                        colDarkBlue), // background
+                        Constants.deepBlue), // background
                     foregroundColor:
                         MaterialStateProperty.all<Color>(Colors.white),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -360,14 +359,14 @@ class SelectLocationState extends State<SelectLocation> {
                   style: TextStyle(fontSize: 20),
                 ),
                 icon: const Icon(Icons.favorite_rounded),
-                // backgroundColor: colDarkBlue,
+                // backgroundColor: Constants.deepBlue,
                 onPressed: () {
                   pushViewEntry(context, currentVal, "Available");
                 },
 
                 style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(colRed), // background
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Constants.redOrange), // background
                     foregroundColor:
                         MaterialStateProperty.all<Color>(Colors.white),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(

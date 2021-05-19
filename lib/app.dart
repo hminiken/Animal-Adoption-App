@@ -67,7 +67,7 @@ class App extends StatelessWidget {
         AboutCuddler.routeName: (context) => AboutCuddler(),
         UserListed.routeName: (context) => UserListed(),
         Lists.routeName: (context) => Lists(),
-        UserInfo.routeName: (context) => UserInfo(),
+        UpdateUserInfo.routeName: (context) => UpdateUserInfo(),
         EmailPreferences.routeName: (context) => EmailPreferences(),
         DailyFeed.routeName: (context) => DailyFeed(),
       },

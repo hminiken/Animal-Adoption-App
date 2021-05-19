@@ -2,7 +2,6 @@ import 'package:cuddler/models/constants.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
-import 'package:cuddler/classes/theme.dart';
 import 'package:cuddler/models/animals.dart';
 import 'package:cuddler/widgets/global_widgets.dart';
 import 'package:cuddler/widgets/new_profile_widgets.dart';
@@ -161,7 +160,7 @@ class NewProfileState extends State<NewProfile> {
                           alignment: Alignment.centerLeft,
                           child: centerText(
                               context, 'Pet Information', Colors.white, 24)),
-                      color: colYellow,
+                      color: Constants.fadedYellow,
                       padding: EdgeInsets.all(10),
                     ),
                     Padding(
@@ -341,7 +340,7 @@ class NewProfileState extends State<NewProfile> {
                               },
                               title: new Text("Good with other animals"),
                               controlAffinity: ListTileControlAffinity.leading,
-                              activeColor: colRed),
+                              activeColor: Constants.redOrange),
                           CheckboxListTile(
                               value: isGoodChildren,
                               onChanged: (bool? value) {
@@ -349,7 +348,7 @@ class NewProfileState extends State<NewProfile> {
                               },
                               title: new Text("Good with children"),
                               controlAffinity: ListTileControlAffinity.leading,
-                              activeColor: colRed),
+                              activeColor: Constants.redOrange),
                           CheckboxListTile(
                               value: isMustLeash,
                               onChanged: (bool? value) {
@@ -358,7 +357,7 @@ class NewProfileState extends State<NewProfile> {
                               title: new Text(
                                   "Animal must be leashed at all times"),
                               controlAffinity: ListTileControlAffinity.leading,
-                              activeColor: colRed),
+                              activeColor: Constants.redOrange),
                         ])),
                     // ==== USER INFORMATIon =====
                     SizedBox(height: 15),
@@ -367,7 +366,7 @@ class NewProfileState extends State<NewProfile> {
                           alignment: Alignment.centerLeft,
                           child: centerText(
                               context, 'Your Information', Colors.white, 24)),
-                      color: colYellow,
+                      color: Constants.fadedYellow,
                       padding: EdgeInsets.all(10),
                     ),
                     Padding(
@@ -436,7 +435,7 @@ class NewProfileState extends State<NewProfile> {
                             style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.all<Color>(
-                                        colRed), // background
+                                        Constants.redOrange), // background
                                 foregroundColor:
                                     MaterialStateProperty.all<Color>(
                                         Colors.white),
@@ -451,7 +450,7 @@ class NewProfileState extends State<NewProfile> {
                             child: ClipRRect(
                               // borderRadius: BorderRadius.circular(80.0),
 
-                              child: setUploadImage(context, image),
+                              child: setUploadImage(context, image, ""),
                             ),
                           ),
                           SizedBox(height: 15),
@@ -488,7 +487,7 @@ class NewProfileState extends State<NewProfile> {
               }
             },
             tooltip: 'Upload your Pet',
-            backgroundColor: colDarkBlue,
+            backgroundColor: Constants.deepBlue,
             label: const Text('Upload your Pet'),
             icon: const Icon(
               Icons.upload_rounded,

@@ -141,6 +141,7 @@ class EmailPreferencesState extends State<EmailPreferences> {
                           // backgroundColor: Constants.deepBlue,
                           onPressed: () {
                             // selectImage();
+                            Navigator.of(context).pop();
                           },
 
                           style: ButtonStyle(

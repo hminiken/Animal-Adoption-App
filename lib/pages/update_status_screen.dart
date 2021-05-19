@@ -1,5 +1,5 @@
-import 'package:cuddler/classes/theme.dart';
 import 'package:flutter/material.dart';
+import '../models/constants.dart';
 import 'user_listed_pets.dart';
 
 class UpdateStatus extends StatefulWidget {
@@ -99,7 +99,7 @@ class UpdateStatusState extends State<UpdateStatus> {
 
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
-                          colDarkBlue), // background
+                          Constants.deepBlue), // background
                       foregroundColor:
                           MaterialStateProperty.all<Color>(Colors.white),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
