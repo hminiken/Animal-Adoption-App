@@ -3,6 +3,7 @@ import 'models/constants.dart';
 import 'pages/dashboard.dart';
 import 'pages/login.dart';
 import 'pages/about_cuddler_screen.dart';
+import 'pages/admin_screen.dart';
 import 'pages/new_profile_screen.dart';
 import 'pages/select_location_screen.dart';
 import 'pages/user_listed_pets.dart';
