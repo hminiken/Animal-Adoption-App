@@ -44,7 +44,6 @@ class _DashboardScreenState extends State<Dashboard> {
     setState(() {});
   }
 
-
   AppBar _buildAppBar(ThemeData theme) {
     return AppBar(
       toolbarHeight: 50.0,
@@ -73,7 +72,7 @@ class _DashboardScreenState extends State<Dashboard> {
               size: 26.0,
             ),
           ),
-        )
+        ),
       ],
     );
   }
