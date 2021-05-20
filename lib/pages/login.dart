@@ -47,14 +47,14 @@ class Login extends StatelessWidget {
     final firebaseUser = (await _auth.createUserWithEmailAndPassword(
       email: loginData.name,
       password: loginData.password,
-    ))
-        .user;
+    )).user;
     FirebaseFirestore.instance.collection('users').doc(firebaseUser!.uid).set({
       'fName': loginData.name,
       'email': loginData.name,
       'password': loginData.password,
       'accountType': 1,
-      'profileImgURL': 'https://firebasestorage.googleapis.com/v0/b/cuddler-bd524.appspot.com/o/blank_profile.png?alt=media&token=a67b63b3-8711-4874-b7f3-74548b545536',
+      'profileImgURL': '''
+https://firebasestorage.googleapis.com/v0/b/cuddler-bd524.appspot.com/o/blank_profile.png?alt=media&token=a67b63b3-8711-4874-b7f3-74548b545536''',
       'userLocation': null
     }).then((_) {
       print("success!");
