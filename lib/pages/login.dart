@@ -47,7 +47,8 @@ class Login extends StatelessWidget {
     final firebaseUser = (await _auth.createUserWithEmailAndPassword(
       email: loginData.name,
       password: loginData.password,
-    )).user;
+    ))
+        .user;
     FirebaseFirestore.instance.collection('users').doc(firebaseUser!.uid).set({
       'fName': loginData.name,
       'email': loginData.name,

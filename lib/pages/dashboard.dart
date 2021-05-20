@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cuddler/pages/user_profile_screen.dart';
+//import 'package:cuddler/pages/user_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'admin_screen.dart';
 import '../models/constants.dart';
-import 'new_profile_screen.dart';
-import 'select_location_screen.dart';
+//import 'new_profile_screen.dart';
+//import 'select_location_screen.dart';
 import '../widgets/background.dart';
 import '../widgets/landingButton.dart';
 import '../widgets/transition_route_observer.dart';
@@ -35,12 +35,15 @@ class _DashboardScreenState extends State<Dashboard> {
   }
 
   void decideAdmin() async {
-    await FirebaseFirestore.instance.collection('users').doc(user.uid).get()
-      .then((snap) {
-        if (snap.data()?['accountType'] == 0) {
-          isAdmin = true;
-        }
-      });
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .get()
+        .then((snap) {
+      if (snap.data()?['accountType'] == 0) {
+        isAdmin = true;
+      }
+    });
     setState(() {});
   }
 
@@ -65,14 +68,14 @@ class _DashboardScreenState extends State<Dashboard> {
           padding: EdgeInsets.only(right: 20.0),
           child: GestureDetector(
             onTap: () {
-              pushViewEntry(context, UserProfile.routeName);
+              //pushViewEntry(context, UserProfile.routeName);
             },
             child: Icon(
               Icons.person,
               size: 26.0,
             ),
           ),
-        ),
+        )
       ],
     );
   }
@@ -91,7 +94,7 @@ class _DashboardScreenState extends State<Dashboard> {
       ),
       floatingActionButton: isAdmin ? adminButton(context) : null,
       floatingActionButtonLocation:
-      isAdmin ? FloatingActionButtonLocation.centerFloat : null,
+          isAdmin ? FloatingActionButtonLocation.centerFloat : null,
     );
   }
 
@@ -145,14 +148,14 @@ class _DashboardScreenState extends State<Dashboard> {
           Expanded(
             child: LandingButton(
               displayText: list,
-              page: NewProfile(),
+              page: Placeholder(), //NewProfile(),
             ),
           ),
           SizedBox(height: 40.0),
           Expanded(
             child: LandingButton(
               displayText: adopt,
-              page: SelectLocation(),
+              page: Placeholder(), //SelectLocation(),
             ),
           ),
           SizedBox(height: 80.0),
@@ -200,14 +203,14 @@ class _DashboardScreenState extends State<Dashboard> {
               Expanded(
                 child: LandingButton(
                   displayText: list,
-                  page: NewProfile(),
+                  page: Placeholder(), //NewProfile(),
                 ),
               ),
               SizedBox(width: 20.0),
               Expanded(
                 child: LandingButton(
                   displayText: adopt,
-                  page: SelectLocation(),
+                  page: Placeholder(), //SelectLocation(),
                 ),
               ),
             ],
