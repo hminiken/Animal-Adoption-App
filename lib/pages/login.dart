@@ -1,11 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_login/flutter_login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
-import 'package:flutter_login/flutter_login.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'dashboard.dart';
 import '../models/constants.dart';
-import '../models/users.dart';
 import '../widgets/background.dart';
 import '../widgets/custom_route.dart';
 
@@ -15,7 +14,6 @@ class Login extends StatelessWidget {
 
   Duration get loginTime => Duration(milliseconds: timeDilation.ceil() * 2250);
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  //final user = FirebaseAuth.instance.currentUser!;
 
   Future<String?> _loginUser(LoginData data) {
     return Future.delayed(loginTime).then((_) async {
@@ -26,12 +24,9 @@ class Login extends StatelessWidget {
       if (result.docs.isEmpty) {
         return 'Username does not exist';
       }
-      var passwordText = await FirebaseFirestore.instance
-          .collection('users')
-          .where('password', isEqualTo: data.password)
-          .get();
-      if (passwordText.docs.isEmpty) {
-        return 'Password does not match';
+      var passwordText = result.docs[0].data()['password'];
+      if (passwordText != data.password) {
+        return 'Password is incorrect';
       }
       _auth.signInWithEmailAndPassword(
           email: data.name, password: data.password);
@@ -39,12 +34,12 @@ class Login extends StatelessWidget {
     });
   }
 
-  Future<String?> _recoverPassword(String name) {
+  Future<String?> _recoverPassword(String data) {
     return Future.delayed(loginTime).then((_) {
-      if (!mockUsers.containsKey(name)) {
-        return 'Username does not exist';
-      }
-      return null;
+      final warning = 'Please understand that this operation is in beta.';
+      final result = 'At this time, there is no way to recover your password.';
+      final dream = 'Some day we hope to send a recovery email to $data';
+      return warning + result + dream;
     });
   }
 
@@ -54,13 +49,12 @@ class Login extends StatelessWidget {
       password: loginData.password,
     ))
         .user;
-    //FirebaseFirestore.instance.collection('users').add({
     FirebaseFirestore.instance.collection('users').doc(firebaseUser!.uid).set({
       'fName': loginData.name,
       'email': loginData.name,
       'password': loginData.password,
       'accountType': 1,
-      'profileImgURL': 'blank_profile.png',
+      'profileImgURL': 'https://firebasestorage.googleapis.com/v0/b/cuddler-bd524.appspot.com/o/blank_profile.png?alt=media&token=a67b63b3-8711-4874-b7f3-74548b545536',
       'userLocation': null
     }).then((_) {
       print("success!");
@@ -93,7 +87,7 @@ class Login extends StatelessWidget {
         pageColorDark: Constants.tealBlue,
         titleStyle: TextStyle(
           color: Constants.deepBlue,
-          fontFamily: 'Courgette',
+          fontFamily: 'OleoScriptSwashCaps',
           letterSpacing: 2,
         ),
       ),
