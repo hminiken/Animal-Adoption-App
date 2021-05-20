@@ -65,7 +65,7 @@ class UsersList extends StatelessWidget {
                 count = 0;
                 return ListTile(
                   leading: Icon(Icons.star),
-                  title: Text('User Profiles'.toUpperCase(), 
+                  title: Text('User Profiles'.toUpperCase(),
                     style: TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
@@ -117,7 +117,7 @@ class UsersList extends StatelessWidget {
                         },
                       ),
                     ],
-                  ), 
+                  ),
                 );
               }
             }
@@ -158,7 +158,7 @@ class _AnimalState extends State<AnimalsList> {
                 count = 0;
                 return ListTile(
                   leading: Icon(Icons.star),
-                  title: Text((widget.type + ' Profiles').toUpperCase(), 
+                  title: Text((widget.type + ' Profiles').toUpperCase(),
                     style: TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
@@ -202,7 +202,7 @@ class _AnimalState extends State<AnimalsList> {
                         },
                       ),
                     ],
-                  ), 
+                  ),
                 );
               }
             }
