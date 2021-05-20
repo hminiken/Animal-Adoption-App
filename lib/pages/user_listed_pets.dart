@@ -1,19 +1,39 @@
-import 'select_location_screen.dart';
+import 'update_status_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/my_flutter_app_icons.dart';
-import 'details.dart';
 
-//List screen Widget
-class Lists extends StatefulWidget {
-  static const routeName = '/lists_page';
+String uid = 'I1tRDK1UeCV3kyeUbU9jjUj7NoX2';
 
-  @override
-  _ListsState createState() => _ListsState();
+class StatusArguments {
+  // final File image;
+  String imageURL, currentStatus, petName;
+  DocumentReference id;
+
+  StatusArguments(this.imageURL, this.currentStatus, this.petName, this.id);
+  // PostDetailArguments(this.image);
 }
 
-class _ListsState extends State<Lists> {
+void pushNewEntry(BuildContext context, String image, String status,
+    String name, DocumentReference id) {
+  Navigator.of(context).pushNamed(UpdateStatus.routeName,
+      arguments: StatusArguments(image, status, name, id));
+}
+
+//List screen Widget
+class UserListed extends StatefulWidget {
+  static const routeName = '/user_listed_page';
+
+  @override
+  _UserListedState createState() => _UserListedState();
+}
+
+class _UserListedState extends State<UserListed> {
+  //unique user id. Need to add later to "fetch" this from current login session
+
+  String uid = 'I1tRDK1UeCV3kyeUbU9jjUj7NoX2';
+
   @override
   Widget build(BuildContext context) {
     // return MaterialApp(
@@ -21,10 +41,6 @@ class _ListsState extends State<Lists> {
     //       primarySwatch: Colors.teal,
     //       fontFamily: GoogleFonts.gabriela().fontFamily),
     //   home:
-    //
-
-    final LocationArguments args =
-        ModalRoute.of(context)!.settings.arguments as LocationArguments;
 
     return DefaultTabController(
       length: 3,
@@ -37,14 +53,14 @@ class _ListsState extends State<Lists> {
               Tab(icon: Icon(MyFlutterApp.pastafarianism)),
             ],
           ),
-          title: Text('Cuddler'),
+          title: Text('My Listed Pets'),
           centerTitle: true,
         ),
         body: TabBarView(
           children: [
-            DogsList(location: args.location),
-            CatsList(location: args.location),
-            OthersList(location: args.location),
+            DogsList(),
+            CatsList(),
+            OthersList(),
           ],
         ),
       ),
@@ -54,18 +70,15 @@ class _ListsState extends State<Lists> {
 
 //Widget for displaying list of dogs
 class DogsList extends StatelessWidget {
-  final String location;
-
-  DogsList({required this.location});
-
   @override
   Widget build(BuildContext context) {
     //Grab the collection from firebase
     CollectionReference dogs = FirebaseFirestore.instance.collection('dogs');
-    final Query localDogs = dogs.where("location", isEqualTo: location);
+
+    final Query myDogs = dogs.where("uid", isEqualTo: uid);
 
     return StreamBuilder<QuerySnapshot>(
-      stream: localDogs.snapshots(),
+      stream: myDogs.snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         //If firebase has data display it as a list
         if (snapshot.hasData && snapshot.data!.docs.length > 0) {
@@ -79,21 +92,8 @@ class DogsList extends StatelessWidget {
                 return ListTile(
                     //Go to details screen on tap, send necessary info to details screen
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Details(
-                                    age: post['age'],
-                                    url: post['url'],
-                                    sex: post['sex'],
-                                    about: post['about'],
-                                    name: post['name'],
-                                    disposition1: post['disposition1'],
-                                    disposition2: post['disposition2'],
-                                    disposition3: post['disposition3'],
-                                    phone: post['phone'],
-                                    email: post['email'],
-                                  )));
+                      pushNewEntry(context, post['url'], post['status'],
+                          post['name'], dogs.doc(post.id));
                     },
                     leading: Icon(MyFlutterApp.dog),
                     title: Text(
@@ -124,18 +124,14 @@ class DogsList extends StatelessWidget {
 
 //Widget for displaying list of cats
 class CatsList extends StatelessWidget {
-  final String location;
-
-  CatsList({required this.location});
-
   @override
   Widget build(BuildContext context) {
     //Grab the collection from firebase
     CollectionReference cats = FirebaseFirestore.instance.collection('cats');
-    final Query localCats = cats.where("location", isEqualTo: location);
+    final Query myCats = cats.where("uid", isEqualTo: uid);
 
     return StreamBuilder<QuerySnapshot>(
-      stream: localCats.snapshots(),
+      stream: myCats.snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         //If firebase has data display it as a list
         if (snapshot.hasData && snapshot.data!.docs.length > 0) {
@@ -149,21 +145,8 @@ class CatsList extends StatelessWidget {
                 return ListTile(
                     //Go to details screen on tap, send necessary info to details screen
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Details(
-                                    age: post['age'],
-                                    url: post['url'],
-                                    sex: post['sex'],
-                                    about: post['about'],
-                                    name: post['name'],
-                                    disposition1: post['disposition1'],
-                                    disposition2: post['disposition2'],
-                                    disposition3: post['disposition3'],
-                                    phone: post['phone'],
-                                    email: post['email'],
-                                  )));
+                      pushNewEntry(context, post['url'], post['status'],
+                          post['name'], cats.doc(post.id));
                     },
                     leading: Icon(MyFlutterApp.cat),
                     title: Text(
@@ -194,18 +177,15 @@ class CatsList extends StatelessWidget {
 
 //Widget for displaying list of others
 class OthersList extends StatelessWidget {
-  final String location;
-
-  OthersList({required this.location});
   @override
   Widget build(BuildContext context) {
     //Grab the collection from firebase
     CollectionReference others =
         FirebaseFirestore.instance.collection('others');
-    final Query localOthers = others.where("location", isEqualTo: location);
+    final Query myOthers = others.where("uid", isEqualTo: uid);
 
     return StreamBuilder<QuerySnapshot>(
-      stream: localOthers.snapshots(),
+      stream: myOthers.snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         //If firebase has data display it as a list
         if (snapshot.hasData && snapshot.data!.docs.length > 0) {
@@ -219,21 +199,8 @@ class OthersList extends StatelessWidget {
                 return ListTile(
                     //Go to details screen on tap, send necessary info to details screen
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Details(
-                                    age: post['age'],
-                                    url: post['url'],
-                                    sex: post['sex'],
-                                    about: post['about'],
-                                    name: post['name'],
-                                    disposition1: post['disposition1'],
-                                    disposition2: post['disposition2'],
-                                    disposition3: post['disposition3'],
-                                    phone: post['phone'],
-                                    email: post['email'],
-                                  )));
+                      pushNewEntry(context, post['url'], post['status'],
+                          post['name'], others.doc(post.id));
                     },
                     leading: Icon(MyFlutterApp.pastafarianism),
                     title: Text(

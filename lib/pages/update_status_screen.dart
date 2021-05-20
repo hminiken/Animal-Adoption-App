@@ -1,5 +1,6 @@
 import 'package:cuddler/classes/theme.dart';
 import 'package:flutter/material.dart';
+import 'user_listed_pets.dart';
 
 class UpdateStatus extends StatefulWidget {
   static const routeName = '/update_status_screen';
@@ -16,11 +17,16 @@ class UpdateStatusState extends State<UpdateStatus> {
 
   var dropdownItems = ['Available', 'Pending', 'Not Available', 'Adopted'];
 
-  var currentVal = 'Available';
+  var statusValue = 'Available';
   var currentPet = "Lassie";
   var currentStatus = "Available";
 
   Widget build(BuildContext context) {
+    final StatusArguments args =
+        ModalRoute.of(context)!.settings.arguments as StatusArguments;
+
+    String petImage = args.imageURL;
+
     return Scaffold(
       //  appBar: cuddlerAppBar(context, 'Select a Location'),
       appBar: AppBar(
@@ -35,13 +41,13 @@ class UpdateStatusState extends State<UpdateStatus> {
                   children: [
                 Align(
                     alignment: Alignment.center,
-                    child: Text('Change the status for ' + currentPet,
+                    child: Text('Change the status for ' + args.petName,
                         style: Theme.of(context).textTheme.headline5)),
                 SizedBox(height: 15),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10.0),
-                  child: Image.asset(
-                    'assets/images/sampleCat.jpg',
+                  child: Image.network(
+                    petImage,
                     height: 150.0,
                     fit: BoxFit.cover,
                   ),
@@ -49,7 +55,7 @@ class UpdateStatusState extends State<UpdateStatus> {
                 SizedBox(height: 50),
                 Align(
                     alignment: Alignment.center,
-                    child: Text('Current status is: ' + currentStatus,
+                    child: Text('Current status is: ' + args.currentStatus,
                         style: Theme.of(context).textTheme.headline6)),
                 SizedBox(height: 15),
                 DropdownButtonFormField(
@@ -63,11 +69,12 @@ class UpdateStatusState extends State<UpdateStatus> {
                           ],
                         ));
                   }).toList(),
-                  onChanged: (newValue) {
-                    // do other stuff with _category
-                    //  setState(() => _category = newValue);
+                  onChanged: (String? curValue) {
+                    setState(() {
+                      statusValue = curValue!;
+                    });
                   },
-                  value: currentVal,
+                  value: statusValue,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.fromLTRB(10, 20, 10, 20),
                     // filled: true,
@@ -85,7 +92,10 @@ class UpdateStatusState extends State<UpdateStatus> {
                   icon: const Icon(Icons.update_outlined),
                   // backgroundColor: colDarkBlue,
                   //
-                  onPressed: () {},
+                  onPressed: () {
+                    args.id.update({'status': statusValue});
+                    Navigator.pop(context);
+                  },
 
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
