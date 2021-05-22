@@ -17,7 +17,6 @@ class Lists extends StatefulWidget {
 class _ListsState extends State<Lists> {
   @override
   Widget build(BuildContext context) {
-
     final LocationArguments args =
         ModalRoute.of(context)!.settings.arguments as LocationArguments;
 
