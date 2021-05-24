@@ -113,7 +113,8 @@ class _DogsListState extends State<DogsList> {
               )),
         ],
       ),
-      StreamBuilder<QuerySnapshot>(
+      Flexible(
+          child: StreamBuilder<QuerySnapshot>(
         stream: dropdownValue == 'Sort by All'
             ? localDogs.snapshots()
             : sortBy.snapshots(),
@@ -146,7 +147,7 @@ class _DogsListState extends State<DogsList> {
                                       phone: post['phone'],
                                       email: post['email'],
                                       location: post['location'],
-                                      status: post['status'],
+                                      
                                       breed: post['breed'],
                                     )));
                       },
@@ -173,7 +174,7 @@ class _DogsListState extends State<DogsList> {
             return Center(child: CircularProgressIndicator());
           }
         },
-      )
+      ))
     ]);
   }
 }
@@ -239,7 +240,8 @@ class _CatsListState extends State<CatsList> {
               )),
         ],
       ),
-      StreamBuilder<QuerySnapshot>(
+      Flexible(
+          child: StreamBuilder<QuerySnapshot>(
         stream: dropdownValue == 'Sort by All'
             ? localCats.snapshots()
             : sortBy.snapshots(),
@@ -272,7 +274,7 @@ class _CatsListState extends State<CatsList> {
                                       phone: post['phone'],
                                       email: post['email'],
                                       location: post['location'],
-                                      status: post['status'],
+                                      
                                       breed: post['breed'],
                                     )));
                       },
@@ -299,7 +301,7 @@ class _CatsListState extends State<CatsList> {
             return Center(child: CircularProgressIndicator());
           }
         },
-      )
+      ))
     ]);
   }
 }
@@ -366,7 +368,8 @@ class _OthersListState extends State<OthersList> {
               )),
         ],
       ),
-      StreamBuilder<QuerySnapshot>(
+      Flexible(
+          child: StreamBuilder<QuerySnapshot>(
         stream: dropdownValue == 'Sort by All'
             ? localOthers.snapshots()
             : sortBy.snapshots(),
@@ -399,7 +402,6 @@ class _OthersListState extends State<OthersList> {
                                       phone: post['phone'],
                                       email: post['email'],
                                       location: post['location'],
-                                      status: post['status'],
                                       breed: post['breed'],
                                     )));
                       },
@@ -426,7 +428,7 @@ class _OthersListState extends State<OthersList> {
             return Center(child: CircularProgressIndicator());
           }
         },
-      )
+      ))
     ]);
   }
 }
