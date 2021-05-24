@@ -182,14 +182,14 @@ class Details extends StatelessWidget {
 
   Widget showAboutLandscape() {
     return Wrap(
-          children: [
-            Text('About: ', style: TextStyle(fontWeight: FontWeight.bold)),
-            Text(
-              '$about',
-              overflow: TextOverflow.ellipsis,
-            )
-          ],
-        );
+      children: [
+        Text('About: ', style: TextStyle(fontWeight: FontWeight.bold)),
+        Text(
+          '$about',
+          overflow: TextOverflow.ellipsis,
+        )
+      ],
+    );
   }
 }
 

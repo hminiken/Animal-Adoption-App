@@ -147,7 +147,6 @@ class _DogsListState extends State<DogsList> {
                                       phone: post['phone'],
                                       email: post['email'],
                                       location: post['location'],
-                                      
                                       breed: post['breed'],
                                     )));
                       },
@@ -274,7 +273,6 @@ class _CatsListState extends State<CatsList> {
                                       phone: post['phone'],
                                       email: post['email'],
                                       location: post['location'],
-                                      
                                       breed: post['breed'],
                                     )));
                       },
