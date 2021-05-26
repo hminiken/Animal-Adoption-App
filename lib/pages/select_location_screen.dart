@@ -1,10 +1,11 @@
-import 'package:cuddler/classes/theme.dart';
 import 'package:cuddler/models/constants.dart';
 import 'package:cuddler/pages/lists.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:location/location.dart' as location;
 import 'package:geocoding/geocoding.dart';
+
+import '../widgets/background.dart';
 
 class LocationArguments {
   // final File image;
@@ -77,48 +78,7 @@ class SelectLocationState extends State<SelectLocation> {
         body: Stack(
           children: <Widget>[
             //image code
-            Image.asset(
-              'assets/images/faded-background.png',
-              fit: BoxFit.cover,
-              // height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-            ),
-            //top grey shadow
-            Align(
-              alignment: Alignment.topCenter,
-              child: Container(
-                height: 200,
-                width: double.infinity,
-                decoration: new BoxDecoration(
-                  gradient: new LinearGradient(
-                    end: const Alignment(0.0, 0.4),
-                    begin: const Alignment(0.0, -1),
-                    colors: <Color>[
-                      const Color(0x8A000000),
-                      Colors.white.withOpacity(0.0)
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            //bottom grey shadow
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                height: MediaQuery.of(context).size.height,
-                width: double.infinity,
-                decoration: new BoxDecoration(
-                  gradient: new LinearGradient(
-                    end: const Alignment(0.0, -1.9),
-                    begin: const Alignment(0.0, 0.0),
-                    colors: <Color>[
-                      Colors.white.withOpacity(0.95),
-                      Colors.white.withOpacity(0.0)
-                    ],
-                  ),
-                ),
-              ),
-            ),
+            fadedBackground(context),
             LayoutBuilder(builder: (context, constraints) {
               return constraints.maxWidth < 500
                   ? verticalLayout(context)
@@ -139,7 +99,7 @@ class SelectLocationState extends State<SelectLocation> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(200),
             border: Border.all(
-              color: colDarkBlue,
+              color: Constants.deepBlue,
               width: 5,
             ),
           ),
@@ -173,14 +133,14 @@ class SelectLocationState extends State<SelectLocation> {
             size: 25,
           ),
 
-          // backgroundColor: colDarkBlue,
+          // backgroundColor: Constants.deepBlue,
           onPressed: () {
             retrieveLocation();
           },
 
           style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all<Color>(colDarkBlue), // background
+              backgroundColor: MaterialStateProperty.all<Color>(
+                  Constants.deepBlue), // background
               foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
@@ -233,14 +193,14 @@ class SelectLocationState extends State<SelectLocation> {
             style: TextStyle(fontSize: 20),
           ),
           icon: const Icon(Icons.favorite_rounded),
-          // backgroundColor: colDarkBlue,
+          // backgroundColor: Constants.deepBlue,
           onPressed: () {
             pushViewEntry(context, currentVal, "Available");
           },
 
           style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all<Color>(colRed), // background
+              backgroundColor: MaterialStateProperty.all<Color>(
+                  Constants.redOrange), // background
               foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
@@ -267,7 +227,7 @@ class SelectLocationState extends State<SelectLocation> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(200),
               border: Border.all(
-                color: colDarkBlue,
+                color: Constants.deepBlue,
                 width: 5,
               ),
             ),
@@ -303,14 +263,14 @@ class SelectLocationState extends State<SelectLocation> {
                   style: TextStyle(fontSize: 16),
                 ),
                 icon: const Icon(Icons.location_on),
-                // backgroundColor: colDarkBlue,
+                // backgroundColor: Constants.deepBlue,
                 onPressed: () {
                   retrieveLocation();
                 },
 
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(
-                        colDarkBlue), // background
+                        Constants.deepBlue), // background
                     foregroundColor:
                         MaterialStateProperty.all<Color>(Colors.white),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -360,14 +320,14 @@ class SelectLocationState extends State<SelectLocation> {
                   style: TextStyle(fontSize: 20),
                 ),
                 icon: const Icon(Icons.favorite_rounded),
-                // backgroundColor: colDarkBlue,
+                // backgroundColor: Constants.deepBlue,
                 onPressed: () {
                   pushViewEntry(context, currentVal, "Available");
                 },
 
                 style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(colRed), // background
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Constants.redOrange), // background
                     foregroundColor:
                         MaterialStateProperty.all<Color>(Colors.white),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(

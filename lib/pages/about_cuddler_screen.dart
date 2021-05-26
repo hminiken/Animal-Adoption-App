@@ -1,6 +1,8 @@
-import 'package:cuddler/classes/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../models/constants.dart';
+import '../widgets/background.dart';
 
 class AboutCuddler extends StatefulWidget {
   static const routeName = '/about_cuddler_screen';
@@ -37,60 +39,19 @@ class AboutCuddlerState extends State<AboutCuddler> {
       body: Stack(
         children: <Widget>[
           //image code
-          Image.asset(
-            'assets/images/faded-background.png',
-            fit: BoxFit.cover,
-            // height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            // height: MediaQuery.of(context).size.height / ,
-          ),
-          //top grey shadow
-          Align(
-            alignment: Alignment.topCenter,
-            child: Container(
-              height: 200,
-              width: double.infinity,
-              decoration: new BoxDecoration(
-                gradient: new LinearGradient(
-                  end: const Alignment(0.0, 0.4),
-                  begin: const Alignment(0.0, -1),
-                  colors: <Color>[
-                    const Color(0x8A000000),
-                    Colors.white.withOpacity(0.0)
-                  ],
-                ),
-              ),
-            ),
-          ),
-          //bottom grey shadow
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              height: MediaQuery.of(context).size.height,
-              width: double.infinity,
-              decoration: new BoxDecoration(
-                gradient: new LinearGradient(
-                  end: const Alignment(0.0, -1.5),
-                  begin: const Alignment(0.0, -0.1),
-                  colors: <Color>[
-                    Colors.white.withOpacity(0.99),
-                    Colors.white.withOpacity(0.0)
-                  ],
-                ),
-              ),
-            ),
-          ),
+          fadedBackground(context),
           Padding(
             padding: const EdgeInsets.all(20),
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+              SizedBox(height: 55),
               Container(
                 padding: EdgeInsets.all(0),
                 margin: EdgeInsets.all(5),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(200),
                   border: Border.all(
-                    color: colDarkBlue,
+                    color: Constants.deepBlue,
                     width: 5,
                   ),
                 ),
@@ -106,14 +67,15 @@ class AboutCuddlerState extends State<AboutCuddler> {
               Center(
                   child: Text('Cuddler ',
                       style: GoogleFonts.oleoScriptSwashCaps(
-                        textStyle: TextStyle(color: colDarkBlue, fontSize: 48),
+                        textStyle:
+                            TextStyle(color: Constants.deepBlue, fontSize: 48),
                       ))),
               SizedBox(height: 5),
               Text(
-                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua  eiusmod tempor incididu.\n\n',
+                  'What better way to match future pet owners up with available animals than a swipe-ready dating app!\n\n',
                   style: GoogleFonts.poppins(
                     textStyle: TextStyle(
-                      color: colDarkBlue,
+                      color: Constants.deepBlue,
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                     ),
