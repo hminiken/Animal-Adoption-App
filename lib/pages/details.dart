@@ -13,6 +13,8 @@ class Details extends StatelessWidget {
   final bool disposition3;
   final String email;
   final String phone;
+  final String location;
+  final String breed;
 
   //Constructor to pass data from the list screen for the details screen
   const Details(
@@ -24,6 +26,8 @@ class Details extends StatelessWidget {
       required this.name,
       required this.email,
       required this.phone,
+      required this.location,
+      required this.breed,
       required this.disposition1,
       required this.disposition2,
       required this.disposition3})
@@ -38,14 +42,9 @@ class Details extends StatelessWidget {
       ),
       body: SafeArea(child: LayoutBuilder(builder: (context, constraints) {
         if (constraints.maxWidth < 600) {
-          return Column(children: [
-            Expanded(child: animalInfo()),
-            DetailsButton(email, phone)
-          ]);
+          return Column(children: [animalInfo(), DetailsButton(email, phone)]);
         } else {
-          return Container(
-            child: landscape(),
-          );
+          return landscape();
         }
       })),
     );
@@ -53,22 +52,29 @@ class Details extends StatelessWidget {
 
   //For Display animal info for landscape view
   Widget landscape() {
-    return Container(
+    return Padding(
       padding: EdgeInsets.all(15),
       child: Column(children: [
-        Expanded(
-            child: Row(children: [
-          Flexible(fit: FlexFit.tight, child: displayImage()),
+        Row(children: [
+          Expanded(child: displayImage()),
           Spacer(),
-          Flexible(
+          Expanded(
               child: Column(children: [
             showName(),
+            SizedBox(height: 5),
             showAge(),
+            SizedBox(height: 5),
             showGender(),
+            SizedBox(height: 5),
+            showBreed(),
+            SizedBox(height: 5),
+            showLocation(),
+            SizedBox(height: 5),
             showDisposition(),
-            showAbout(),
+            SizedBox(height: 5),
+            showAboutLandscape(),
           ])),
-        ])),
+        ]),
         DetailsButton(email, phone)
       ]),
     );
@@ -76,33 +82,48 @@ class Details extends StatelessWidget {
 
   //Display the animal's info
   Widget animalInfo() {
-    return Container(
-      padding: EdgeInsets.all(15),
+    return Expanded(
       child: Column(children: [
-        Expanded(child: displayImage()),
-        showName(),
-        SizedBox(height: 10),
-        showAge(),
-        SizedBox(height: 5),
-        showGender(),
-        SizedBox(height: 5),
-        showDisposition(),
-        SizedBox(height: 5),
-        showAbout()
+        Expanded(flex: 4, child: displayImage()),
+        Expanded(flex: 2, child: showName()),
+        Expanded(child: showAge()),
+        Expanded(child: showGender()),
+        Expanded(child: showBreed()),
+        Expanded(child: showLocation()),
+        Expanded(child: showDisposition()),
+        Expanded(child: showAbout()),
       ]),
     );
   }
 
   //Display image of animal
   Widget displayImage() {
-    return Container(
-        padding: EdgeInsets.all(15),
+    return Padding(
+        padding: EdgeInsets.all(5),
         child: Image.network(
-          'https://www.sftravel.com/sites/sftravel.prod.acquia-sites.com/files/field/image/dog.jpg',
+          url,
           loadingBuilder: (context, child, progress) {
             return progress == null ? child : LinearProgressIndicator();
           },
         ));
+  }
+
+  Widget showBreed() {
+    return Wrap(
+      children: [
+        Text('Breed: ', style: TextStyle(fontWeight: FontWeight.bold)),
+        Text('$breed')
+      ],
+    );
+  }
+
+  Widget showLocation() {
+    return Wrap(
+      children: [
+        Text('Location: ', style: TextStyle(fontWeight: FontWeight.bold)),
+        Text('$location')
+      ],
+    );
   }
 
   Widget showName() {
@@ -147,10 +168,26 @@ class Details extends StatelessWidget {
   }
 
   Widget showAbout() {
+    return Padding(
+        padding: EdgeInsets.only(left: 10, right: 10),
+        child: Wrap(
+          children: [
+            Text('About: ', style: TextStyle(fontWeight: FontWeight.bold)),
+            Text(
+              '$about',
+            )
+          ],
+        ));
+  }
+
+  Widget showAboutLandscape() {
     return Wrap(
       children: [
         Text('About: ', style: TextStyle(fontWeight: FontWeight.bold)),
-        Text('$about')
+        Text(
+          '$about',
+          overflow: TextOverflow.ellipsis,
+        )
       ],
     );
   }
@@ -166,7 +203,6 @@ class DetailsButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Flexible(
-        flex: 1,
         child: Align(
             alignment: Alignment.bottomCenter,
             child: Container(
