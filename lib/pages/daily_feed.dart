@@ -2,8 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuddler/pages/add_news_item.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import '../models/constants.dart';
 import '../models/user_model.dart';
 import '../widgets/background.dart';
 
@@ -49,6 +47,8 @@ class DailyFeedState extends State<DailyFeed> {
         content.add(doc["content"]);
       });
     });
+
+    print(result);
     setState(() {});
   }
 
@@ -79,9 +79,12 @@ class DailyFeedState extends State<DailyFeed> {
           entries.add(documentSnapshot['headline']);
           content.add(documentSnapshot['content']);
         });
+        print(result);
       }
+
       setState(() {});
     });
+    print(result);
   }
 
   void deleteItem(DocumentSnapshot post) {
@@ -100,6 +103,8 @@ class DailyFeedState extends State<DailyFeed> {
         .doc(post.id)
         .delete()
         .catchError((error) => print("Failed to delete: $error"));
+
+    print(userNews);
   }
 
   late String userEmail;
@@ -111,12 +116,6 @@ class DailyFeedState extends State<DailyFeed> {
   List<String> content = [];
 
   DailyFeedState() {
-    var ms = (new DateTime.now()).millisecondsSinceEpoch;
-    var now = ms / 1000;
-
-    var oneDayAgo = now - 86400;
-    var oneWeekAgo = now - (86400 * 7);
-
     userEmail = currentUser.email;
 
     FirebaseFirestore.instance

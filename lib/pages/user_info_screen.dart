@@ -91,7 +91,7 @@ class UpdateUserInfoState extends State<UpdateUserInfo> {
       url = await downloadUrl.ref.getDownloadURL();
     }
 
-    var result = await FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection('users')
         .doc(curUser.uid)
         .update({
