@@ -7,6 +7,7 @@ import 'pages/about_cuddler_screen.dart';
 import 'pages/daily_feed.dart';
 import 'package:cuddler/pages/email_preferences.dart';
 
+import 'pages/admin_screen.dart';
 import 'pages/new_profile_screen.dart';
 import 'pages/select_location_screen.dart';
 import 'pages/user_info_screen.dart';
@@ -23,7 +24,6 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Cuddler',
       theme: ThemeData(
-        // brightness: Brightness.dark,
         primaryColor: Constants.tealBlue,
         accentColor: Constants.tealBlue,
         textSelectionTheme:
@@ -35,10 +35,10 @@ class App extends StatelessWidget {
             color: Constants.deepBlue,
           ),
           button: TextStyle(
-            fontFamily: 'Hanuman',
+            fontFamily: 'Solway',
           ),
           caption: TextStyle(
-            fontFamily: 'JosefinSlab',
+            fontFamily: 'Courgette',
             fontSize: 12.0,
             fontWeight: FontWeight.normal,
             color: Constants.deepBlue,
@@ -46,13 +46,13 @@ class App extends StatelessWidget {
           headline1: TextStyle(fontFamily: 'Courgette'),
           headline2: TextStyle(fontFamily: 'Hanuman'),
           headline4: TextStyle(fontFamily: 'Solway'),
-          headline5: TextStyle(fontFamily: 'Solway'),
-          headline6: TextStyle(fontFamily: 'Solway'),
+          headline5: TextStyle(fontFamily: 'Courgette'),
+          headline6: TextStyle(fontFamily: 'Courgette'),
           subtitle1: TextStyle(fontFamily: 'Solway'),
-          bodyText1: TextStyle(fontFamily: 'Solway'),
+          bodyText1: TextStyle(fontFamily: 'Courgette'),
           bodyText2: TextStyle(fontFamily: 'Solway'),
-          subtitle2: TextStyle(fontFamily: 'JosefinSlab'),
-          overline: TextStyle(fontFamily: 'JosefinSlab'),
+          subtitle2: TextStyle(fontFamily: 'Solway'),
+          overline: TextStyle(fontFamily: 'Courgette'),
         ),
       ),
       home: Login(),
@@ -62,6 +62,7 @@ class App extends StatelessWidget {
       routes: {
         Login.routeName: (context) => Login(),
         Dashboard.routeName: (context) => Dashboard(),
+        AdminPage.routeName: (context) => AdminPage(),
         NewProfile.routeName: (context) => NewProfile(),
         SelectLocation.routeName: (context) => SelectLocation(),
         UpdateStatus.routeName: (context) => UpdateStatus(),

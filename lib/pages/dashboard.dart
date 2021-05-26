@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuddler/pages/user_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'admin_screen.dart';
 import '../models/constants.dart';
 import '../models/user_model.dart';
 import '../widgets/background.dart';
@@ -18,11 +20,11 @@ class Dashboard extends StatefulWidget {
   _DashboardScreenState createState() => _DashboardScreenState();
 }
 
-class _DashboardScreenState extends State<Dashboard>
-    with SingleTickerProviderStateMixin, TransitionRouteAware {
-  final user = FirebaseAuth.instance.currentUser;
-
+class _DashboardScreenState extends State<Dashboard> {
+  final user = FirebaseAuth.instance.currentUser!;
+  bool isAdmin = false;
   final routeObserver = TransitionRouteObserver<PageRoute>();
+
   @override
   void initState() {
     super.initState();
@@ -63,6 +65,18 @@ class _DashboardScreenState extends State<Dashboard>
   //   routeObserver.unsubscribe(this);
   //   super.dispose();
   // }
+  void decideAdmin() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .get()
+        .then((snap) {
+      if (snap.data()?['accountType'] == 0) {
+        isAdmin = true;
+      }
+    });
+    setState(() {});
+  }
 
   AppBar _buildAppBar(ThemeData theme) {
     return AppBar(
@@ -100,7 +114,7 @@ class _DashboardScreenState extends State<Dashboard>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
+    decideAdmin();
     return Scaffold(
       appBar: _buildAppBar(theme),
       body: Stack(
@@ -109,6 +123,9 @@ class _DashboardScreenState extends State<Dashboard>
           LayoutBuilder(builder: layoutLanding),
         ],
       ),
+      floatingActionButton: isAdmin ? adminButton(context) : null,
+      floatingActionButtonLocation:
+          isAdmin ? FloatingActionButtonLocation.centerFloat : null,
     );
   }
 
@@ -133,17 +150,15 @@ class _DashboardScreenState extends State<Dashboard>
             child: Image.asset('images/circleLogo.png'),
           ),
           Expanded(
-            //flex: 3,
             child: Text(
               'Cuddler',
               style: TextStyle(
-                  fontFamily: 'Courgette',
+                  fontFamily: 'OleoScriptSwashCaps',
                   fontSize: 38.0,
                   color: Constants.deepBlue),
             ),
           ),
           Expanded(
-            flex: 1,
             child: Text(
               // 'Welcome, ${user.email}',
               'Welcome, ${currentUser.fName}',
@@ -154,7 +169,6 @@ class _DashboardScreenState extends State<Dashboard>
             ),
           ),
           Expanded(
-            //flex: 2,
             child: Text(
               'Please choose an option',
               style: TextStyle(
@@ -203,14 +217,13 @@ class _DashboardScreenState extends State<Dashboard>
               Text(
                 'Cuddler',
                 style: TextStyle(
-                    fontFamily: 'Courgette',
+                    fontFamily: 'OleoScriptSwashCaps',
                     fontSize: 38.0,
                     color: Constants.deepBlue),
               ),
             ],
           ),
           Expanded(
-            //flex: 2,
             child: Text(
               'Please choose an option',
               style: TextStyle(
@@ -224,7 +237,6 @@ class _DashboardScreenState extends State<Dashboard>
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Expanded(
-                //flex: 1,
                 child: LandingButton(
                     displayText: list,
                     page: NewProfile(),
@@ -232,7 +244,6 @@ class _DashboardScreenState extends State<Dashboard>
               ),
               SizedBox(width: 20.0),
               Expanded(
-                //flex: 1,
                 child: LandingButton(
                   displayText: adopt,
                   page: SelectLocation(),
@@ -252,6 +263,19 @@ class _DashboardScreenState extends State<Dashboard>
           SizedBox(height: 60.0),
         ],
       ),
+    );
+  }
+
+  Widget adminButton(BuildContext context) {
+    return FloatingActionButton(
+      child: const Icon(Icons.admin_panel_settings),
+      backgroundColor: Constants.fadedOrange,
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => AdminPage()),
+        );
+      },
     );
   }
 }
