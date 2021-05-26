@@ -43,6 +43,8 @@ class CuddlerUser {
       }
     });
 
+    print(result);
+
     return currentUser;
   }
 }
