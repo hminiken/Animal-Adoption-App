@@ -113,17 +113,17 @@ class UpdateStatusState extends State<UpdateStatus> {
                 ),
                 SizedBox(height: 50),
               ]))),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
-      floatingActionButton: Semantics(
-        child: FloatingActionButton.extended(
-          onPressed: () {
-            // Add your onPressed code here!
-          },
-          label: const Text('Delete'),
-          icon: const Icon(Icons.delete_forever),
-          backgroundColor: Colors.red,
-        ),
-      ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
+      // floatingActionButton: Semantics(
+      //   child: FloatingActionButton.extended(
+      //     onPressed: () {
+      //       // Add your onPressed code here!
+      //     },
+      //     label: const Text('Delete'),
+      //     icon: const Icon(Icons.delete_forever),
+      //     backgroundColor: Colors.red,
+      //   ),
+      // ),
     );
   }
 }

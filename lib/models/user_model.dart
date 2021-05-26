@@ -14,23 +14,35 @@ class CuddlerUser {
       required this.accountType,
       required this.userLocation,
       required this.profileImgURL});
+
+  Future<CuddlerUser> getUserData(var user) async {
+    CuddlerUser currentUser = new CuddlerUser(
+        userID: "",
+        fName: "",
+        email: "",
+        phoneNumber: "",
+        accountType: 1,
+        userLocation: "",
+        profileImgURL: "");
+
+    var result = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        currentUser.userID = user.uid;
+        currentUser.profileImgURL = documentSnapshot.get("profileImgURL");
+        currentUser.fName = documentSnapshot.get("fName");
+        currentUser.email = documentSnapshot.get("email");
+        currentUser.phoneNumber = documentSnapshot.get("phoneNumber");
+        currentUser.accountType = documentSnapshot.get("accountType");
+        currentUser.userLocation = documentSnapshot.get("userLocation");
+      } else {
+        print('Document does not exist on the database');
+      }
+    });
+
+    return currentUser;
+  }
 }
-
-// CuddlerUser.fromMap(Map<String, dynamic> map, {this.reference})
-//     : assert(map['userID'] != null),
-//       assert(map['email'] != null),
-//       assert(map['password'] != null),
-//       assert(map['userID'] != null),
-//       userID = map['num_items'],
-//       profileImgURL = map['profileImgURL'];
-
-// factory CuddlerUser.fromSnapshot(DocumentSnapshot snapshot) {
-//   return CuddlerUser(
-//     userID: snapshot['userID'],
-//     profileImgURL: snapshot['profileImgURL'],
-//     fName: snapshot['fName'],
-//     email: snapshot['email'],
-//     password: snapshot['password'],
-//     accountType: snapshot['accountType'],
-//   );
-// }

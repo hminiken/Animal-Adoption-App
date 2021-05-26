@@ -1,3 +1,4 @@
+import 'package:cuddler/pages/add_news_item.dart';
 import 'package:flutter/material.dart';
 import 'models/constants.dart';
 import 'pages/dashboard.dart';
@@ -12,6 +13,7 @@ import 'pages/user_info_screen.dart';
 import 'pages/user_listed_pets.dart';
 import 'pages/update_status_screen.dart';
 import 'pages/user_profile_screen.dart';
+import 'pages/add_news_item.dart';
 import 'widgets/transition_route_observer.dart';
 import 'pages/lists.dart';
 
@@ -70,6 +72,7 @@ class App extends StatelessWidget {
         UpdateUserInfo.routeName: (context) => UpdateUserInfo(),
         EmailPreferences.routeName: (context) => EmailPreferences(),
         DailyFeed.routeName: (context) => DailyFeed(),
+        AddNewsItem.routeName: (context) => AddNewsItem(),
       },
     );
   }

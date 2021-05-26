@@ -146,6 +146,10 @@ class CatsList extends StatelessWidget {
                 var age = post['age'].toString();
                 var sex = post['sex'];
                 var fav = post['favorite'];
+
+                //post[id] in listfavorites = true
+                //fav = true
+                //else fav = false
                 return ListTile(
                     //Go to details screen on tap, send necessary info to details screen
                     onTap: () {

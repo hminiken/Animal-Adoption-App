@@ -7,21 +7,22 @@ import 'package:cuddler/pages/email_preferences.dart';
 import 'package:cuddler/pages/user_info_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cuddler/widgets/global_widgets.dart';
-
 import '../models/constants.dart';
+import '../models/user_model.dart';
+import '../models/user_model.dart';
+import '../models/user_model.dart';
 import '../pages/user_info_screen.dart';
 import '../widgets/global_widgets.dart';
+import 'user_info_screen.dart';
 
 class UserProfile extends StatefulWidget {
   static const routeName = '/user_profile_screen';
-  // static const routeName = '/';
   @override
   UserProfileState createState() => UserProfileState();
 }
 
 class UserProfileState extends State<UserProfile> {
   Future<bool> _goToLogin(BuildContext context) {
-    //save session state?
     return Navigator.of(context)
         .pushReplacementNamed('/')
         // we dont want to pop the screen, just replace it completely
@@ -31,7 +32,7 @@ class UserProfileState extends State<UserProfile> {
   @override
   void initState() {
     super.initState();
-    getUserImage();
+    getUserInfo();
   }
 
   void pushViewEntry(BuildContext context, String routeName) {
@@ -41,13 +42,8 @@ class UserProfileState extends State<UserProfile> {
           // arguments:
         )
         .then((value) => setState(() {
-              getUserImage();
+              getUserInfo();
             }));
-
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => SecondPage()),
-    // ).then((value) => setState(() {}));
   }
 
   final List<String> profileOptions = [
@@ -61,27 +57,26 @@ class UserProfileState extends State<UserProfile> {
     UpdateUserInfo.routeName,
     EmailPreferences.routeName,
     AboutCuddler.routeName,
-  ]; //last two are place holders, screens not created yet
+  ];
 
-  getUserImage() async {
-    final user = FirebaseAuth.instance.currentUser!;
-    String userEmail = user.email!;
+  final user = FirebaseAuth.instance.currentUser!;
 
-    var result = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        url = documentSnapshot.get("profileImgURL");
-        userName = documentSnapshot.get("fName");
-      } else {
-        print('Document does not exist on the database');
-      }
+  CuddlerUser currentUser = new CuddlerUser(
+      userID: "",
+      fName: "",
+      email: "",
+      phoneNumber: "",
+      accountType: 1,
+      userLocation: "",
+      profileImgURL: "");
+
+  getUserInfo() async {
+    currentUser = await currentUser.getUserData(user);
+
+    setState(() {
+      url = currentUser.profileImgURL;
+      userName = currentUser.fName;
     });
-
-    setState(() {});
-    print(url);
   }
 
   var dropdownItems = ['Available', 'Pending', 'Not Available', 'Adopted'];

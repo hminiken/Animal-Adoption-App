@@ -33,10 +33,11 @@ dependencies:
   google_fonts: ^2.0.0 
   image_picker: ^0.7.4 
   permission_handler: ^7.1.0 
+  flutter_launcher_icons: 
   geocoding: 
   location:
   intl:
-
+  change_app_package_name:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -45,6 +46,11 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: assets/images/icon.png
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -99,6 +105,15 @@ flutter:
     - family: MyFlutterApp
       fonts:
         - asset: assets/icons/MyFlutterApp.ttf
+    - family: Montserrat
+      fonts:
+        - asset: fonts/Montserrat-Bold.ttf
+        - asset: fonts/Montserrat-SemiBold.ttf
+        - asset: fonts/Montserrat-Regular.ttf
+    - family: OleoScriptSwashCaps
+      fonts:
+        - asset: fonts/OleoScriptSwashCaps-Bold.ttf
+        - asset: fonts/OleoScriptSwashCaps-Regular.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.animal_adoption_app">
+    package="edu.oregonstate.minikenh">
    <application
-        android:label="animal_adoption_app"
+        android:label="Cuddler"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

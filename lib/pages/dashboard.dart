@@ -2,6 +2,8 @@ import 'package:cuddler/pages/user_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../models/constants.dart';
+import '../models/user_model.dart';
+import '../widgets/background.dart';
 import 'new_profile_screen.dart';
 import 'daily_feed.dart';
 import 'select_location_screen.dart';
@@ -24,6 +26,7 @@ class _DashboardScreenState extends State<Dashboard>
   @override
   void initState() {
     super.initState();
+    getUserInfo();
   }
 
   void pushViewEntry(BuildContext context, String routeName) {
@@ -31,6 +34,21 @@ class _DashboardScreenState extends State<Dashboard>
       routeName,
       // arguments:
     );
+  }
+
+  CuddlerUser currentUser = new CuddlerUser(
+      userID: "",
+      fName: "",
+      email: "",
+      phoneNumber: "",
+      accountType: 1,
+      userLocation: "",
+      profileImgURL: "");
+
+  getUserInfo() async {
+    currentUser = await currentUser.getUserData(user);
+
+    setState(() {});
   }
 
   // @override
@@ -87,7 +105,7 @@ class _DashboardScreenState extends State<Dashboard>
       appBar: _buildAppBar(theme),
       body: Stack(
         children: [
-          Background(),
+          fadedBackground(context),
           LayoutBuilder(builder: layoutLanding),
         ],
       ),
@@ -111,8 +129,8 @@ class _DashboardScreenState extends State<Dashboard>
         children: <Widget>[
           SizedBox(height: 30.0),
           Container(
-            width: 80.0,
-            child: Image.asset('images/blueHeartLogo.png'),
+            width: 150.0,
+            child: Image.asset('images/circleLogo.png'),
           ),
           Expanded(
             //flex: 3,
@@ -128,7 +146,7 @@ class _DashboardScreenState extends State<Dashboard>
             flex: 1,
             child: Text(
               // 'Welcome, ${user.email}',
-              'Welcome, ',
+              'Welcome, ${currentUser.fName}',
               style: TextStyle(
                 fontFamily: 'Courgette',
                 fontSize: 20.0,
@@ -142,7 +160,7 @@ class _DashboardScreenState extends State<Dashboard>
               style: TextStyle(
                 fontFamily: 'Courgette',
                 fontSize: 30.0,
-                color: Colors.black,
+                color: Constants.deepBlue,
               ),
             ),
           ),
