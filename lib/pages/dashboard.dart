@@ -9,7 +9,6 @@ import '../widgets/background.dart';
 import 'new_profile_screen.dart';
 import 'daily_feed.dart';
 import 'select_location_screen.dart';
-import '../widgets/background.dart';
 import '../widgets/landingButton.dart';
 import '../widgets/transition_route_observer.dart';
 

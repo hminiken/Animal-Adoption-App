@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cuddler/pages/user_listed_pets.dart';
@@ -8,8 +7,6 @@ import 'package:cuddler/pages/user_info_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cuddler/widgets/global_widgets.dart';
 import '../models/constants.dart';
-import '../models/user_model.dart';
-import '../models/user_model.dart';
 import '../models/user_model.dart';
 import '../pages/user_info_screen.dart';
 import '../widgets/global_widgets.dart';

@@ -1,11 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cuddler/widgets/global_widgets.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../models/constants.dart';
-import '../models/user_model.dart';
-import '../widgets/background.dart';
 
 class AddNewsItem extends StatefulWidget {
   static const routeName = '/add-news-item';
@@ -21,12 +16,11 @@ class AddNewsItemState extends State<AddNewsItem> {
 
   final formKey = GlobalKey<FormState>();
   String headline = "", content = "";
+  String newsItemID = "";
 
   postNewsItem() async {
     var ms = (new DateTime.now()).millisecondsSinceEpoch;
     var now = ms / 1000;
-
-    String newsItemID = "";
 
     FirebaseFirestore.instance.collection('news').add({
       'headline': headline,
