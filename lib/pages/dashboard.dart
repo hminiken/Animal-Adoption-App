@@ -59,11 +59,11 @@ class _DashboardScreenState extends State<Dashboard> {
         .doc(user.uid)
         .get()
         .then((snap) {
-          userName = snap.data()?['fName'];
-          if (snap.data()?['accountType'] == 0) {
-            isAdmin = true;
-          }
-        });
+      userName = snap.data()?['fName'];
+      if (snap.data()?['accountType'] == 0) {
+        isAdmin = true;
+      }
+    });
     setState(() {});
   }
 
