@@ -23,6 +23,7 @@ class _DashboardScreenState extends State<Dashboard> {
   final user = FirebaseAuth.instance.currentUser!;
   bool isAdmin = false;
   final routeObserver = TransitionRouteObserver<PageRoute>();
+  var userName;
 
   @override
   void initState() {
@@ -52,28 +53,17 @@ class _DashboardScreenState extends State<Dashboard> {
     setState(() {});
   }
 
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   routeObserver.subscribe(
-  //       this, ModalRoute.of(context) as PageRoute<dynamic?>);
-  // }
-
-  // @override
-  // void dispose() {
-  //   routeObserver.unsubscribe(this);
-  //   super.dispose();
-  // }
   void decideAdmin() async {
     await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
         .get()
         .then((snap) {
-      if (snap.data()?['accountType'] == 0) {
-        isAdmin = true;
-      }
-    });
+          userName = snap.data()?['fName'];
+          if (snap.data()?['accountType'] == 0) {
+            isAdmin = true;
+          }
+        });
     setState(() {});
   }
 
@@ -159,8 +149,7 @@ class _DashboardScreenState extends State<Dashboard> {
           ),
           Expanded(
             child: Text(
-              // 'Welcome, ${user.email}',
-              'Welcome, ${currentUser.fName}',
+              'Welcome, $userName',
               style: TextStyle(
                 fontFamily: 'Courgette',
                 fontSize: 20.0,
