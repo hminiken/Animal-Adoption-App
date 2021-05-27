@@ -1,5 +1,5 @@
-import 'package:cuddler/classes/theme.dart';
 import 'package:flutter/material.dart';
+import '../models/constants.dart';
 import 'user_listed_pets.dart';
 
 class UpdateStatus extends StatefulWidget {
@@ -99,7 +99,7 @@ class UpdateStatusState extends State<UpdateStatus> {
 
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
-                          colDarkBlue), // background
+                          Constants.deepBlue), // background
                       foregroundColor:
                           MaterialStateProperty.all<Color>(Colors.white),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -113,17 +113,17 @@ class UpdateStatusState extends State<UpdateStatus> {
                 ),
                 SizedBox(height: 50),
               ]))),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
-      floatingActionButton: Semantics(
-        child: FloatingActionButton.extended(
-          onPressed: () {
-            // Add your onPressed code here!
-          },
-          label: const Text('Delete'),
-          icon: const Icon(Icons.delete_forever),
-          backgroundColor: Colors.red,
-        ),
-      ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
+      // floatingActionButton: Semantics(
+      //   child: FloatingActionButton.extended(
+      //     onPressed: () {
+      //       // Add your onPressed code here!
+      //     },
+      //     label: const Text('Delete'),
+      //     icon: const Icon(Icons.delete_forever),
+      //     backgroundColor: Colors.red,
+      //   ),
+      // ),
     );
   }
 }

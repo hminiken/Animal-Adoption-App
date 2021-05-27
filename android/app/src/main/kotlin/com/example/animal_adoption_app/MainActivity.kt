@@ -1,4 +1,4 @@
-package com.example.animal_adoption_app
+package edu.oregonstate.minikenh
 
 import io.flutter.embedding.android.FlutterActivity
 

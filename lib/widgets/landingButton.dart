@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import '../models/constants.dart';
 
 class LandingButton extends StatelessWidget {
-  LandingButton({required this.displayText, required this.page});
+  LandingButton(
+      {required this.displayText, required this.page, required this.icon});
   //final GestureTapCallback onPressed;
   final String displayText;
   final Widget page;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +22,8 @@ class LandingButton extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              const Icon(
-                Icons.home_rounded,
+              Icon(
+                icon,
                 color: Constants.deepBlue,
               ),
               SizedBox(width: 8.0),
