@@ -51,7 +51,7 @@ class App extends StatelessWidget {
       ),
       home: Login(),
       navigatorObservers: [TransitionRouteObserver()],
-      initialRoute: Login.routeName,
+      initialRoute: Dashboard.routeName,
       routes: {
         Login.routeName: (context) => Login(),
         Dashboard.routeName: (context) => Dashboard(),

@@ -15,6 +15,7 @@ class Details extends StatelessWidget {
   final String phone;
   final String location;
   final String breed;
+  final String status;
 
   //Constructor to pass data from the list screen for the details screen
   const Details(
@@ -28,6 +29,7 @@ class Details extends StatelessWidget {
       required this.phone,
       required this.location,
       required this.breed,
+      required this.status,
       required this.disposition1,
       required this.disposition2,
       required this.disposition3})
@@ -62,6 +64,8 @@ class Details extends StatelessWidget {
               child: Column(children: [
             showName(),
             SizedBox(height: 5),
+            showStatus(),
+            SizedBox(height: 5),
             showAge(),
             SizedBox(height: 5),
             showGender(),
@@ -86,6 +90,7 @@ class Details extends StatelessWidget {
       child: Column(children: [
         Expanded(flex: 4, child: displayImage()),
         Expanded(flex: 2, child: showName()),
+        Expanded(child: showStatus()),
         Expanded(child: showAge()),
         Expanded(child: showGender()),
         Expanded(child: showBreed()),
@@ -113,6 +118,15 @@ class Details extends StatelessWidget {
       children: [
         Text('Breed: ', style: TextStyle(fontWeight: FontWeight.bold)),
         Text('$breed')
+      ],
+    );
+  }
+
+    Widget showStatus() {
+    return Wrap(
+      children: [
+        Text('Status: ', style: TextStyle(fontWeight: FontWeight.bold)),
+        Text('$status')
       ],
     );
   }
@@ -160,16 +174,16 @@ class Details extends StatelessWidget {
           'Disposition: ',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        disposition1 ? Text('A kind disposition. ') : Text(''),
-        disposition2 ? Text('A sad disposition. ') : Text(''),
-        disposition3 ? Text('A mean disposition. ') : Text('')
+        disposition1 ? Text('Good with other animals. ') : Text(''),
+        disposition2 ? Text('Good with children. ') : Text(''),
+        disposition3 ? Text('Animal must be leashed at all times. ') : Text('')
       ],
     );
   }
 
   Widget showAbout() {
     return Padding(
-        padding: EdgeInsets.only(left: 10, right: 10),
+        padding: EdgeInsets.all(10),
         child: Wrap(
           children: [
             Text('About: ', style: TextStyle(fontWeight: FontWeight.bold)),
