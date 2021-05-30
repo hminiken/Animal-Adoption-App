@@ -18,42 +18,78 @@ class DogsList extends StatefulWidget {
 class _DogsListState extends State<DogsList> {
   String dropdownValue = 'Sort by All Breeds';
   String dropdownValue2 = 'Sort by All Dispositions';
-  String dropdownValue3 = 'Sort by Newest';
+  String dropdownValue3 = 'Sort by All Dates Added';
   bool dis1 = false;
   bool dis2 = false;
   bool dis3 = false;
 
   @override
   Widget build(BuildContext context) {
+    //For comparing time
+    var ms = (new DateTime.now()).millisecondsSinceEpoch;
+    var now = ms / 1000;
+    var oneWeekAgo = now - (86400 * 7);
+    var oneMonthAgo = now - (86400 * 30);
+
     //Grab the collection from firebase
     CollectionReference dogs = FirebaseFirestore.instance.collection('dogs');
     final Query localDogs = dogs.where("location", isEqualTo: widget.location);
+
     Query sortBy = localDogs.where("breed", isEqualTo: dropdownValue);
 
-    //Sorting logic for boolean dispositions
+    //Sorting logic
     if (dis1 == true) {
       if (dropdownValue == 'Sort by All Breeds') {
         sortBy = localDogs.where("disposition1", isEqualTo: true);
+        dis1 = false;
       } else {
         sortBy = localDogs
             .where("breed", isEqualTo: dropdownValue)
             .where("disposition1", isEqualTo: true);
+            dis1 = false;
       }
     } else if (dis2 == true) {
       if (dropdownValue == 'Sort by All Breeds') {
         sortBy = localDogs.where("disposition2", isEqualTo: true);
+        dis2 = false;
       } else {
         sortBy = localDogs
             .where("breed", isEqualTo: dropdownValue)
             .where("disposition2", isEqualTo: true);
+            dis2 = false;
       }
     } else if (dis3 == true) {
       if (dropdownValue == 'Sort by All Breeds') {
         sortBy = localDogs.where("disposition3", isEqualTo: true);
+        dis3 = false;
       } else {
         sortBy = localDogs
             .where("breed", isEqualTo: dropdownValue)
             .where("disposition3", isEqualTo: true);
+            dis3 = false;
+      }
+    }
+
+    //Sorting logic
+    if (dropdownValue3 == 'Added within One Week') {
+      if (dropdownValue == 'Sort by All Breeds' &&
+          dropdownValue2 == 'Sort by All Dispositions') {
+        sortBy = localDogs.where("dateAdded", isGreaterThan: oneWeekAgo);
+      } else if (dropdownValue != 'Sort by All Breeds' &&
+          dropdownValue2 == 'Sort by All Dispositions') {
+        sortBy = localDogs
+            .where("Breed", isEqualTo: dropdownValue)
+            .where("dateAdded", isGreaterThan: oneWeekAgo);
+      }
+    } else if (dropdownValue3 == 'Added within One Month') {
+      if (dropdownValue == 'Sort by All Breeds' &&
+          dropdownValue2 == 'Sort by All Dispositions') {
+        sortBy = localDogs.where("dateAdded", isGreaterThan: oneMonthAgo);
+      } else if (dropdownValue != 'Sort by All Breeds' &&
+          dropdownValue2 == 'Sort by All Dispositions') {
+        sortBy = localDogs
+            .where("breed", isEqualTo: dropdownValue)
+            .where("dateAdded", isGreaterThan: oneMonthAgo);
       }
     }
 
@@ -117,6 +153,7 @@ class _DogsListState extends State<DogsList> {
                     onChanged: (String? newValue) {
                       setState(() {
                         dropdownValue2 = newValue!;
+                        //More sorting logic because of booleans
                         if (dropdownValue2 == 'Good with other animals') {
                           dis1 = true;
                         } else if (dropdownValue2 == 'Good with children') {
@@ -161,8 +198,9 @@ class _DogsListState extends State<DogsList> {
                       });
                     },
                     items: <String>[
-                      'Sort by Newest',
-                      'Sort by Oldest',
+                      'Added within One Week',
+                      'Added within One Month',
+                      'Sort by All Dates Added',
                     ].map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
@@ -176,7 +214,7 @@ class _DogsListState extends State<DogsList> {
           child: StreamBuilder<QuerySnapshot>(
         stream: dropdownValue == 'Sort by All Breeds' &&
                 dropdownValue2 == 'Sort by All Dispositions' &&
-                dropdownValue3 == 'Sort by Newest'
+                dropdownValue3 == 'Sort by All Dates Added'
             ? localDogs.snapshots()
             : sortBy.snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {

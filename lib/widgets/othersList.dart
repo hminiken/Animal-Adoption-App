@@ -18,12 +18,18 @@ class OthersList extends StatefulWidget {
 class _OthersListState extends State<OthersList> {
   String dropdownValue = 'Sort by All Breeds';
   String dropdownValue2 = 'Sort by All Dispositions';
-  String dropdownValue3 = 'Sort by Newest';
+  String dropdownValue3 = 'Sort by All Dates Added';
   bool dis1 = false;
   bool dis2 = false;
   bool dis3 = false;
   @override
   Widget build(BuildContext context) {
+    //For comparing time
+    var ms = (new DateTime.now()).millisecondsSinceEpoch;
+    var now = ms / 1000;
+    var oneWeekAgo = now - (86400 * 7);
+    var oneMonthAgo = now - (86400 * 30);
+
     //Grab the collection from firebase
     CollectionReference others =
         FirebaseFirestore.instance.collection('others');
@@ -35,26 +41,55 @@ class _OthersListState extends State<OthersList> {
     if (dis1 == true) {
       if (dropdownValue == 'Sort by All Breeds') {
         sortBy = localOthers.where("disposition1", isEqualTo: true);
+        dis1 = false;
       } else {
         sortBy = localOthers
             .where("breed", isEqualTo: dropdownValue)
             .where("disposition1", isEqualTo: true);
+            dis1 = false;
       }
     } else if (dis2 == true) {
       if (dropdownValue == 'Sort by All Breeds') {
         sortBy = localOthers.where("disposition2", isEqualTo: true);
+        dis2 = false;
       } else {
         sortBy = localOthers
             .where("breed", isEqualTo: dropdownValue)
             .where("disposition2", isEqualTo: true);
+            dis2 = false;
       }
     } else if (dis3 == true) {
       if (dropdownValue == 'Sort by All Breeds') {
         sortBy = localOthers.where("disposition3", isEqualTo: true);
+        dis2 = false;
       } else {
         sortBy = localOthers
             .where("breed", isEqualTo: dropdownValue)
             .where("disposition3", isEqualTo: true);
+            dis2 = false;
+      }
+    }
+
+    //Sorting logic
+    if (dropdownValue3 == 'Added within One Week') {
+      if (dropdownValue == 'Sort by All Breeds' &&
+          dropdownValue2 == 'Sort by All Dispositions') {
+        sortBy = localOthers.where("dateAdded", isGreaterThan: oneWeekAgo);
+      } else if (dropdownValue != 'Sort by All Breeds' &&
+          dropdownValue2 == 'Sort by All Dispositions') {
+        sortBy = localOthers
+            .where("Breed", isEqualTo: dropdownValue)
+            .where("dateAdded", isGreaterThan: oneWeekAgo);
+      }
+    } else if (dropdownValue3 == 'Added within One Month') {
+      if (dropdownValue == 'Sort by All Breeds' &&
+          dropdownValue2 == 'Sort by All Dispositions') {
+        sortBy = localOthers.where("dateAdded", isGreaterThan: oneMonthAgo);
+      } else if (dropdownValue != 'Sort by All Breeds' &&
+          dropdownValue2 == 'Sort by All Dispositions') {
+        sortBy = localOthers
+            .where("breed", isEqualTo: dropdownValue)
+            .where("dateAdded", isGreaterThan: oneMonthAgo);
       }
     }
 
@@ -156,8 +191,9 @@ class _OthersListState extends State<OthersList> {
                       });
                     },
                     items: <String>[
-                      'Sort by Newest',
-                      'Sort by Oldest',
+                      'Added within One Week',
+                      'Added within One Month',
+                      'Sort by All Dates Added'
                     ].map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
@@ -171,7 +207,7 @@ class _OthersListState extends State<OthersList> {
           child: StreamBuilder<QuerySnapshot>(
         stream: dropdownValue == 'Sort by All Breeds' &&
                 dropdownValue2 == 'Sort by All Dispositions' &&
-                dropdownValue3 == 'Sort by Newest'
+                dropdownValue3 == 'Sort by All Dates Added'
             ? localOthers.snapshots()
             : sortBy.snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
