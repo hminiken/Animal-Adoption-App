@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 bool isGoodAnimals = false, isGoodChildren = false, isMustLeash = false;
 
@@ -13,13 +14,15 @@ Widget buildNewProfileTextField(BuildContext context, String label) {
       ));
 }
 
-Widget setUploadImage(BuildContext context, File image) {
-  if (image == File("assets/images/profileImgPlaceholder.png")) {
-    return Image.asset(
-      "assets/images/profileImgPlaceholder.png",
+final picker = ImagePicker();
 
+Widget setUploadImage(BuildContext context, File image, String url) {
+  if (image.path != "") {
+    return Image.network(
+      url,
       // height: 125.0,
-      height: MediaQuery.of(context).size.width / 3,
+      height: 125,
+      width: 125,
       fit: BoxFit.cover,
     );
   } else {

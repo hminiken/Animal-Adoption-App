@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'admin_screen.dart';
 import '../models/constants.dart';
-import 'new_profile_screen.dart';
-import 'select_location_screen.dart';
+import '../models/user_model.dart';
 import '../widgets/background.dart';
+import 'new_profile_screen.dart';
+import 'daily_feed.dart';
+import 'select_location_screen.dart';
 import '../widgets/landingButton.dart';
 import '../widgets/transition_route_observer.dart';
 
@@ -21,10 +23,12 @@ class _DashboardScreenState extends State<Dashboard> {
   final user = FirebaseAuth.instance.currentUser!;
   bool isAdmin = false;
   final routeObserver = TransitionRouteObserver<PageRoute>();
+  var userName;
 
   @override
   void initState() {
     super.initState();
+    getUserInfo();
   }
 
   void pushViewEntry(BuildContext context, String routeName) {
@@ -34,12 +38,28 @@ class _DashboardScreenState extends State<Dashboard> {
     );
   }
 
+  CuddlerUser currentUser = new CuddlerUser(
+      userID: "",
+      fName: "",
+      email: "",
+      phoneNumber: "",
+      accountType: 1,
+      userLocation: "",
+      profileImgURL: "");
+
+  getUserInfo() async {
+    currentUser = await currentUser.getUserData(user);
+
+    setState(() {});
+  }
+
   void decideAdmin() async {
     await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
         .get()
         .then((snap) {
+      userName = snap.data()?['fName'];
       if (snap.data()?['accountType'] == 0) {
         isAdmin = true;
       }
@@ -88,7 +108,7 @@ class _DashboardScreenState extends State<Dashboard> {
       appBar: _buildAppBar(theme),
       body: Stack(
         children: [
-          Background(),
+          fadedBackground(context),
           LayoutBuilder(builder: layoutLanding),
         ],
       ),
@@ -100,6 +120,7 @@ class _DashboardScreenState extends State<Dashboard> {
 
   final String adopt = 'Adopt a Pet';
   final String list = 'List a Pet';
+  final String dailyFeed = 'Daily Feed';
 
   Widget layoutLanding(BuildContext context, BoxConstraints constraints) =>
       constraints.maxWidth < 500
@@ -114,8 +135,8 @@ class _DashboardScreenState extends State<Dashboard> {
         children: <Widget>[
           SizedBox(height: 30.0),
           Container(
-            width: 80.0,
-            child: Image.asset('images/blueHeartLogo.png'),
+            width: 150.0,
+            child: Image.asset('images/circleLogo.png'),
           ),
           Expanded(
             child: Text(
@@ -128,7 +149,7 @@ class _DashboardScreenState extends State<Dashboard> {
           ),
           Expanded(
             child: Text(
-              'Welcome, ${user.email}',
+              'Welcome, $userName',
               style: TextStyle(
                 fontFamily: 'Courgette',
                 fontSize: 20.0,
@@ -141,22 +162,25 @@ class _DashboardScreenState extends State<Dashboard> {
               style: TextStyle(
                 fontFamily: 'Courgette',
                 fontSize: 30.0,
-                color: Colors.black,
+                color: Constants.deepBlue,
               ),
             ),
           ),
           Expanded(
             child: LandingButton(
-              displayText: list,
-              page: NewProfile(),
-            ),
+                displayText: list,
+                page: NewProfile(),
+                icon: Icons.upload_rounded),
           ),
           SizedBox(height: 40.0),
           Expanded(
             child: LandingButton(
-              displayText: adopt,
-              page: SelectLocation(),
-            ),
+                displayText: adopt, page: SelectLocation(), icon: Icons.pets),
+          ),
+          SizedBox(height: 40.0),
+          Expanded(
+            child: LandingButton(
+                displayText: dailyFeed, page: DailyFeed(), icon: Icons.list),
           ),
           SizedBox(height: 80.0),
         ],
@@ -202,15 +226,24 @@ class _DashboardScreenState extends State<Dashboard> {
             children: [
               Expanded(
                 child: LandingButton(
-                  displayText: list,
-                  page: NewProfile(),
-                ),
+                    displayText: list,
+                    page: NewProfile(),
+                    icon: Icons.upload_rounded),
               ),
               SizedBox(width: 20.0),
               Expanded(
                 child: LandingButton(
                   displayText: adopt,
                   page: SelectLocation(),
+                  icon: Icons.pets,
+                ),
+              ),
+              Expanded(
+                //flex: 1,
+                child: LandingButton(
+                  displayText: dailyFeed,
+                  page: DailyFeed(),
+                  icon: Icons.list,
                 ),
               ),
             ],
