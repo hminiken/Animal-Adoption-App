@@ -122,7 +122,7 @@ class Details extends StatelessWidget {
     );
   }
 
-    Widget showStatus() {
+  Widget showStatus() {
     return Wrap(
       children: [
         Text('Status: ', style: TextStyle(fontWeight: FontWeight.bold)),

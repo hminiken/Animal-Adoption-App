@@ -46,7 +46,7 @@ class _DogsListState extends State<DogsList> {
         sortBy = localDogs
             .where("breed", isEqualTo: dropdownValue)
             .where("disposition1", isEqualTo: true);
-            dis1 = false;
+        dis1 = false;
       }
     } else if (dis2 == true) {
       if (dropdownValue == 'Sort by All Breeds') {
@@ -56,7 +56,7 @@ class _DogsListState extends State<DogsList> {
         sortBy = localDogs
             .where("breed", isEqualTo: dropdownValue)
             .where("disposition2", isEqualTo: true);
-            dis2 = false;
+        dis2 = false;
       }
     } else if (dis3 == true) {
       if (dropdownValue == 'Sort by All Breeds') {
@@ -66,7 +66,7 @@ class _DogsListState extends State<DogsList> {
         sortBy = localDogs
             .where("breed", isEqualTo: dropdownValue)
             .where("disposition3", isEqualTo: true);
-            dis3 = false;
+        dis3 = false;
       }
     }
 
