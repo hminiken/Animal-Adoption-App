@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cuddler/models/animals.dart';
 import 'package:cuddler/pages/user_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,10 +17,10 @@ class Dashboard extends StatefulWidget {
   static const routeName = '/dashboard';
 
   @override
-  _DashboardScreenState createState() => _DashboardScreenState();
+  DashboardScreenState createState() => DashboardScreenState();
 }
 
-class _DashboardScreenState extends State<Dashboard> {
+class DashboardScreenState extends State<Dashboard> {
   final user = FirebaseAuth.instance.currentUser!;
   bool isAdmin = false;
   final routeObserver = TransitionRouteObserver<PageRoute>();
@@ -35,6 +36,27 @@ class _DashboardScreenState extends State<Dashboard> {
       routeName,
       // arguments:
     );
+  }
+
+  void pushViewListPet(BuildContext context, String routeName, bool isUpdate) {
+    Navigator.of(context).pushNamed(routeName,
+        arguments: Animals(
+            about: "",
+            age: 1,
+            disposition1: false,
+            disposition2: false,
+            disposition3: false,
+            email: "",
+            name: "",
+            phone: "",
+            contactName: "",
+            sex: "",
+            url: "",
+            breed: "",
+            favorite: false,
+            location: "Alabama",
+            animalID: "",
+            isUpdate: false));
   }
 
   CuddlerUser currentUser = new CuddlerUser(
@@ -145,16 +167,19 @@ class _DashboardScreenState extends State<Dashboard> {
         children: <Widget>[
           SizedBox(height: 30.0),
           Container(
-            width: 150.0,
+            width: MediaQuery.of(context).size.width / 3,
             child: Image.asset('images/circleLogo.png'),
           ),
           Expanded(
-            child: Text(
-              'Cuddler',
-              style: TextStyle(
-                  fontFamily: 'OleoScriptSwashCaps',
-                  fontSize: 38.0,
-                  color: Constants.deepBlue),
+            child: FittedBox(
+              fit: BoxFit.contain,
+              child: Text(
+                'Cuddler',
+                style: TextStyle(
+                    fontFamily: 'OleoScriptSwashCaps',
+                    fontSize: 38.0,
+                    color: Constants.deepBlue),
+              ),
             ),
           ),
           Expanded(
@@ -168,27 +193,31 @@ class _DashboardScreenState extends State<Dashboard> {
             ),
           ),
           Expanded(
-            child: Text(
-              'Please choose an option',
-              style: TextStyle(
-                fontFamily: 'Courgette',
-                fontSize: 30.0,
-                color: Constants.deepBlue,
-              ),
+              child: Padding(
+            padding: EdgeInsets.only(right: 20.0, left: 20),
+            child: FittedBox(
+                fit: BoxFit.fitWidth,
+                child: Text(
+                  'Please choose an option',
+                  style: TextStyle(
+                    fontFamily: 'Courgette',
+                    fontSize: 30.0,
+                    color: Constants.deepBlue,
+                  ),
+                )),
+          )),
+          Expanded(
+            child: LandingButtonNoClick(
+              displayText: list,
+              icon: Icons.upload_rounded,
             ),
           ),
-          Expanded(
-            child: LandingButton(
-                displayText: list,
-                page: NewProfile(),
-                icon: Icons.upload_rounded),
-          ),
-          SizedBox(height: 40.0),
+          SizedBox(height: MediaQuery.of(context).size.width / 15),
           Expanded(
             child: LandingButton(
                 displayText: adopt, page: SelectLocation(), icon: Icons.pets),
           ),
-          SizedBox(height: 40.0),
+          SizedBox(height: MediaQuery.of(context).size.width / 15),
           Expanded(
             child: LandingButton(
                 displayText: dailyFeed, page: DailyFeed(), icon: Icons.list),
@@ -209,7 +238,7 @@ class _DashboardScreenState extends State<Dashboard> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                width: 80.0,
+                width: MediaQuery.of(context).size.width / 5,
                 child: Image.asset('images/blueHeartLogo.png'),
               ),
               SizedBox(width: 20.0),
@@ -232,34 +261,37 @@ class _DashboardScreenState extends State<Dashboard> {
               textAlign: TextAlign.right,
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Expanded(
-                child: LandingButton(
-                    displayText: list,
-                    page: NewProfile(),
-                    icon: Icons.upload_rounded),
-              ),
-              SizedBox(width: 20.0),
-              Expanded(
-                child: LandingButton(
-                  displayText: adopt,
-                  page: SelectLocation(),
-                  icon: Icons.pets,
-                ),
-              ),
-              Expanded(
-                //flex: 1,
-                child: LandingButton(
-                  displayText: dailyFeed,
-                  page: DailyFeed(),
-                  icon: Icons.list,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 60.0),
+          Padding(
+              padding: EdgeInsets.only(right: 10.0, left: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    child: LandingButton(
+                        displayText: list,
+                        page: NewProfile(),
+                        icon: Icons.upload_rounded),
+                  ),
+                  SizedBox(width: MediaQuery.of(context).size.width / 50),
+                  Expanded(
+                    child: LandingButton(
+                      displayText: adopt,
+                      page: SelectLocation(),
+                      icon: Icons.pets,
+                    ),
+                  ),
+                  SizedBox(width: MediaQuery.of(context).size.width / 50),
+                  Expanded(
+                    //flex: 1,
+                    child: LandingButton(
+                      displayText: dailyFeed,
+                      page: DailyFeed(),
+                      icon: Icons.list,
+                    ),
+                  ),
+                ],
+              )),
+          SizedBox(height: 80),
         ],
       ),
     );

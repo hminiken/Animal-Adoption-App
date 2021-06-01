@@ -38,6 +38,7 @@ dependencies:
   location:
   intl:
   change_app_package_name:
+  launch_review:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

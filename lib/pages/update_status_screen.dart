@@ -41,8 +41,10 @@ class UpdateStatusState extends State<UpdateStatus> {
                   children: [
                 Align(
                     alignment: Alignment.center,
-                    child: Text('Change the status for ' + args.petName,
-                        style: Theme.of(context).textTheme.headline5)),
+                    child: FittedBox(
+                        fit: BoxFit.fitWidth,
+                        child: Text('Change the status for ' + args.petName,
+                            style: Theme.of(context).textTheme.headline5))),
                 SizedBox(height: 15),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10.0),

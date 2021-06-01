@@ -1,4 +1,5 @@
 import 'package:cuddler/models/constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
@@ -69,7 +70,9 @@ class NewProfileState extends State<NewProfile> {
       phone: '',
       sex: '',
       url: '',
-      location: '');
+      location: 'Alabama',
+      animalID: '',
+      isUpdate: false);
 
   bool isGoodAnimals = false, isGoodChildren = false, isMustLeash = false;
 
@@ -100,8 +103,9 @@ class NewProfileState extends State<NewProfile> {
     }
   }
 
-  uploadNewPetProfile() async {
+  uploadNewPetProfile(bool isUpdate, String animalID) async {
     print("Uploading our content");
+    final user = FirebaseAuth.instance.currentUser!;
 
     var collection = getCollection(currentVal);
 
@@ -124,28 +128,58 @@ class NewProfileState extends State<NewProfile> {
 
     newAnimal.favorite = false;
 
-    FirebaseFirestore.instance.collection(collection).add({
-      'about': newAnimal.about,
-      'age': newAnimal.age,
-      'name': newAnimal.name,
-      'breed': newAnimal.breed,
-      'disposition1': isGoodAnimals,
-      'disposition2': isGoodChildren,
-      'disposition3': isMustLeash,
-      'email': newAnimal.email,
-      'contactName': newAnimal.contactName,
-      'phone': newAnimal.phone,
-      'url': url,
-      'sex': newAnimal.sex,
-      'favorite': newAnimal.favorite
-    });
+    if (isUpdate) {
+      FirebaseFirestore.instance.collection(collection).doc(animalID).update({
+        'about': newAnimal.about,
+        'age': newAnimal.age,
+        'name': newAnimal.name,
+        'breed': newAnimal.breed,
+        'disposition1': isGoodAnimals,
+        'disposition2': isGoodChildren,
+        'disposition3': isMustLeash,
+        'email': newAnimal.email,
+        'contactName': newAnimal.contactName,
+        'phone': newAnimal.phone,
+        'url': url,
+        'sex': newAnimal.sex,
+        'favorite': newAnimal.favorite,
+        'uid': user.uid,
+        'status': "Available",
+        'dateAdded': 1234,
+        'location': newAnimal.location,
+      });
+    } else {
+      FirebaseFirestore.instance.collection(collection).add({
+        'about': newAnimal.about,
+        'age': newAnimal.age,
+        'name': newAnimal.name,
+        'breed': newAnimal.breed,
+        'disposition1': isGoodAnimals,
+        'disposition2': isGoodChildren,
+        'disposition3': isMustLeash,
+        'email': newAnimal.email,
+        'contactName': newAnimal.contactName,
+        'phone': newAnimal.phone,
+        'url': url,
+        'sex': newAnimal.sex,
+        'favorite': newAnimal.favorite,
+        'uid': user.uid,
+        'status': "Available",
+        'dateAdded': 1234,
+        'location': newAnimal.location,
+      });
+    }
+
+    Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
+    final Animals args = ModalRoute.of(context)!.settings.arguments as Animals;
+
     return Scaffold(
         appBar: AppBar(
-          title: Text('List a Pet'),
+          title: args.isUpdate ? Text('Update Pet Info') : Text('List a Pet'),
           centerTitle: true,
         ),
 
@@ -180,7 +214,7 @@ class NewProfileState extends State<NewProfile> {
                                     border: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(5.0))),
-                                isEmpty: currentVal == '',
+                                isEmpty: currentVal == args.breed,
                                 child: DropdownButtonHideUnderline(
                                   child: DropdownButton<String>(
                                     value: currentVal,
@@ -188,7 +222,7 @@ class NewProfileState extends State<NewProfile> {
                                     onChanged: (String? newValue) {
                                       setState(() {
                                         currentVal = newValue!;
-                                        breedCurValue = '';
+                                        breedCurValue = args.breed;
                                         getBreedList(currentVal);
                                         state.didChange(newValue);
                                       });
@@ -218,10 +252,10 @@ class NewProfileState extends State<NewProfile> {
                                     border: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(5.0))),
-                                isEmpty: breedCurValue == '',
+                                isEmpty: breedCurValue == args.breed,
                                 child: DropdownButtonHideUnderline(
                                   child: DropdownButton<String>(
-                                    value: breedCurValue,
+                                    value: args.breed,
                                     isDense: true,
                                     onChanged: (String? breedNewValue) {
                                       setState(() {
@@ -255,10 +289,10 @@ class NewProfileState extends State<NewProfile> {
                                     border: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(5.0))),
-                                isEmpty: sexCurValue == '',
+                                isEmpty: sexCurValue == args.sex,
                                 child: DropdownButtonHideUnderline(
                                   child: DropdownButton<String>(
-                                    value: sexCurValue,
+                                    value: args.sex,
                                     isDense: true,
                                     onChanged: (String? sexNewValue) {
                                       setState(() {
@@ -278,7 +312,46 @@ class NewProfileState extends State<NewProfile> {
                             },
                           ),
                           SizedBox(height: 25),
+                          FormField<String>(
+                            builder: (FormFieldState<String> state) {
+                              return InputDecorator(
+                                decoration: InputDecoration(
+                                    // labelStyle: textStyle,
+                                    errorStyle: TextStyle(
+                                        color: Colors.redAccent,
+                                        fontSize: 14.0),
+                                    labelText: 'Location',
+                                    hintText: 'Please select the location',
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(5.0))),
+                                isEmpty: newAnimal.location == args.location,
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton<String>(
+                                    value: args.location,
+                                    isDense: true,
+                                    onChanged: (String? sexNewValue) {
+                                      setState(() {
+                                        newAnimal.location = sexNewValue!;
+                                        state.didChange(newAnimal.location);
+                                      });
+                                    },
+                                    items: Constants()
+                                        .statesList
+                                        .map((String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                          SizedBox(height: 25),
                           TextFormField(
+                              initialValue: args.name,
                               onSaved: (value) {
                                 newAnimal.name = value!;
                               },
@@ -295,6 +368,7 @@ class NewProfileState extends State<NewProfile> {
                               )),
                           SizedBox(height: 25),
                           TextFormField(
+                              initialValue: args.age.toString(),
                               onSaved: (value) {
                                 newAnimal.age = int.parse(value!);
                               },
@@ -311,6 +385,7 @@ class NewProfileState extends State<NewProfile> {
                               )),
                           SizedBox(height: 25),
                           TextFormField(
+                              initialValue: args.about,
                               keyboardType: TextInputType.multiline,
                               maxLines: null,
                               minLines: 2,
@@ -374,6 +449,7 @@ class NewProfileState extends State<NewProfile> {
                         child: Column(children: [
                           SizedBox(height: 25),
                           TextFormField(
+                              initialValue: args.contactName,
                               onSaved: (value) {
                                 newAnimal.contactName = value!;
                               },
@@ -390,6 +466,7 @@ class NewProfileState extends State<NewProfile> {
                               )),
                           SizedBox(height: 25),
                           TextFormField(
+                              initialValue: args.phone,
                               onSaved: (value) {
                                 newAnimal.phone = value!;
                               },
@@ -406,6 +483,7 @@ class NewProfileState extends State<NewProfile> {
                               )),
                           SizedBox(height: 25),
                           TextFormField(
+                              initialValue: args.email,
                               onSaved: (value) {
                                 newAnimal.email = value!;
                               },
@@ -447,11 +525,23 @@ class NewProfileState extends State<NewProfile> {
                           ),
                           SizedBox(height: 15),
                           Container(
-                            child: ClipRRect(
-                              // borderRadius: BorderRadius.circular(80.0),
-
-                              child: setUploadImage(context, image, ""),
+                            padding: EdgeInsets.all(0),
+                            margin: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(100),
+                              border: Border.all(
+                                color: Constants.fadedYellow,
+                                width: 5,
+                              ),
                             ),
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(80.0),
+                                child: Image.file(
+                                  image,
+                                  width: 150,
+                                  height: 150,
+                                  fit: BoxFit.cover,
+                                )),
                           ),
                           SizedBox(height: 15),
                         ])),
@@ -482,13 +572,14 @@ class NewProfileState extends State<NewProfile> {
               }
               if (formKey.currentState!.validate()) {
                 formKey.currentState!.save();
-                uploadNewPetProfile();
-                Navigator.of(context).pop();
+                uploadNewPetProfile(args.isUpdate, args.animalID);
               }
             },
             tooltip: 'Upload your Pet',
             backgroundColor: Constants.deepBlue,
-            label: const Text('Upload your Pet'),
+            label: args.isUpdate
+                ? Text('Update your Pet')
+                : Text('Upload your Pet'),
             icon: const Icon(
               Icons.upload_rounded,
             ),

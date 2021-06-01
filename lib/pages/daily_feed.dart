@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cuddler/models/constants.dart';
 import 'package:cuddler/pages/add_news_item.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -161,7 +162,8 @@ class DailyFeedState extends State<DailyFeed> {
                   ),
                   IconButton(
                     onPressed: () {
-                      getAllNewsItems();
+                      // getAllNewsItems();
+                      uploadPets();
                     },
                     icon: Icon(
                         Icons.refresh), //for testing, get's all new updates

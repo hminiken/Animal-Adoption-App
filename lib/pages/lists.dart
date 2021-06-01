@@ -190,21 +190,93 @@ class CatsList extends StatefulWidget {
 
 class _CatsListState extends State<CatsList> {
   String dropdownValue = 'Sort by All';
+  String dropdownValueDisposition = 'Sort by All';
+
   @override
   Widget build(BuildContext context) {
     //Grab the collection from firebase
     CollectionReference cats = FirebaseFirestore.instance.collection('cats');
     final Query localCats = cats.where("location", isEqualTo: widget.location);
-    Query sortBy = localCats.where("breed", isEqualTo: dropdownValue);
+    Query sortBy = localCats
+        .where("breed", isEqualTo: dropdownValue)
+        .where('disposition2', isEqualTo: false);
 
     return Column(children: [
+      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Container(
+            padding: EdgeInsets.all(5),
+            child: DropdownButton<String>(
+              value: dropdownValue,
+              icon: const Icon(Icons.arrow_downward),
+              style: const TextStyle(color: Colors.black),
+              underline: Container(
+                height: 2,
+                color: Constants.tealBlue,
+              ),
+              onChanged: (String? newValue) {
+                setState(() {
+                  dropdownValue = newValue!;
+                  // sortBy = localCats
+                  //     .where("breed", isEqualTo: dropdownValue)
+                  //     .where('disposition2', isEqualTo: false);
+                });
+              },
+              items: <String>[
+                'Domestic Shorthair',
+                'American Shorthair',
+                'Domestic Longhair',
+                'Maine Coon',
+                'Siamese',
+                'Russian Blue',
+                'Ragdoll',
+                'Bengal',
+                'Persian',
+                'Bombay',
+                'Other - Please Specify',
+                'Sort by All'
+              ].map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            )),
+        Container(
+            padding: EdgeInsets.all(5),
+            child: DropdownButton<String>(
+              value: dropdownValueDisposition,
+              icon: const Icon(Icons.arrow_downward),
+              style: const TextStyle(color: Colors.black),
+              underline: Container(
+                height: 2,
+                color: Constants.tealBlue,
+              ),
+              onChanged: (String? newValue) {
+                setState(() {
+                  dropdownValueDisposition = newValue!;
+                  // sortBy = localCats
+                  //     .where("breed", isEqualTo: dropdownValue)
+                  //     .where('disposition2', isEqualTo: false);
+                });
+              },
+              items: <String>[
+                'Good With Children',
+                'Good with Other Animals',
+                'Sort by All'
+              ].map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            )),
+      ]),
       Row(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
               padding: EdgeInsets.all(5),
               child: DropdownButton<String>(
-                value: dropdownValue,
+                value: dropdownValueDisposition,
                 icon: const Icon(Icons.arrow_downward),
                 style: const TextStyle(color: Colors.black),
                 underline: Container(
@@ -213,24 +285,14 @@ class _CatsListState extends State<CatsList> {
                 ),
                 onChanged: (String? newValue) {
                   setState(() {
-                    dropdownValue = newValue!;
-                    sortBy = localCats.where("breed", isEqualTo: dropdownValue);
+                    dropdownValueDisposition = newValue!;
+                    // sortBy = localCats
+                    //     .where("breed", isEqualTo: dropdownValue)
+                    //     .where('disposition2', isEqualTo: false);
                   });
                 },
-                items: <String>[
-                  'Domestic Shorthair',
-                  'American Shorthair',
-                  'Domestic Longhair',
-                  'Maine Coon',
-                  'Siamese',
-                  'Russian Blue',
-                  'Ragdoll',
-                  'Bengal',
-                  'Persian',
-                  'Bombay',
-                  'Other - Please Specify',
-                  'Sort by All'
-                ].map<DropdownMenuItem<String>>((String value) {
+                items: <String>['1 Day', '1 Week', 'Sort by All']
+                    .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(value),
