@@ -2,7 +2,7 @@ import '../pages/details.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../widgets/my_flutter_app_icons.dart';
+
 import '../models/constants.dart';
 
 //Widget for displaying list of dogs
@@ -250,7 +250,10 @@ class _DogsListState extends State<DogsList> {
                                       status: post['status'],
                                     )));
                       },
-                      leading: Icon(MyFlutterApp.dog),
+                      leading: CircleAvatar(
+                        backgroundImage: NetworkImage(post['url']),
+                        backgroundColor: Colors.transparent,
+                      ),
                       title: Text(
                         post['name'],
                         style: TextStyle(fontSize: 20),
@@ -270,7 +273,7 @@ class _DogsListState extends State<DogsList> {
           }
           //If firebase has no data use circular loading picture
           else {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: Text('No pets available with that criteria'));
           }
         },
       ))
