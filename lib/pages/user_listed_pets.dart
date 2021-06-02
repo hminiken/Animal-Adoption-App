@@ -1,3 +1,6 @@
+import 'package:cuddler/models/animals.dart';
+import 'package:cuddler/pages/new_profile_screen.dart';
+
 import 'update_status_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +21,11 @@ void pushNewEntry(BuildContext context, String image, String status,
     String name, DocumentReference id) {
   Navigator.of(context).pushNamed(UpdateStatus.routeName,
       arguments: StatusArguments(image, status, name, id));
+}
+
+void pushViewListPet(BuildContext context, String routeName, bool isUpdate,
+    Animals currentAnimal, DocumentReference id) {
+  Navigator.of(context).pushNamed(routeName, arguments: currentAnimal);
 }
 
 //List screen Widget
@@ -65,6 +73,26 @@ class DogsList extends StatelessWidget {
   final userID;
   @override
   Widget build(BuildContext context) {
+    Animals currentPet = new Animals(
+        about: "",
+        age: 1,
+        disposition1: false,
+        disposition2: false,
+        disposition3: false,
+        email: "",
+        name: "",
+        phone: "",
+        contactName: "",
+        sex: "",
+        url: "",
+        breed: "",
+        favorite: false,
+        location: "Alabama",
+        animalID: "",
+        categoryName: "",
+        status: "",
+        isUpdate: true);
+
     //Grab the collection from firebase
     CollectionReference dogs = FirebaseFirestore.instance.collection('dogs');
 
@@ -81,14 +109,17 @@ class DogsList extends StatelessWidget {
                 var post = snapshot.data!.docs[index];
                 var age = post['age'].toString();
                 var sex = post['sex'];
-                var fav = post['favorite'];
+
                 return ListTile(
                     //Go to details screen on tap, send necessary info to details screen
                     onTap: () {
                       pushNewEntry(context, post['url'], post['status'],
                           post['name'], dogs.doc(post.id));
                     },
-                    leading: Icon(MyFlutterApp.dog),
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(post['url']),
+                      backgroundColor: Colors.transparent,
+                    ),
                     title: Text(
                       post['name'],
                       style: TextStyle(fontSize: 20),
@@ -96,12 +127,28 @@ class DogsList extends StatelessWidget {
                     subtitle: Text('Age: $age\nSex: $sex'),
                     isThreeLine: true,
                     trailing: IconButton(
-                      icon: fav
-                          ? Icon(Icons.favorite)
-                          : Icon(Icons.favorite_border),
-                      color: fav ? Colors.red : null,
+                      icon: Icon(Icons.edit),
                       onPressed: () {
-                        dogs.doc(post.id).update({'favorite': !fav});
+                        // dogs.doc(post.id).update({'favorite'});
+                        currentPet.about = post['about'];
+                        currentPet.age = post['age'];
+                        currentPet.disposition1 = post['disposition1'];
+                        currentPet.disposition2 = post['disposition2'];
+                        currentPet.disposition3 = post['disposition3'];
+                        currentPet.email = post['email'];
+                        currentPet.name = post['name'];
+                        currentPet.phone = post['phone'];
+                        currentPet.contactName = post['contactName'];
+                        currentPet.sex = post['sex'];
+                        currentPet.url = post['url'];
+                        currentPet.breed = post['breed'];
+                        currentPet.favorite = post['favorite'];
+                        currentPet.location = post['location'];
+                        currentPet.status = post['status'];
+                        currentPet.categoryName = 'Dog';
+                        currentPet.animalID = post.id;
+                        pushViewListPet(context, NewProfile.routeName, true,
+                            currentPet, dogs.doc(post.id));
                       },
                     ));
               });
@@ -121,6 +168,26 @@ class CatsList extends StatelessWidget {
   final userID;
   @override
   Widget build(BuildContext context) {
+    Animals currentPet = new Animals(
+        about: "",
+        age: 1,
+        disposition1: false,
+        disposition2: false,
+        disposition3: false,
+        email: "",
+        name: "",
+        phone: "",
+        contactName: "",
+        sex: "",
+        url: "",
+        breed: "",
+        favorite: false,
+        location: "Alabama",
+        animalID: "",
+        categoryName: "",
+        status: "",
+        isUpdate: true);
+
     //Grab the collection from firebase
     CollectionReference cats = FirebaseFirestore.instance.collection('cats');
     final Query myCats = cats.where("uid", isEqualTo: userID);
@@ -136,14 +203,16 @@ class CatsList extends StatelessWidget {
                 var post = snapshot.data!.docs[index];
                 var age = post['age'].toString();
                 var sex = post['sex'];
-                var fav = post['favorite'];
                 return ListTile(
                     //Go to details screen on tap, send necessary info to details screen
                     onTap: () {
                       pushNewEntry(context, post['url'], post['status'],
                           post['name'], cats.doc(post.id));
                     },
-                    leading: Icon(MyFlutterApp.cat),
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(post['url']),
+                      backgroundColor: Colors.transparent,
+                    ),
                     title: Text(
                       post['name'],
                       style: TextStyle(fontSize: 20),
@@ -151,12 +220,28 @@ class CatsList extends StatelessWidget {
                     subtitle: Text('Age: $age\nSex: $sex'),
                     isThreeLine: true,
                     trailing: IconButton(
-                      icon: fav
-                          ? Icon(Icons.favorite)
-                          : Icon(Icons.favorite_border),
-                      color: fav ? Colors.red : null,
+                      icon: Icon(Icons.edit),
                       onPressed: () {
-                        cats.doc(post.id).update({'favorite': !fav});
+                        currentPet.about = post['about'];
+                        currentPet.age = post['age'];
+                        currentPet.disposition1 = post['disposition1'];
+                        currentPet.disposition2 = post['disposition2'];
+                        currentPet.disposition3 = post['disposition3'];
+                        currentPet.email = post['email'];
+                        currentPet.name = post['name'];
+                        currentPet.phone = post['phone'];
+                        currentPet.contactName = post['contactName'];
+                        currentPet.sex = post['sex'];
+                        currentPet.url = post['url'];
+                        currentPet.breed = post['breed'];
+                        currentPet.favorite = post['favorite'];
+                        currentPet.location = post['location'];
+                        currentPet.status = post['status'];
+
+                        currentPet.categoryName = 'Cat';
+                        currentPet.animalID = cats.doc(post.id).toString();
+                        pushViewListPet(context, NewProfile.routeName, true,
+                            currentPet, cats.doc(post.id));
                       },
                     ));
               });
@@ -176,6 +261,25 @@ class OthersList extends StatelessWidget {
   final userID;
   @override
   Widget build(BuildContext context) {
+    Animals currentPet = new Animals(
+        about: "",
+        age: 1,
+        disposition1: false,
+        disposition2: false,
+        disposition3: false,
+        email: "",
+        name: "",
+        phone: "",
+        contactName: "",
+        sex: "",
+        url: "",
+        breed: "",
+        favorite: false,
+        location: "Alabama",
+        animalID: "",
+        status: "",
+        categoryName: "",
+        isUpdate: true);
     //Grab the collection from firebase
     CollectionReference others =
         FirebaseFirestore.instance.collection('others');
@@ -192,14 +296,16 @@ class OthersList extends StatelessWidget {
                 var post = snapshot.data!.docs[index];
                 var age = post['age'].toString();
                 var sex = post['sex'];
-                var fav = post['favorite'];
                 return ListTile(
                     //Go to details screen on tap, send necessary info to details screen
                     onTap: () {
                       pushNewEntry(context, post['url'], post['status'],
                           post['name'], others.doc(post.id));
                     },
-                    leading: Icon(MyFlutterApp.pastafarianism),
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(post['url']),
+                      backgroundColor: Colors.transparent,
+                    ),
                     title: Text(
                       post['name'],
                       style: TextStyle(fontSize: 20),
@@ -207,12 +313,27 @@ class OthersList extends StatelessWidget {
                     subtitle: Text('Age: $age\nSex: $sex'),
                     isThreeLine: true,
                     trailing: IconButton(
-                      icon: fav
-                          ? Icon(Icons.favorite)
-                          : Icon(Icons.favorite_border),
-                      color: fav ? Colors.red : null,
+                      icon: Icon(Icons.edit),
                       onPressed: () {
-                        others.doc(post.id).update({'favorite': !fav});
+                        currentPet.about = post['about'];
+                        currentPet.age = post['age'];
+                        currentPet.disposition1 = post['disposition1'];
+                        currentPet.disposition2 = post['disposition2'];
+                        currentPet.disposition3 = post['disposition3'];
+                        currentPet.email = post['email'];
+                        currentPet.name = post['name'];
+                        currentPet.phone = post['phone'];
+                        currentPet.contactName = post['contactName'];
+                        currentPet.sex = post['sex'];
+                        currentPet.url = post['url'];
+                        currentPet.breed = post['breed'];
+                        currentPet.favorite = post['favorite'];
+                        currentPet.location = post['location'];
+                        currentPet.status = post['status'];
+                        currentPet.categoryName = 'Other';
+                        currentPet.animalID = others.doc(post.id).toString();
+                        pushViewListPet(context, NewProfile.routeName, true,
+                            currentPet, others.doc(post.id));
                       },
                     ));
               });

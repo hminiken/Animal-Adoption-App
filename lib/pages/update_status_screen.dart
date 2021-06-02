@@ -41,8 +41,10 @@ class UpdateStatusState extends State<UpdateStatus> {
                   children: [
                 Align(
                     alignment: Alignment.center,
-                    child: Text('Change the status for ' + args.petName,
-                        style: Theme.of(context).textTheme.headline5)),
+                    child: FittedBox(
+                        fit: BoxFit.fitWidth,
+                        child: Text('Change the status for ' + args.petName,
+                            style: Theme.of(context).textTheme.headline5))),
                 SizedBox(height: 15),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10.0),
@@ -90,13 +92,14 @@ class UpdateStatusState extends State<UpdateStatus> {
                     style: TextStyle(fontSize: 20),
                   ),
                   icon: const Icon(Icons.update_outlined),
-                  // backgroundColor: colDarkBlue,
-                  //
                   onPressed: () {
-                    args.id.update({'status': statusValue});
+                    if (statusValue == "Adopted") {
+                      args.id.delete();
+                    } else {
+                      args.id.update({'status': statusValue});
+                    }
                     Navigator.pop(context);
                   },
-
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
                           Constants.deepBlue), // background
@@ -111,6 +114,9 @@ class UpdateStatusState extends State<UpdateStatus> {
                       //     TextStyle(fontSize: 24, fontWeight: FontWeight.bold)
                       ),
                 ),
+                SizedBox(height: 50),
+                Text(
+                    "Note: Changing status to 'Adopted' will remove the pet from the database. This action cannot be undone."),
                 SizedBox(height: 50),
               ]))),
       // floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,

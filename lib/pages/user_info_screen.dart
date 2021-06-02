@@ -181,12 +181,14 @@ class UpdateUserInfoState extends State<UpdateUserInfo> {
                                 Constants().statesList.map((String category) {
                               return new DropdownMenuItem(
                                   value: category,
-                                  child: Row(
-                                    children: <Widget>[
-                                      // Icon(Icons.star),
-                                      Text(category),
-                                    ],
-                                  ));
+                                  child: FittedBox(
+                                      fit: BoxFit.fitWidth,
+                                      child: Row(
+                                        children: <Widget>[
+                                          // Icon(Icons.star),
+                                          Text(category),
+                                        ],
+                                      )));
                             }).toList(),
                             onChanged: (String? newValue) {
                               setState(() {
