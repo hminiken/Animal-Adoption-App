@@ -28,6 +28,7 @@ class NewProfileState extends State<NewProfile> {
   final formKey = GlobalKey<FormState>();
   var petCategories = ["Dog", "Cat", "Other"];
   var sexDropDown = ["Male", "Female"];
+  bool updatePhoto = false;
 
   var categoryCurValue = 'Dog';
   var breedCurValue = '';
@@ -55,8 +56,9 @@ class NewProfileState extends State<NewProfile> {
     return dropdownList;
   }
 
-  File image = new File('assets/images/profileImgPlaceholder.png');
-  File defaultImage = new File('assets/images/profileImgPlaceholder.png');
+  File image = new File('images/blank_animal.png');
+  var imagePath = 'images/blank_animal.png';
+  File defaultImage = new File('/images/blank_animal.png');
   final picker = ImagePicker();
   Animals newAnimal = new Animals(
       about: '',
@@ -74,6 +76,7 @@ class NewProfileState extends State<NewProfile> {
       url: '',
       location: 'Alabama',
       animalID: '',
+      categoryName: '',
       isUpdate: false);
 
   bool isGoodAnimals = false, isGoodChildren = false, isMustLeash = false;
@@ -99,13 +102,15 @@ class NewProfileState extends State<NewProfile> {
       final pickedFile = await picker.getImage(source: ImageSource.gallery);
       setState(() {
         image = File(pickedFile!.path);
+        imagePath = image.path;
+        updatePhoto = true;
       });
     } on PlatformException catch (e) {
       print('Error: ${e.toString()}, code: ${e.code}');
     }
   }
 
-  uploadNewPetProfile(bool isUpdate, String animalID) async {
+  uploadNewPetProfile(bool isUpdate, String animalID, String curImgURL) async {
     print("Uploading our content");
     final user = FirebaseAuth.instance.currentUser!;
 
@@ -113,18 +118,24 @@ class NewProfileState extends State<NewProfile> {
 
     newAnimal.breed = breedCurValue;
     newAnimal.sex = sexCurValue;
+    String url = "";
 
-    FirebaseStorage storage = FirebaseStorage.instance;
-    Reference ref = storage.ref().child("image" + DateTime.now().toString());
-    UploadTask uploadTask = ref.putFile(image);
+    if (updatePhoto) {
+      FirebaseStorage storage = FirebaseStorage.instance;
+      Reference ref = storage.ref().child("image" + DateTime.now().toString());
+      UploadTask uploadTask = ref.putFile(image);
 
-    final TaskSnapshot downloadUrl = (await uploadTask);
+      final TaskSnapshot downloadUrl = (await uploadTask);
 
-    final String url = await downloadUrl.ref.getDownloadURL();
+      url = await downloadUrl.ref.getDownloadURL();
+    }
 
     newAnimal.favorite = false;
 
     if (isUpdate) {
+      if (!updatePhoto) {
+        url = curImgURL;
+      }
       FirebaseFirestore.instance.collection(collection).doc(animalID).update({
         'about': newAnimal.about,
         'age': newAnimal.age,
@@ -141,7 +152,7 @@ class NewProfileState extends State<NewProfile> {
         'favorite': newAnimal.favorite,
         'uid': user.uid,
         'status': "Available",
-        'dateAdded': 1234,
+        'dateAdded': DateTime.now().millisecondsSinceEpoch * 1000,
         'location': newAnimal.location,
       });
     } else {
@@ -165,13 +176,21 @@ class NewProfileState extends State<NewProfile> {
         'location': newAnimal.location,
       });
     }
-
-    Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
     final Animals args = ModalRoute.of(context)!.settings.arguments as Animals;
+
+    if (args.isUpdate) {
+      if (!updatePhoto) {
+        imagePath = args.url;
+      }
+
+      setState(() {
+        categoryCurValue = args.categoryName;
+      });
+    }
 
     return Scaffold(
         appBar: AppBar(
@@ -215,14 +234,19 @@ class NewProfileState extends State<NewProfile> {
                                   child: DropdownButton<String>(
                                     value: categoryCurValue,
                                     isDense: true,
-                                    onChanged: (String? categoryNewValue) {
-                                      setState(() {
-                                        categoryCurValue = categoryNewValue!;
-                                        breedCurValue = args.breed;
-                                        getBreedList(categoryCurValue);
-                                        state.didChange(categoryNewValue);
-                                      });
-                                    },
+                                    disabledHint:
+                                        Text('Cannot change for update'),
+                                    onChanged: args.isUpdate
+                                        ? null
+                                        : (String? categoryNewValue) {
+                                            setState(() {
+                                              categoryCurValue =
+                                                  categoryNewValue!;
+                                              breedCurValue = args.breed;
+                                              getBreedList(categoryCurValue);
+                                              state.didChange(categoryNewValue);
+                                            });
+                                          },
                                     items: petCategories.map((String value) {
                                       return DropdownMenuItem<String>(
                                         value: value,
@@ -499,30 +523,57 @@ class NewProfileState extends State<NewProfile> {
                                 border: OutlineInputBorder(),
                               )),
                           SizedBox(height: 30),
-                          ElevatedButton.icon(
-                            label: const Text(
-                              'Upload Image',
-                              style: TextStyle(fontSize: 20),
-                            ),
-                            icon: const Icon(Icons.photo),
-                            // backgroundColor: colDarkBlue,
-                            onPressed: () {
-                              selectImage();
-                            },
+                          Row(children: [
+                            ElevatedButton.icon(
+                              label: const Text(
+                                'Upload Photo',
+                                style: TextStyle(fontSize: 20),
+                              ),
+                              icon: const Icon(Icons.photo),
+                              // backgroundColor: colDarkBlue,
+                              onPressed: () {
+                                selectImage();
+                              },
 
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Constants.redOrange), // background
-                                foregroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Colors.white),
-                                shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ))),
-                          ),
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Constants.redOrange), // background
+                                  foregroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.white),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ))),
+                            ),
+                            SizedBox(width: 15),
+                            ElevatedButton.icon(
+                              label: const Text(
+                                'Take Photo',
+                                style: TextStyle(fontSize: 20),
+                              ),
+                              icon: const Icon(Icons.camera_alt),
+                              // backgroundColor: colDarkBlue,
+                              onPressed: () {
+                                selectImage();
+                              },
+
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Constants.redOrange), // background
+                                  foregroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.white),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ))),
+                            ),
+                          ]),
                           SizedBox(height: 15),
                           Container(
                             padding: EdgeInsets.all(0),
@@ -536,11 +587,12 @@ class NewProfileState extends State<NewProfile> {
                             ),
                             child: ClipRRect(
                                 borderRadius: BorderRadius.circular(80.0),
-                                child: Image.file(
-                                  image,
-                                  width: 150,
-                                  height: 150,
-                                  fit: BoxFit.cover,
+                                child: CircleAvatar(
+                                  radius: 80.0,
+                                  backgroundImage: args.isUpdate && !updatePhoto
+                                      ? NetworkImage(args.url)
+                                      : AssetImage(imagePath) as ImageProvider,
+                                  backgroundColor: Colors.transparent,
                                 )),
                           ),
                           SizedBox(height: 15),
@@ -557,10 +609,7 @@ class NewProfileState extends State<NewProfile> {
         floatingActionButton: Semantics(
           child: new FloatingActionButton.extended(
             onPressed: () {
-              if (image.path == defaultImage.path) {
-                showAlertDialog(context, 'Missing Photo',
-                    'Please upload an image of your pet to proceed');
-              } else if (categoryCurValue == '') {
+              if (categoryCurValue == '') {
                 showAlertDialog(context, 'Missing Category',
                     'Please choose your pet\'s category');
               } else if (breedCurValue == '') {
@@ -572,7 +621,8 @@ class NewProfileState extends State<NewProfile> {
               }
               if (formKey.currentState!.validate()) {
                 formKey.currentState!.save();
-                uploadNewPetProfile(args.isUpdate, args.animalID);
+                uploadNewPetProfile(args.isUpdate, args.animalID, args.url);
+                Navigator.of(context).pop();
               }
             },
             tooltip: 'Upload your Pet',

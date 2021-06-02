@@ -96,6 +96,7 @@ class DogsList extends StatelessWidget {
         favorite: false,
         location: "Alabama",
         animalID: "",
+        categoryName: "",
         isUpdate: true);
 
     //Grab the collection from firebase
@@ -146,6 +147,7 @@ class DogsList extends StatelessWidget {
                         currentPet.breed = post['breed'];
                         currentPet.favorite = post['favorite'];
                         currentPet.location = post['location'];
+                        currentPet.categoryName = 'Dog';
                         currentPet.animalID = post.id;
                         pushViewListPet(context, NewProfile.routeName, true,
                             currentPet, dogs.doc(post.id));
@@ -182,6 +184,7 @@ class CatsList extends StatelessWidget {
         favorite: false,
         location: "Alabama",
         animalID: "",
+        categoryName: "",
         isUpdate: true);
 
     //Grab the collection from firebase
@@ -230,6 +233,7 @@ class CatsList extends StatelessWidget {
                         currentPet.breed = post['breed'];
                         currentPet.favorite = post['favorite'];
                         currentPet.location = post['location'];
+                        currentPet.categoryName = 'Cat';
                         currentPet.animalID = cats.doc(post.id).toString();
                         pushViewListPet(context, NewProfile.routeName, true,
                             currentPet, cats.doc(post.id));
@@ -266,6 +270,7 @@ class OthersList extends StatelessWidget {
         favorite: false,
         location: "Alabama",
         animalID: "",
+        categoryName: "",
         isUpdate: true);
     //Grab the collection from firebase
     CollectionReference others =
@@ -314,6 +319,7 @@ class OthersList extends StatelessWidget {
                         currentPet.breed = post['breed'];
                         currentPet.favorite = post['favorite'];
                         currentPet.location = post['location'];
+                        currentPet.categoryName = 'Other';
                         currentPet.animalID = others.doc(post.id).toString();
                         pushViewListPet(context, NewProfile.routeName, true,
                             currentPet, others.doc(post.id));

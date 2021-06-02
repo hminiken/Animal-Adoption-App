@@ -15,6 +15,7 @@ class Animals {
   String location;
   String animalID;
   bool isUpdate;
+  String categoryName;
 
   Animals(
       {required this.about,
@@ -32,5 +33,6 @@ class Animals {
       required this.favorite,
       required this.location,
       required this.animalID,
+      required this.categoryName,
       required this.isUpdate});
 }

@@ -71,6 +71,7 @@ flutter:
     - assets/images/background.jpg
     - assets/images/circleLogo.png
     - assets/images/profileImgPlaceholder.png
+    - images/blank_animal.png
     - images/blueHeartLogo.png
     - images/circleLogo.png
     - images/geometric-background.png

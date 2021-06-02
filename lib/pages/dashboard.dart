@@ -57,6 +57,7 @@ class DashboardScreenState extends State<Dashboard> {
             favorite: false,
             location: "Alabama",
             animalID: "",
+            categoryName: "Dog",
             isUpdate: false));
   }
 
