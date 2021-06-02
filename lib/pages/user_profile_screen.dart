@@ -184,7 +184,7 @@ class UserProfileState extends State<UserProfile> {
                   ),
                   Column(
                     children: [
-                      centerText(context, 'Hillary', Colors.white, 24),
+                      centerText(context, userName, Colors.white, 24),
                       centerText(context, '5 Pets Adopted', Colors.white, 14),
                     ],
                   )

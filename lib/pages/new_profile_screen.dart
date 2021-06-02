@@ -1,12 +1,16 @@
+import 'dart:io';
+
 import 'package:cuddler/models/constants.dart';
-import 'package:cuddler/pages/dashboard.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:cuddler/models/animals.dart';
 import 'package:cuddler/widgets/global_widgets.dart';
 import 'package:cuddler/widgets/new_profile_widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class NewProfile extends StatefulWidget {
   static const routeName = '/new_profile_screen';
@@ -25,21 +29,24 @@ class NewProfileState extends State<NewProfile> {
   final formKey = GlobalKey<FormState>();
   var petCategories = ["Dog", "Cat", "Other"];
   var sexDropDown = ["Male", "Female"];
-  String currentVal = 'Dog';
+  bool updatePhoto = false;
+
+  var categoryCurValue = 'Dog';
   var breedCurValue = '';
   var sexCurValue = 'Male';
+  var locationCurValue = 'Alabama';
 
   final user = FirebaseAuth.instance.currentUser!;
 
-  List<String> getBreedList(currentVal) {
+  List<String> getBreedList(categoryCurValue) {
     var dropdownList;
-    if (currentVal == 'Dog') {
+    if (categoryCurValue == 'Dog') {
       dropdownList = Constants().dogBreeds;
       // breedCurValue = '';
-    } else if (currentVal == 'Cat') {
+    } else if (categoryCurValue == 'Cat') {
       dropdownList = Constants().catBreeds;
       // breedCurValue = '';
-    } else if (currentVal == 'Other') {
+    } else if (categoryCurValue == 'Other') {
       dropdownList = Constants().otherBreeds;
       // breedCurValue = '';
     } else {
@@ -49,6 +56,10 @@ class NewProfileState extends State<NewProfile> {
     return dropdownList;
   }
 
+  File image = new File('images/blank_animal.png');
+  var imagePath = 'images/blank_animal.png';
+  File defaultImage = new File('/images/blank_animal.png');
+  final picker = ImagePicker();
   Animals newAnimal = new Animals(
       about: '',
       age: 0,
@@ -63,7 +74,10 @@ class NewProfileState extends State<NewProfile> {
       phone: '',
       sex: '',
       url: '',
-      location: '');
+      location: 'Alabama',
+      animalID: '',
+      categoryName: '',
+      isUpdate: false);
 
   bool isGoodAnimals = false, isGoodChildren = false, isMustLeash = false;
 
@@ -75,43 +89,112 @@ class NewProfileState extends State<NewProfile> {
 
   void isMustLeashChanged(bool value) => setState(() => isMustLeash = value);
 
-  uploadNewPetProfile() async {
-    print("Uploading our content");
+  void selectImage() async {
+    try {
+      var _permissionGranted = await Permission.storage.request();
+      if (_permissionGranted.isDenied) {
+        _permissionGranted = await Permission.storage.request();
+        if (_permissionGranted.isPermanentlyDenied) {
+          print('Location service permission not granted. Returning.');
+          return;
+        }
+      }
+      final pickedFile = await picker.getImage(source: ImageSource.gallery);
+      setState(() {
+        image = File(pickedFile!.path);
+        imagePath = image.path;
+        updatePhoto = true;
+      });
+    } on PlatformException catch (e) {
+      print('Error: ${e.toString()}, code: ${e.code}');
+    }
+  }
 
-    var collection = getCollection(currentVal);
+  uploadNewPetProfile(bool isUpdate, String animalID, String curImgURL) async {
+    print("Uploading our content");
+    final user = FirebaseAuth.instance.currentUser!;
+
+    var collection = getCollection(categoryCurValue);
 
     newAnimal.breed = breedCurValue;
     newAnimal.sex = sexCurValue;
+    String url = "";
 
-    final uid = user.uid;
+    if (updatePhoto) {
+      FirebaseStorage storage = FirebaseStorage.instance;
+      Reference ref = storage.ref().child("image" + DateTime.now().toString());
+      UploadTask uploadTask = ref.putFile(image);
+
+      final TaskSnapshot downloadUrl = (await uploadTask);
+
+      url = await downloadUrl.ref.getDownloadURL();
+    }
 
     newAnimal.favorite = false;
 
-    FirebaseFirestore.instance.collection(collection).add({
-      'about': newAnimal.about,
-      'age': newAnimal.age,
-      'name': newAnimal.name,
-      'breed': newAnimal.breed,
-      'disposition1': isGoodAnimals,
-      'disposition2': isGoodChildren,
-      'disposition3': isMustLeash,
-      'email': newAnimal.email,
-      'contactName': newAnimal.contactName,
-      'phone': newAnimal.phone,
-      'url': widget.photoURL,
-      'sex': newAnimal.sex,
-      'favorite': newAnimal.favorite,
-      'location': newAnimal.location,
-      'dateAdded': DateTime.now().millisecondsSinceEpoch * 1000,
-      'uid': uid
-    });
+    if (isUpdate) {
+      if (!updatePhoto) {
+        url = curImgURL;
+      }
+      FirebaseFirestore.instance.collection(collection).doc(animalID).update({
+        'about': newAnimal.about,
+        'age': newAnimal.age,
+        'name': newAnimal.name,
+        'breed': newAnimal.breed,
+        'disposition1': isGoodAnimals,
+        'disposition2': isGoodChildren,
+        'disposition3': isMustLeash,
+        'email': newAnimal.email,
+        'contactName': newAnimal.contactName,
+        'phone': newAnimal.phone,
+        'url': url,
+        'sex': newAnimal.sex,
+        'favorite': newAnimal.favorite,
+        'uid': user.uid,
+        'status': "Available",
+        'dateAdded': DateTime.now().millisecondsSinceEpoch * 1000,
+        'location': newAnimal.location,
+      });
+    } else {
+      FirebaseFirestore.instance.collection(collection).add({
+        'about': newAnimal.about,
+        'age': newAnimal.age,
+        'name': newAnimal.name,
+        'breed': newAnimal.breed,
+        'disposition1': isGoodAnimals,
+        'disposition2': isGoodChildren,
+        'disposition3': isMustLeash,
+        'email': newAnimal.email,
+        'contactName': newAnimal.contactName,
+        'phone': newAnimal.phone,
+        'url': url,
+        'sex': newAnimal.sex,
+        'favorite': newAnimal.favorite,
+        'uid': user.uid,
+        'status': "Available",
+        'dateAdded': 1234,
+        'location': newAnimal.location,
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final Animals args = ModalRoute.of(context)!.settings.arguments as Animals;
+
+    if (args.isUpdate) {
+      if (!updatePhoto) {
+        imagePath = args.url;
+      }
+
+      setState(() {
+        categoryCurValue = args.categoryName;
+      });
+    }
+
     return Scaffold(
         appBar: AppBar(
-          title: Text('List a Pet'),
+          title: args.isUpdate ? Text('Update Pet Info') : Text('List a Pet'),
           centerTitle: true,
         ),
 
@@ -146,19 +229,24 @@ class NewProfileState extends State<NewProfile> {
                                     border: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(5.0))),
-                                isEmpty: currentVal == '',
+                                // isEmpty: categoryCurValue == '',
                                 child: DropdownButtonHideUnderline(
                                   child: DropdownButton<String>(
-                                    value: currentVal,
+                                    value: categoryCurValue,
                                     isDense: true,
-                                    onChanged: (String? newValue) {
-                                      setState(() {
-                                        currentVal = newValue!;
-                                        breedCurValue = '';
-                                        getBreedList(currentVal);
-                                        state.didChange(newValue);
-                                      });
-                                    },
+                                    disabledHint:
+                                        Text('Cannot change for update'),
+                                    onChanged: args.isUpdate
+                                        ? null
+                                        : (String? categoryNewValue) {
+                                            setState(() {
+                                              categoryCurValue =
+                                                  categoryNewValue!;
+                                              breedCurValue = args.breed;
+                                              getBreedList(categoryCurValue);
+                                              state.didChange(categoryNewValue);
+                                            });
+                                          },
                                     items: petCategories.map((String value) {
                                       return DropdownMenuItem<String>(
                                         value: value,
@@ -184,18 +272,19 @@ class NewProfileState extends State<NewProfile> {
                                     border: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(5.0))),
-                                isEmpty: breedCurValue == '',
+                                // isEmpty: breedCurValue == args.breed,
                                 child: DropdownButtonHideUnderline(
                                   child: DropdownButton<String>(
-                                    value: breedCurValue,
+                                    value: args.breed,
                                     isDense: true,
                                     onChanged: (String? breedNewValue) {
                                       setState(() {
                                         breedCurValue = breedNewValue!;
+                                        args.breed = breedNewValue;
                                         state.didChange(breedNewValue);
                                       });
                                     },
-                                    items: getBreedList(currentVal)
+                                    items: getBreedList(categoryCurValue)
                                         .map((String value) {
                                       return DropdownMenuItem<String>(
                                         value: value,
@@ -217,19 +306,20 @@ class NewProfileState extends State<NewProfile> {
                                         color: Colors.redAccent,
                                         fontSize: 14.0),
                                     labelText: 'Sex',
-                                    hintText: 'Please select gender',
+                                    hintText: 'Please select Sex',
                                     border: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(5.0))),
-                                isEmpty: sexCurValue == '',
+                                // isEmpty: sexCurValue == args.sex,
                                 child: DropdownButtonHideUnderline(
                                   child: DropdownButton<String>(
-                                    value: sexCurValue,
+                                    value: args.sex,
                                     isDense: true,
                                     onChanged: (String? sexNewValue) {
                                       setState(() {
                                         sexCurValue = sexNewValue!;
                                         state.didChange(sexNewValue);
+                                        args.sex = sexNewValue;
                                       });
                                     },
                                     items: sexDropDown.map((String value) {
@@ -244,7 +334,48 @@ class NewProfileState extends State<NewProfile> {
                             },
                           ),
                           SizedBox(height: 25),
+                          FormField<String>(
+                            builder: (FormFieldState<String> state) {
+                              return InputDecorator(
+                                decoration: InputDecoration(
+                                    // labelStyle: textStyle,
+                                    errorStyle: TextStyle(
+                                        color: Colors.redAccent,
+                                        fontSize: 14.0),
+                                    labelText: 'Location',
+                                    hintText: 'Please select the location',
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(5.0))),
+                                // isEmpty: newAnimal.location == args.location,
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton<String>(
+                                    value: args.location,
+                                    isDense: true,
+                                    onChanged: (String? locationNewValue) {
+                                      setState(() {
+                                        locationCurValue = locationNewValue!;
+                                        newAnimal.location = locationNewValue;
+                                        state.didChange(newAnimal.location);
+                                        args.location = locationNewValue;
+                                      });
+                                    },
+                                    items: Constants()
+                                        .statesList
+                                        .map((String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                          SizedBox(height: 25),
                           TextFormField(
+                              initialValue: args.name,
                               onSaved: (value) {
                                 newAnimal.name = value!;
                               },
@@ -261,6 +392,7 @@ class NewProfileState extends State<NewProfile> {
                               )),
                           SizedBox(height: 25),
                           TextFormField(
+                              initialValue: args.age.toString(),
                               onSaved: (value) {
                                 newAnimal.age = int.parse(value!);
                               },
@@ -277,6 +409,7 @@ class NewProfileState extends State<NewProfile> {
                               )),
                           SizedBox(height: 25),
                           TextFormField(
+                              initialValue: args.about,
                               keyboardType: TextInputType.multiline,
                               maxLines: null,
                               minLines: 2,
@@ -340,6 +473,7 @@ class NewProfileState extends State<NewProfile> {
                         child: Column(children: [
                           SizedBox(height: 25),
                           TextFormField(
+                              initialValue: args.contactName,
                               onSaved: (value) {
                                 newAnimal.contactName = value!;
                               },
@@ -356,6 +490,7 @@ class NewProfileState extends State<NewProfile> {
                               )),
                           SizedBox(height: 25),
                           TextFormField(
+                              initialValue: args.phone,
                               onSaved: (value) {
                                 newAnimal.phone = value!;
                               },
@@ -372,6 +507,7 @@ class NewProfileState extends State<NewProfile> {
                               )),
                           SizedBox(height: 25),
                           TextFormField(
+                              initialValue: args.email,
                               onSaved: (value) {
                                 newAnimal.email = value!;
                               },
@@ -387,37 +523,77 @@ class NewProfileState extends State<NewProfile> {
                                 border: OutlineInputBorder(),
                               )),
                           SizedBox(height: 30),
-                          // ElevatedButton.icon(
-                          //   label: const Text(
-                          //     'Upload Image',
-                          //     style: TextStyle(fontSize: 20),
-                          //   ),
-                          //   icon: const Icon(Icons.photo),
-                          //   // backgroundColor: colDarkBlue,
-                          //   onPressed: () {
-                          //     selectImage();
-                          //   },
+                          Row(children: [
+                            ElevatedButton.icon(
+                              label: const Text(
+                                'Upload Photo',
+                                style: TextStyle(fontSize: 20),
+                              ),
+                              icon: const Icon(Icons.photo),
+                              // backgroundColor: colDarkBlue,
+                              onPressed: () {
+                                selectImage();
+                              },
 
-                          //   style: ButtonStyle(
-                          //       backgroundColor:
-                          //           MaterialStateProperty.all<Color>(
-                          //               Constants.redOrange), // background
-                          //       foregroundColor:
-                          //           MaterialStateProperty.all<Color>(
-                          //               Colors.white),
-                          //       shape: MaterialStateProperty.all<
-                          //               RoundedRectangleBorder>(
-                          //           RoundedRectangleBorder(
-                          //         borderRadius: BorderRadius.circular(20),
-                          //       ))),
-                          // ),
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Constants.redOrange), // background
+                                  foregroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.white),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ))),
+                            ),
+                            SizedBox(width: 15),
+                            ElevatedButton.icon(
+                              label: const Text(
+                                'Take Photo',
+                                style: TextStyle(fontSize: 20),
+                              ),
+                              icon: const Icon(Icons.camera_alt),
+                              // backgroundColor: colDarkBlue,
+                              onPressed: () {
+                                selectImage();
+                              },
+
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Constants.redOrange), // background
+                                  foregroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.white),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ))),
+                            ),
+                          ]),
                           SizedBox(height: 15),
                           Container(
-                            child: CircleAvatar(
-                              radius: 80.0,
-                              backgroundImage: NetworkImage(widget.photoURL),
-                              backgroundColor: Colors.transparent,
+                            padding: EdgeInsets.all(0),
+                            margin: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(100),
+                              border: Border.all(
+                                color: Constants.fadedYellow,
+                                width: 5,
+                              ),
                             ),
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(80.0),
+                                child: CircleAvatar(
+                                  radius: 80.0,
+                                  backgroundImage: args.isUpdate && !updatePhoto
+                                      ? NetworkImage(args.url)
+                                      : AssetImage(imagePath) as ImageProvider,
+                                  backgroundColor: Colors.transparent,
+                                )),
                           ),
                           SizedBox(height: 15),
                         ])),
@@ -433,7 +609,7 @@ class NewProfileState extends State<NewProfile> {
         floatingActionButton: Semantics(
           child: new FloatingActionButton.extended(
             onPressed: () {
-              if (currentVal == '') {
+              if (categoryCurValue == '') {
                 showAlertDialog(context, 'Missing Category',
                     'Please choose your pet\'s category');
               } else if (breedCurValue == '') {
@@ -445,13 +621,15 @@ class NewProfileState extends State<NewProfile> {
               }
               if (formKey.currentState!.validate()) {
                 formKey.currentState!.save();
-                uploadNewPetProfile();
-                Navigator.of(context).pushNamed(Dashboard.routeName);
+                uploadNewPetProfile(args.isUpdate, args.animalID, args.url);
+                Navigator.of(context).pop();
               }
             },
             tooltip: 'Upload your Pet',
             backgroundColor: Constants.deepBlue,
-            label: const Text('Upload your Pet'),
+            label: args.isUpdate
+                ? Text('Update your Pet')
+                : Text('Upload your Pet'),
             icon: const Icon(
               Icons.upload_rounded,
             ),
