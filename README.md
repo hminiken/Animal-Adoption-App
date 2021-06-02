@@ -152,6 +152,8 @@ profile by Rahmat Hidayat from the Noun Project
 
 Rabbit by Sumana Chamrunworakiat from the Noun Project
 
+https://github.com/NearHuscarl/flutter_login/tree/master/example
+
 https://medium.com/firebase-tips-tricks/how-to-use-firebase-queries-in-flutter-361f21005467
 
 https://petercoding.com/firebase/2020/02/16/using-firebase-queries-in-flutter/
