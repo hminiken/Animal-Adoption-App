@@ -7,7 +7,6 @@ import 'package:cuddler/widgets/global_widgets.dart';
 import 'package:cuddler/widgets/new_profile_widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
-import 'dart:io';
 
 class NewProfile extends StatefulWidget {
   static const routeName = '/new_profile_screen';
