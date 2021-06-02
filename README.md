@@ -145,8 +145,11 @@ In the user profile page, the user can select “Update Email Preferences”. Th
  
 Sources To Thank:
 Pet Shop by supalerk laipawat from the Noun Project
+
 Heart by allex from the Noun Project
+
 profile by Rahmat Hidayat from the Noun Project
+
 Rabbit by Sumana Chamrunworakiat from the Noun Project
 
 https://medium.com/firebase-tips-tricks/how-to-use-firebase-queries-in-flutter-361f21005467
