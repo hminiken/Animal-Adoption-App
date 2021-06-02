@@ -102,7 +102,7 @@ class NewProfileState extends State<NewProfile> {
       'sex': newAnimal.sex,
       'favorite': newAnimal.favorite,
       'location': newAnimal.location,
-      'dateAdded': DateTime.now(),
+      'dateAdded': DateTime.now().millisecondsSinceEpoch * 1000,
       'uid': uid
     });
   }
