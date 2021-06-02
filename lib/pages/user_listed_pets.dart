@@ -115,7 +115,10 @@ class DogsList extends StatelessWidget {
                       pushNewEntry(context, post['url'], post['status'],
                           post['name'], dogs.doc(post.id));
                     },
-                    leading: Icon(MyFlutterApp.dog),
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(post['url']),
+                      backgroundColor: Colors.transparent,
+                    ),
                     title: Text(
                       post['name'],
                       style: TextStyle(fontSize: 20),
@@ -197,14 +200,16 @@ class CatsList extends StatelessWidget {
                 var post = snapshot.data!.docs[index];
                 var age = post['age'].toString();
                 var sex = post['sex'];
-                var fav = post['favorite'];
                 return ListTile(
                     //Go to details screen on tap, send necessary info to details screen
                     onTap: () {
                       pushNewEntry(context, post['url'], post['status'],
                           post['name'], cats.doc(post.id));
                     },
-                    leading: Icon(MyFlutterApp.cat),
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(post['url']),
+                      backgroundColor: Colors.transparent,
+                    ),
                     title: Text(
                       post['name'],
                       style: TextStyle(fontSize: 20),
@@ -285,14 +290,16 @@ class OthersList extends StatelessWidget {
                 var post = snapshot.data!.docs[index];
                 var age = post['age'].toString();
                 var sex = post['sex'];
-                var fav = post['favorite'];
                 return ListTile(
                     //Go to details screen on tap, send necessary info to details screen
                     onTap: () {
                       pushNewEntry(context, post['url'], post['status'],
                           post['name'], others.doc(post.id));
                     },
-                    leading: Icon(MyFlutterApp.pastafarianism),
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(post['url']),
+                      backgroundColor: Colors.transparent,
+                    ),
                     title: Text(
                       post['name'],
                       style: TextStyle(fontSize: 20),

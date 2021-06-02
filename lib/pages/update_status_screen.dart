@@ -93,15 +93,13 @@ class UpdateStatusState extends State<UpdateStatus> {
                   ),
                   icon: const Icon(Icons.update_outlined),
                   onPressed: () {
-                    if(statusValue == "Adopted")
-                    {
+                    if (statusValue == "Adopted") {
                       args.id.delete();
                     } else {
                       args.id.update({'status': statusValue});
                     }
                     Navigator.pop(context);
                   },
-
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
                           Constants.deepBlue), // background
@@ -117,8 +115,8 @@ class UpdateStatusState extends State<UpdateStatus> {
                       ),
                 ),
                 SizedBox(height: 50),
-
-                Text("Note: Changing status to 'Adopted' will remove the pet from the database. This action cannot be undone."),
+                Text(
+                    "Note: Changing status to 'Adopted' will remove the pet from the database. This action cannot be undone."),
                 SizedBox(height: 50),
               ]))),
       // floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
