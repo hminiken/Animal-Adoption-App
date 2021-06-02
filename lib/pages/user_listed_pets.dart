@@ -4,10 +4,9 @@ import 'package:cuddler/pages/new_profile_screen.dart';
 import 'update_status_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/my_flutter_app_icons.dart';
-
-String uid = 'I1tRDK1UeCV3kyeUbU9jjUj7NoX2';
 
 class StatusArguments {
   // final File image;
@@ -38,18 +37,10 @@ class UserListed extends StatefulWidget {
 }
 
 class _UserListedState extends State<UserListed> {
-  //unique user id. Need to add later to "fetch" this from current login session
-
-  String uid = 'I1tRDK1UeCV3kyeUbU9jjUj7NoX2';
+  final user = FirebaseAuth.instance.currentUser!;
 
   @override
   Widget build(BuildContext context) {
-    // return MaterialApp(
-    //   theme: ThemeData(
-    //       primarySwatch: Colors.teal,
-    //       fontFamily: GoogleFonts.gabriela().fontFamily),
-    //   home:
-
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -66,9 +57,9 @@ class _UserListedState extends State<UserListed> {
         ),
         body: TabBarView(
           children: [
-            DogsList(),
-            CatsList(),
-            OthersList(),
+            DogsList(userID: user.uid),
+            CatsList(userID: user.uid),
+            OthersList(userID: user.uid),
           ],
         ),
       ),
@@ -78,6 +69,8 @@ class _UserListedState extends State<UserListed> {
 
 //Widget for displaying list of dogs
 class DogsList extends StatelessWidget {
+  DogsList({required this.userID});
+  final userID;
   @override
   Widget build(BuildContext context) {
     Animals currentPet = new Animals(
@@ -102,7 +95,7 @@ class DogsList extends StatelessWidget {
     //Grab the collection from firebase
     CollectionReference dogs = FirebaseFirestore.instance.collection('dogs');
 
-    final Query myDogs = dogs.where("uid", isEqualTo: uid);
+    final Query myDogs = dogs.where("uid", isEqualTo: userID);
 
     return StreamBuilder<QuerySnapshot>(
       stream: myDogs.snapshots(),
@@ -155,9 +148,9 @@ class DogsList extends StatelessWidget {
                     ));
               });
         }
-        //If firebase has no data use circular loading picture
+        //If firebase has no data display message
         else {
-          return Center(child: CircularProgressIndicator());
+          return Center(child: Text('No dogs listed'));
         }
       },
     );
@@ -166,6 +159,8 @@ class DogsList extends StatelessWidget {
 
 //Widget for displaying list of cats
 class CatsList extends StatelessWidget {
+  CatsList({required this.userID});
+  final userID;
   @override
   Widget build(BuildContext context) {
     Animals currentPet = new Animals(
@@ -189,7 +184,7 @@ class CatsList extends StatelessWidget {
 
     //Grab the collection from firebase
     CollectionReference cats = FirebaseFirestore.instance.collection('cats');
-    final Query myCats = cats.where("uid", isEqualTo: uid);
+    final Query myCats = cats.where("uid", isEqualTo: userID);
 
     return StreamBuilder<QuerySnapshot>(
       stream: myCats.snapshots(),
@@ -241,9 +236,9 @@ class CatsList extends StatelessWidget {
                     ));
               });
         }
-        //If firebase has no data use circular loading picture
+        //If firebase has no data display message
         else {
-          return Center(child: CircularProgressIndicator());
+          return Center(child: Text('No cats listed'));
         }
       },
     );
@@ -252,6 +247,8 @@ class CatsList extends StatelessWidget {
 
 //Widget for displaying list of others
 class OthersList extends StatelessWidget {
+  OthersList({required this.userID});
+  final userID;
   @override
   Widget build(BuildContext context) {
     Animals currentPet = new Animals(
@@ -275,7 +272,7 @@ class OthersList extends StatelessWidget {
     //Grab the collection from firebase
     CollectionReference others =
         FirebaseFirestore.instance.collection('others');
-    final Query myOthers = others.where("uid", isEqualTo: uid);
+    final Query myOthers = others.where("uid", isEqualTo: userID);
 
     return StreamBuilder<QuerySnapshot>(
       stream: myOthers.snapshots(),
@@ -327,9 +324,9 @@ class OthersList extends StatelessWidget {
                     ));
               });
         }
-        //If firebase has no data use circular loading picture
+        //If firebase has no data display message
         else {
-          return Center(child: CircularProgressIndicator());
+          return Center(child: Text('No other pets listed'));
         }
       },
     );

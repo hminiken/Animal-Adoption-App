@@ -7,7 +7,7 @@ import 'admin_screen.dart';
 import '../models/constants.dart';
 import '../models/user_model.dart';
 import '../widgets/background.dart';
-import 'new_profile_screen.dart';
+import 'photo_screen.dart';
 import 'daily_feed.dart';
 import 'select_location_screen.dart';
 import '../widgets/landingButton.dart';
@@ -251,37 +251,34 @@ class DashboardScreenState extends State<Dashboard> {
               textAlign: TextAlign.right,
             ),
           ),
-          Padding(
-              padding: EdgeInsets.only(right: 10.0, left: 10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                    child: LandingButton(
-                        displayText: list,
-                        page: NewProfile(),
-                        icon: Icons.upload_rounded),
-                  ),
-                  SizedBox(width: MediaQuery.of(context).size.width / 50),
-                  Expanded(
-                    child: LandingButton(
-                      displayText: adopt,
-                      page: SelectLocation(),
-                      icon: Icons.pets,
-                    ),
-                  ),
-                  SizedBox(width: MediaQuery.of(context).size.width / 50),
-                  Expanded(
-                    //flex: 1,
-                    child: LandingButton(
-                      displayText: dailyFeed,
-                      page: DailyFeed(),
-                      icon: Icons.list,
-                    ),
-                  ),
-                ],
-              )),
-          SizedBox(height: 80),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: LandingButton(
+                    displayText: list,
+                    page: PhotoScreen(),
+                    icon: Icons.upload_rounded),
+              ),
+              SizedBox(width: 20.0),
+              Expanded(
+                child: LandingButton(
+                  displayText: adopt,
+                  page: SelectLocation(),
+                  icon: Icons.pets,
+                ),
+              ),
+              Expanded(
+                //flex: 1,
+                child: LandingButton(
+                  displayText: dailyFeed,
+                  page: DailyFeed(),
+                  icon: Icons.list,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 60.0),
         ],
       ),
     );

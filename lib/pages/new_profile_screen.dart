@@ -1,20 +1,21 @@
+import 'dart:io';
+
 import 'package:cuddler/models/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-
 import 'package:cuddler/models/animals.dart';
 import 'package:cuddler/widgets/global_widgets.dart';
 import 'package:cuddler/widgets/new_profile_widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io';
-
 import 'package:permission_handler/permission_handler.dart';
 
 class NewProfile extends StatefulWidget {
   static const routeName = '/new_profile_screen';
+  NewProfile({required this.photoURL});
+  final String photoURL;
   @override
   NewProfileState createState() => NewProfileState();
 }
@@ -35,8 +36,7 @@ class NewProfileState extends State<NewProfile> {
   var sexCurValue = 'Male';
   var locationCurValue = 'Alabama';
 
-  //unique user id. Need to add later to "fetch" this from current login session
-  String uid = 'I1tRDK1UeCV3kyeUbU9jjUj7NoX2';
+  final user = FirebaseAuth.instance.currentUser!;
 
   List<String> getBreedList(categoryCurValue) {
     var dropdownList;
