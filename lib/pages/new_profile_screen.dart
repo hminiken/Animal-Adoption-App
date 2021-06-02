@@ -110,7 +110,6 @@ class NewProfileState extends State<NewProfile> {
 
   @override
   Widget build(BuildContext context) {
-    File image = File(widget.photoURL);
     return Scaffold(
         appBar: AppBar(
           title: Text('List a Pet'),
