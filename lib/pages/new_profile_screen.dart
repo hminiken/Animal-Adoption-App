@@ -1,19 +1,17 @@
 import 'package:cuddler/models/constants.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cuddler/pages/dashboard.dart';
 import 'package:flutter/material.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cuddler/models/animals.dart';
 import 'package:cuddler/widgets/global_widgets.dart';
 import 'package:cuddler/widgets/new_profile_widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
-
-import 'package:permission_handler/permission_handler.dart';
 
 class NewProfile extends StatefulWidget {
   static const routeName = '/new_profile_screen';
+  NewProfile({required this.photoURL});
+  final String photoURL;
   @override
   NewProfileState createState() => NewProfileState();
 }
@@ -31,8 +29,7 @@ class NewProfileState extends State<NewProfile> {
   var breedCurValue = '';
   var sexCurValue = 'Male';
 
-  //unique user id. Need to add later to "fetch" this from current login session
-  String uid = 'I1tRDK1UeCV3kyeUbU9jjUj7NoX2';
+  final user = FirebaseAuth.instance.currentUser!;
 
   List<String> getBreedList(currentVal) {
     var dropdownList;
@@ -52,9 +49,6 @@ class NewProfileState extends State<NewProfile> {
     return dropdownList;
   }
 
-  File image = new File('assets/images/profileImgPlaceholder.png');
-  File defaultImage = new File('assets/images/profileImgPlaceholder.png');
-  final picker = ImagePicker();
   Animals newAnimal = new Animals(
       about: '',
       age: 0,
@@ -81,25 +75,6 @@ class NewProfileState extends State<NewProfile> {
 
   void isMustLeashChanged(bool value) => setState(() => isMustLeash = value);
 
-  void selectImage() async {
-    try {
-      var _permissionGranted = await Permission.storage.request();
-      if (_permissionGranted.isDenied) {
-        _permissionGranted = await Permission.storage.request();
-        if (_permissionGranted.isPermanentlyDenied) {
-          print('Location service permission not granted. Returning.');
-          return;
-        }
-      }
-      final pickedFile = await picker.getImage(source: ImageSource.gallery);
-      setState(() {
-        image = File(pickedFile!.path);
-      });
-    } on PlatformException catch (e) {
-      print('Error: ${e.toString()}, code: ${e.code}');
-    }
-  }
-
   uploadNewPetProfile() async {
     print("Uploading our content");
 
@@ -108,19 +83,7 @@ class NewProfileState extends State<NewProfile> {
     newAnimal.breed = breedCurValue;
     newAnimal.sex = sexCurValue;
 
-    FirebaseStorage storage = FirebaseStorage.instance;
-    Reference ref = storage.ref().child("image" + DateTime.now().toString());
-    UploadTask uploadTask = ref.putFile(image);
-
-    final TaskSnapshot downloadUrl = (await uploadTask);
-
-    final String url = await downloadUrl.ref.getDownloadURL();
-
-    // FirebaseStorage storage = FirebaseStorage.instance;
-    // Reference ref = storage.ref().child("image1" + DateTime.now().toString());
-    // UploadTask uploadTask = ref.putFile(image);
-
-    // final String url = 'myimg'; //await ref.getDownloadURL();
+    final uid = user.uid;
 
     newAnimal.favorite = false;
 
@@ -135,9 +98,12 @@ class NewProfileState extends State<NewProfile> {
       'email': newAnimal.email,
       'contactName': newAnimal.contactName,
       'phone': newAnimal.phone,
-      'url': url,
+      'url': widget.photoURL,
       'sex': newAnimal.sex,
-      'favorite': newAnimal.favorite
+      'favorite': newAnimal.favorite,
+      'location': newAnimal.location,
+      'dateAdded': DateTime.now().millisecondsSinceEpoch * 1000,
+      'uid': uid
     });
   }
 
@@ -251,7 +217,7 @@ class NewProfileState extends State<NewProfile> {
                                         color: Colors.redAccent,
                                         fontSize: 14.0),
                                     labelText: 'Sex',
-                                    hintText: 'Please select breed',
+                                    hintText: 'Please select gender',
                                     border: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(5.0))),
@@ -421,36 +387,36 @@ class NewProfileState extends State<NewProfile> {
                                 border: OutlineInputBorder(),
                               )),
                           SizedBox(height: 30),
-                          ElevatedButton.icon(
-                            label: const Text(
-                              'Upload Image',
-                              style: TextStyle(fontSize: 20),
-                            ),
-                            icon: const Icon(Icons.photo),
-                            // backgroundColor: colDarkBlue,
-                            onPressed: () {
-                              selectImage();
-                            },
+                          // ElevatedButton.icon(
+                          //   label: const Text(
+                          //     'Upload Image',
+                          //     style: TextStyle(fontSize: 20),
+                          //   ),
+                          //   icon: const Icon(Icons.photo),
+                          //   // backgroundColor: colDarkBlue,
+                          //   onPressed: () {
+                          //     selectImage();
+                          //   },
 
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Constants.redOrange), // background
-                                foregroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Colors.white),
-                                shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ))),
-                          ),
+                          //   style: ButtonStyle(
+                          //       backgroundColor:
+                          //           MaterialStateProperty.all<Color>(
+                          //               Constants.redOrange), // background
+                          //       foregroundColor:
+                          //           MaterialStateProperty.all<Color>(
+                          //               Colors.white),
+                          //       shape: MaterialStateProperty.all<
+                          //               RoundedRectangleBorder>(
+                          //           RoundedRectangleBorder(
+                          //         borderRadius: BorderRadius.circular(20),
+                          //       ))),
+                          // ),
                           SizedBox(height: 15),
                           Container(
-                            child: ClipRRect(
-                              // borderRadius: BorderRadius.circular(80.0),
-
-                              child: setUploadImage(context, image, ""),
+                            child: CircleAvatar(
+                              radius: 80.0,
+                              backgroundImage: NetworkImage(widget.photoURL),
+                              backgroundColor: Colors.transparent,
                             ),
                           ),
                           SizedBox(height: 15),
@@ -467,10 +433,7 @@ class NewProfileState extends State<NewProfile> {
         floatingActionButton: Semantics(
           child: new FloatingActionButton.extended(
             onPressed: () {
-              if (image.path == defaultImage.path) {
-                showAlertDialog(context, 'Missing Photo',
-                    'Please upload an image of your pet to proceed');
-              } else if (currentVal == '') {
+              if (currentVal == '') {
                 showAlertDialog(context, 'Missing Category',
                     'Please choose your pet\'s category');
               } else if (breedCurValue == '') {
@@ -483,7 +446,7 @@ class NewProfileState extends State<NewProfile> {
               if (formKey.currentState!.validate()) {
                 formKey.currentState!.save();
                 uploadNewPetProfile();
-                Navigator.of(context).pop();
+                Navigator.of(context).pushNamed(Dashboard.routeName);
               }
             },
             tooltip: 'Upload your Pet',
