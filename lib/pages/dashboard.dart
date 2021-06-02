@@ -51,7 +51,7 @@ class DashboardScreenState extends State<Dashboard> {
             name: "",
             phone: "",
             contactName: "",
-            sex: "",
+            sex: "Male",
             url: "",
             breed: "",
             favorite: false,

@@ -160,14 +160,6 @@ class DailyFeedState extends State<DailyFeed> {
                     },
                     icon: Icon(Icons.add),
                   ),
-                  IconButton(
-                    onPressed: () {
-                      // getAllNewsItems();
-                      uploadPets();
-                    },
-                    icon: Icon(
-                        Icons.refresh), //for testing, get's all new updates
-                  ),
                 ]
               : [],
         ),

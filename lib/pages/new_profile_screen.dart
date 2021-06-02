@@ -28,22 +28,24 @@ class NewProfileState extends State<NewProfile> {
   final formKey = GlobalKey<FormState>();
   var petCategories = ["Dog", "Cat", "Other"];
   var sexDropDown = ["Male", "Female"];
-  String currentVal = 'Dog';
+
+  var categoryCurValue = 'Dog';
   var breedCurValue = '';
   var sexCurValue = 'Male';
+  var locationCurValue = 'Alabama';
 
   //unique user id. Need to add later to "fetch" this from current login session
   String uid = 'I1tRDK1UeCV3kyeUbU9jjUj7NoX2';
 
-  List<String> getBreedList(currentVal) {
+  List<String> getBreedList(categoryCurValue) {
     var dropdownList;
-    if (currentVal == 'Dog') {
+    if (categoryCurValue == 'Dog') {
       dropdownList = Constants().dogBreeds;
       // breedCurValue = '';
-    } else if (currentVal == 'Cat') {
+    } else if (categoryCurValue == 'Cat') {
       dropdownList = Constants().catBreeds;
       // breedCurValue = '';
-    } else if (currentVal == 'Other') {
+    } else if (categoryCurValue == 'Other') {
       dropdownList = Constants().otherBreeds;
       // breedCurValue = '';
     } else {
@@ -107,7 +109,7 @@ class NewProfileState extends State<NewProfile> {
     print("Uploading our content");
     final user = FirebaseAuth.instance.currentUser!;
 
-    var collection = getCollection(currentVal);
+    var collection = getCollection(categoryCurValue);
 
     newAnimal.breed = breedCurValue;
     newAnimal.sex = sexCurValue;
@@ -119,12 +121,6 @@ class NewProfileState extends State<NewProfile> {
     final TaskSnapshot downloadUrl = (await uploadTask);
 
     final String url = await downloadUrl.ref.getDownloadURL();
-
-    // FirebaseStorage storage = FirebaseStorage.instance;
-    // Reference ref = storage.ref().child("image1" + DateTime.now().toString());
-    // UploadTask uploadTask = ref.putFile(image);
-
-    // final String url = 'myimg'; //await ref.getDownloadURL();
 
     newAnimal.favorite = false;
 
@@ -214,17 +210,17 @@ class NewProfileState extends State<NewProfile> {
                                     border: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(5.0))),
-                                isEmpty: currentVal == args.breed,
+                                // isEmpty: categoryCurValue == '',
                                 child: DropdownButtonHideUnderline(
                                   child: DropdownButton<String>(
-                                    value: currentVal,
+                                    value: categoryCurValue,
                                     isDense: true,
-                                    onChanged: (String? newValue) {
+                                    onChanged: (String? categoryNewValue) {
                                       setState(() {
-                                        currentVal = newValue!;
+                                        categoryCurValue = categoryNewValue!;
                                         breedCurValue = args.breed;
-                                        getBreedList(currentVal);
-                                        state.didChange(newValue);
+                                        getBreedList(categoryCurValue);
+                                        state.didChange(categoryNewValue);
                                       });
                                     },
                                     items: petCategories.map((String value) {
@@ -252,7 +248,7 @@ class NewProfileState extends State<NewProfile> {
                                     border: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(5.0))),
-                                isEmpty: breedCurValue == args.breed,
+                                // isEmpty: breedCurValue == args.breed,
                                 child: DropdownButtonHideUnderline(
                                   child: DropdownButton<String>(
                                     value: args.breed,
@@ -260,10 +256,11 @@ class NewProfileState extends State<NewProfile> {
                                     onChanged: (String? breedNewValue) {
                                       setState(() {
                                         breedCurValue = breedNewValue!;
+                                        args.breed = breedNewValue;
                                         state.didChange(breedNewValue);
                                       });
                                     },
-                                    items: getBreedList(currentVal)
+                                    items: getBreedList(categoryCurValue)
                                         .map((String value) {
                                       return DropdownMenuItem<String>(
                                         value: value,
@@ -285,11 +282,11 @@ class NewProfileState extends State<NewProfile> {
                                         color: Colors.redAccent,
                                         fontSize: 14.0),
                                     labelText: 'Sex',
-                                    hintText: 'Please select breed',
+                                    hintText: 'Please select Sex',
                                     border: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(5.0))),
-                                isEmpty: sexCurValue == args.sex,
+                                // isEmpty: sexCurValue == args.sex,
                                 child: DropdownButtonHideUnderline(
                                   child: DropdownButton<String>(
                                     value: args.sex,
@@ -298,6 +295,7 @@ class NewProfileState extends State<NewProfile> {
                                       setState(() {
                                         sexCurValue = sexNewValue!;
                                         state.didChange(sexNewValue);
+                                        args.sex = sexNewValue;
                                       });
                                     },
                                     items: sexDropDown.map((String value) {
@@ -325,15 +323,17 @@ class NewProfileState extends State<NewProfile> {
                                     border: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(5.0))),
-                                isEmpty: newAnimal.location == args.location,
+                                // isEmpty: newAnimal.location == args.location,
                                 child: DropdownButtonHideUnderline(
                                   child: DropdownButton<String>(
                                     value: args.location,
                                     isDense: true,
-                                    onChanged: (String? sexNewValue) {
+                                    onChanged: (String? locationNewValue) {
                                       setState(() {
-                                        newAnimal.location = sexNewValue!;
+                                        locationCurValue = locationNewValue!;
+                                        newAnimal.location = locationNewValue;
                                         state.didChange(newAnimal.location);
+                                        args.location = locationNewValue;
                                       });
                                     },
                                     items: Constants()
@@ -560,7 +560,7 @@ class NewProfileState extends State<NewProfile> {
               if (image.path == defaultImage.path) {
                 showAlertDialog(context, 'Missing Photo',
                     'Please upload an image of your pet to proceed');
-              } else if (currentVal == '') {
+              } else if (categoryCurValue == '') {
                 showAlertDialog(context, 'Missing Category',
                     'Please choose your pet\'s category');
               } else if (breedCurValue == '') {
