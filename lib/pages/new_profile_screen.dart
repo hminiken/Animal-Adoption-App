@@ -56,7 +56,7 @@ class NewProfileState extends State<NewProfile> {
     return dropdownList;
   }
 
-  File image = new File('images/blank_animal.png');
+  File image = new File('/images/blank_animal.png');
   var imagePath = 'images/blank_animal.png';
   File defaultImage = new File('/images/blank_animal.png');
   final picker = ImagePicker();
@@ -76,6 +76,7 @@ class NewProfileState extends State<NewProfile> {
       url: '',
       location: 'Alabama',
       animalID: '',
+      status: "",
       categoryName: '',
       isUpdate: false);
 
@@ -118,7 +119,6 @@ class NewProfileState extends State<NewProfile> {
 
     newAnimal.breed = breedCurValue;
     newAnimal.sex = sexCurValue;
-    String url = "";
 
     if (updatePhoto) {
       FirebaseStorage storage = FirebaseStorage.instance;
@@ -127,15 +127,12 @@ class NewProfileState extends State<NewProfile> {
 
       final TaskSnapshot downloadUrl = (await uploadTask);
 
-      url = await downloadUrl.ref.getDownloadURL();
+      curImgURL = await downloadUrl.ref.getDownloadURL();
     }
 
     newAnimal.favorite = false;
 
     if (isUpdate) {
-      if (!updatePhoto) {
-        url = curImgURL;
-      }
       FirebaseFirestore.instance.collection(collection).doc(animalID).update({
         'about': newAnimal.about,
         'age': newAnimal.age,
@@ -147,11 +144,11 @@ class NewProfileState extends State<NewProfile> {
         'email': newAnimal.email,
         'contactName': newAnimal.contactName,
         'phone': newAnimal.phone,
-        'url': url,
+        'url': curImgURL,
         'sex': newAnimal.sex,
         'favorite': newAnimal.favorite,
         'uid': user.uid,
-        'status': "Available",
+        'status': newAnimal.status,
         'dateAdded': DateTime.now().millisecondsSinceEpoch * 1000,
         'location': newAnimal.location,
       });
@@ -167,7 +164,7 @@ class NewProfileState extends State<NewProfile> {
         'email': newAnimal.email,
         'contactName': newAnimal.contactName,
         'phone': newAnimal.phone,
-        'url': url,
+        'url': curImgURL,
         'sex': newAnimal.sex,
         'favorite': newAnimal.favorite,
         'uid': user.uid,
@@ -176,6 +173,7 @@ class NewProfileState extends State<NewProfile> {
         'location': newAnimal.location,
       });
     }
+    Navigator.of(context).pop();
   }
 
   @override
@@ -183,13 +181,15 @@ class NewProfileState extends State<NewProfile> {
     final Animals args = ModalRoute.of(context)!.settings.arguments as Animals;
 
     if (args.isUpdate) {
-      if (!updatePhoto) {
-        imagePath = args.url;
-      }
-
       setState(() {
         categoryCurValue = args.categoryName;
+        if (!updatePhoto) {
+          imagePath = args.url;
+        }
       });
+    } else {
+      args.url =
+          "https://firebasestorage.googleapis.com/v0/b/cuddler-bd524.appspot.com/o/blank_animal.png?alt=media&token=095373ec-af4d-4e12-993f-aed84d5f373d";
     }
 
     return Scaffold(
@@ -589,16 +589,23 @@ class NewProfileState extends State<NewProfile> {
                                 borderRadius: BorderRadius.circular(80.0),
                                 child: CircleAvatar(
                                   radius: 80.0,
-                                  backgroundImage: args.isUpdate && !updatePhoto
+                                  backgroundImage: !updatePhoto
                                       ? NetworkImage(args.url)
-                                      : AssetImage(imagePath) as ImageProvider,
+                                      : FileImage(File(imagePath))
+                                          as ImageProvider,
                                   backgroundColor: Colors.transparent,
                                 )),
                           ),
                           SizedBox(height: 15),
+                          CheckboxListTile(
+                              value: isGoodAnimals,
+                              onChanged: (bool? value) {
+                                setState(() => isGoodAnimals = value!);
+                              },
+                              title: new Text("Add to news bulletins?"),
+                              controlAffinity: ListTileControlAffinity.leading,
+                              activeColor: Constants.redOrange),
                         ])),
-
-                    SizedBox(height: 30),
 
                     SizedBox(height: 70),
                   ],
@@ -622,7 +629,7 @@ class NewProfileState extends State<NewProfile> {
               if (formKey.currentState!.validate()) {
                 formKey.currentState!.save();
                 uploadNewPetProfile(args.isUpdate, args.animalID, args.url);
-                Navigator.of(context).pop();
+                // Navigator.of(context).pop();
               }
             },
             tooltip: 'Upload your Pet',

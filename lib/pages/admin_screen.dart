@@ -1,4 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cuddler/models/animals.dart';
+import 'package:cuddler/pages/new_profile_screen.dart';
+import 'package:cuddler/pages/user_listed_pets.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../models/constants.dart';
@@ -156,6 +159,26 @@ class AnimalsList extends StatefulWidget {
 class _AnimalState extends State<AnimalsList> {
   @override
   Widget build(BuildContext context) {
+    Animals currentPet = new Animals(
+        about: "",
+        age: 1,
+        disposition1: false,
+        disposition2: false,
+        disposition3: false,
+        email: "",
+        name: "",
+        phone: "",
+        contactName: "",
+        sex: "",
+        url: "",
+        breed: "",
+        favorite: false,
+        location: "Alabama",
+        animalID: "",
+        categoryName: "",
+        status: "",
+        isUpdate: true);
+
     return StreamBuilder<QuerySnapshot>(
       stream: widget.animals.snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -185,10 +208,34 @@ class _AnimalState extends State<AnimalsList> {
                         icon: Icon(Icons.edit),
                         color: Constants.deepBlue,
                         onPressed: () {
+                          currentPet.about = profile['about'];
+                          currentPet.age = profile['age'];
+                          currentPet.disposition1 = profile['disposition1'];
+                          currentPet.disposition2 = profile['disposition2'];
+                          currentPet.disposition3 = profile['disposition3'];
+                          currentPet.email = profile['email'];
+                          currentPet.name = profile['name'];
+                          currentPet.phone = profile['phone'];
+                          currentPet.contactName = profile['contactName'];
+                          currentPet.sex = profile['sex'];
+                          currentPet.url = profile['url'];
+                          currentPet.breed = profile['breed'];
+                          currentPet.favorite = profile['favorite'];
+                          currentPet.location = profile['location'];
+                          currentPet.status = profile['status'];
+
+                          //TO DO: Change to variable with current animal category
+                          currentPet.categoryName = 'Dog';
+
+                          currentPet.animalID =
+                              widget.animals.doc(profile.id).toString();
+                          pushViewListPet(context, NewProfile.routeName, true,
+                              currentPet, widget.animals.doc(profile.id));
+
                           //navigate to update_animal_profile
-                          widget.animals
-                              .doc(profile.id)
-                              .update({'name': 'Bob'});
+                          // widget.animals
+                          //     .doc(profile.id)
+                          //     .update({'name': 'Bob'});
                         },
                       ),
                       IconButton(
