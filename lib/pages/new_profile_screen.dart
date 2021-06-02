@@ -119,7 +119,6 @@ class NewProfileState extends State<NewProfile> {
 
     newAnimal.breed = breedCurValue;
     newAnimal.sex = sexCurValue;
-    String url = "";
 
     if (updatePhoto) {
       FirebaseStorage storage = FirebaseStorage.instance;
