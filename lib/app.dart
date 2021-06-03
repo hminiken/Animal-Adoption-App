@@ -1,5 +1,4 @@
 import 'package:cuddler/pages/add_news_item.dart';
-import 'package:cuddler/pages/photo_screen.dart';
 import 'package:flutter/material.dart';
 import 'models/constants.dart';
 import 'pages/dashboard.dart';
@@ -10,7 +9,6 @@ import 'package:cuddler/pages/email_preferences.dart';
 
 import 'pages/admin_screen.dart';
 import 'pages/new_profile_screen.dart';
-import 'pages/photo_screen.dart';
 import 'pages/select_location_screen.dart';
 import 'pages/user_info_screen.dart';
 import 'pages/user_listed_pets.dart';
@@ -65,7 +63,6 @@ class App extends StatelessWidget {
         Login.routeName: (context) => Login(),
         Dashboard.routeName: (context) => Dashboard(),
         AdminPage.routeName: (context) => AdminPage(),
-        PhotoScreen.routeName: (context) => PhotoScreen(),
         NewProfile.routeName: (context) => NewProfile(
             photoURL:
                 'https://firebasestorage.googleapis.com/v0/b/cuddler-bd524.appspot.com/o/blank_animal.png?alt=media&token=095373ec-af4d-4e12-993f-aed84d5f373d'),

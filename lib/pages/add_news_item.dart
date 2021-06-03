@@ -34,10 +34,8 @@ class AddNewsItemState extends State<AddNewsItem> {
           .get()
           .then((querySnapshot) {
         querySnapshot.docs.forEach((documentSnapshot) {
-          documentSnapshot.reference.collection('newsFeed').add({
-            'headline': headline,
-            'content': content,
-          });
+          documentSnapshot.reference.collection('newsFeed').add(
+              {'headline': headline, 'content': content, 'dateAdded': now});
           // documentSnapshot.reference.update({
           //   'newsFeed': FieldValue.arrayUnion([newsItemID])
           // });
