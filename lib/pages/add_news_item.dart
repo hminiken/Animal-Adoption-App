@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuddler/models/news_item.dart';
 import 'package:flutter/material.dart';
 import '../models/constants.dart';
@@ -17,8 +16,6 @@ class AddNewsItemState extends State<AddNewsItem> {
 
   final formKey = GlobalKey<FormState>();
   String headline = "", content = "";
-
-
 
   Widget build(BuildContext context) {
     return Scaffold(
