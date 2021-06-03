@@ -7,7 +7,6 @@ import 'admin_screen.dart';
 import '../models/constants.dart';
 import '../models/user_model.dart';
 import '../widgets/background.dart';
-import 'photo_screen.dart';
 import 'daily_feed.dart';
 import 'select_location_screen.dart';
 import '../widgets/landingButton.dart';
