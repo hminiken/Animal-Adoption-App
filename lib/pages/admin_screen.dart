@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuddler/models/animals.dart';
 import 'package:cuddler/pages/new_profile_screen.dart';
-import 'package:cuddler/pages/user_listed_pets.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'new_profile_screen.dart';
+import 'user_listed_pets.dart';
+import 'admin_update_user.dart';
 import '../models/constants.dart';
+import '../models/user_model.dart';
 import '../widgets/my_flutter_app_icons.dart';
 
 class AdminPage extends StatefulWidget {
@@ -38,15 +41,18 @@ class _AdminState extends State<AdminPage> {
             buildStack(
                 'Dog',
                 AnimalsList(
-                    animals: FirebaseFirestore.instance.collection('dogs'))),
+                    animals: FirebaseFirestore.instance.collection('dogs'),
+                    type: 'Dog')),
             buildStack(
                 'Cat',
                 AnimalsList(
-                    animals: FirebaseFirestore.instance.collection('cats'))),
+                    animals: FirebaseFirestore.instance.collection('cats'),
+                    type: 'Cat')),
             buildStack(
                 'Extra',
                 AnimalsList(
-                    animals: FirebaseFirestore.instance.collection('others'))),
+                    animals: FirebaseFirestore.instance.collection('others'),
+                    type: 'Other')),
           ],
         ),
       ),
@@ -79,11 +85,24 @@ class _AdminState extends State<AdminPage> {
   }
 }
 
+void pushAdminEdit(
+    BuildContext context, String routeName, CuddlerUser currentUser) {
+  Navigator.of(context).pushNamed(routeName, arguments: currentUser);
+}
+
 //Widget for displaying list of users
 class UsersList extends StatelessWidget {
   final currUser = FirebaseAuth.instance.currentUser!;
   @override
   Widget build(BuildContext context) {
+    CuddlerUser currentUser = new CuddlerUser(
+      userID: '',
+      fName: '',
+      email: '',
+      phoneNumber: '',
+      accountType: 1,
+      userLocation: '',
+      profileImgURL: '');
     //Grab the collection from firebase
     CollectionReference users = FirebaseFirestore.instance.collection('users');
     return StreamBuilder<QuerySnapshot>(
@@ -123,8 +142,20 @@ class UsersList extends StatelessWidget {
                         icon: Icon(Icons.edit),
                         color: Constants.deepBlue,
                         onPressed: () {
-                          //navigate to update_user_profile
-                          users.doc(post.id).update({'fName': 'Bob'});
+                          currentUser.userID = users.doc(post.id).toString();
+                          currentUser.fName = username;
+                          currentUser.email = email;
+                          currentUser.phoneNumber = post['phoneNumber'];
+                          currentUser.accountType = post['accountType'];
+                          currentUser.userLocation = post['userLocation'];
+                          currentUser.profileImgURL = pic;
+                          //navigate to edit user screen
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => EditUserViaAdmin(editUser: currentUser)),
+                          );
+                          // pushAdminEdit(
+                          //     context, EditUserViaAdmin.routeName, currentUser);
                         },
                       ),
                       IconButton(
@@ -149,8 +180,10 @@ class UsersList extends StatelessWidget {
 
 //Widget for displaying list of Animal Profiles
 class AnimalsList extends StatefulWidget {
-  AnimalsList({Key? key, required this.animals}) : super(key: key);
+  AnimalsList({Key? key, required this.animals, required this.type})
+      : super(key: key);
   final CollectionReference animals;
+  final String type;
 
   @override
   _AnimalState createState() => _AnimalState();
@@ -224,18 +257,12 @@ class _AnimalState extends State<AnimalsList> {
                           currentPet.location = profile['location'];
                           currentPet.status = profile['status'];
 
-                          //TO DO: Change to variable with current animal category
-                          currentPet.categoryName = 'Dog';
+                          currentPet.categoryName = widget.type;
 
                           currentPet.animalID =
                               widget.animals.doc(profile.id).toString();
                           pushViewListPet(context, NewProfile.routeName, true,
                               currentPet, widget.animals.doc(profile.id));
-
-                          //navigate to update_animal_profile
-                          // widget.animals
-                          //     .doc(profile.id)
-                          //     .update({'name': 'Bob'});
                         },
                       ),
                       IconButton(
