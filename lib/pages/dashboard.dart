@@ -256,12 +256,10 @@ class DashboardScreenState extends State<Dashboard> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Expanded(
-                child: LandingButton(
+                child: LandingButtonNoClick(
                     displayText: list,
-                    page: PhotoScreen(),
                     icon: Icons.upload_rounded),
               ),
-              SizedBox(width: 20.0),
               Expanded(
                 child: LandingButton(
                   displayText: adopt,
@@ -270,7 +268,6 @@ class DashboardScreenState extends State<Dashboard> {
                 ),
               ),
               Expanded(
-                //flex: 1,
                 child: LandingButton(
                   displayText: dailyFeed,
                   page: DailyFeed(),
