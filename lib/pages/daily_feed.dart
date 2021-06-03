@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuddler/pages/add_news_item.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../models/user_model.dart';
 import '../widgets/background.dart';
 
@@ -157,6 +158,9 @@ class DailyFeedState extends State<DailyFeed> {
                       var post = snapshot.data!.docs[index];
                       var headline = post['headline'].toString();
                       var content = post['content'];
+                      var ms = post['dateAdded'] * 1000;
+                      var time = new DateTime.fromMillisecondsSinceEpoch(ms);
+                      var date = DateFormat.MMMMd('en_US').format(time);
                       return Dismissible(
                           key: ObjectKey(post),
                           child: Padding(
@@ -190,7 +194,7 @@ class DailyFeedState extends State<DailyFeed> {
                                     ),
                                     contentPadding: EdgeInsets.all(20),
 
-                                    trailing: Text("May 14"),
+                                    trailing: Text(date.toString()),
                                     // onTap: () => pushViewEntry(context, optionRoute[index]),
                                   ))),
                           onDismissed: (direction) {

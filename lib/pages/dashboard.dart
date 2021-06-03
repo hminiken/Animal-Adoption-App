@@ -7,7 +7,6 @@ import 'admin_screen.dart';
 import '../models/constants.dart';
 import '../models/user_model.dart';
 import '../widgets/background.dart';
-import 'photo_screen.dart';
 import 'daily_feed.dart';
 import 'select_location_screen.dart';
 import '../widgets/landingButton.dart';
@@ -256,12 +255,9 @@ class DashboardScreenState extends State<Dashboard> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Expanded(
-                child: LandingButton(
-                    displayText: list,
-                    page: PhotoScreen(),
-                    icon: Icons.upload_rounded),
+                child: LandingButtonNoClick(
+                    displayText: list, icon: Icons.upload_rounded),
               ),
-              SizedBox(width: 20.0),
               Expanded(
                 child: LandingButton(
                   displayText: adopt,
@@ -270,7 +266,6 @@ class DashboardScreenState extends State<Dashboard> {
                 ),
               ),
               Expanded(
-                //flex: 1,
                 child: LandingButton(
                   displayText: dailyFeed,
                   page: DailyFeed(),

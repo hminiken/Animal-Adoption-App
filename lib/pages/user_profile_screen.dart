@@ -144,7 +144,7 @@ class UserProfileState extends State<UserProfile> {
           ),
           centerText(context, userName, Colors.white, 24),
           SizedBox(height: 5),
-          centerText(context, '5 Pets Adopted', Colors.white, 14),
+          // centerText(context, '5 Pets Adopted', Colors.white, 14),
           SizedBox(height: 25),
         ]),
         decoration: BoxDecoration(
@@ -185,7 +185,7 @@ class UserProfileState extends State<UserProfile> {
                   Column(
                     children: [
                       centerText(context, userName, Colors.white, 24),
-                      centerText(context, '5 Pets Adopted', Colors.white, 14),
+                      // centerText(context, '5 Pets Adopted', Colors.white, 14),
                     ],
                   )
                 ],
