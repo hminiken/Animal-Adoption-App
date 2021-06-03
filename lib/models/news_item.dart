@@ -1,15 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class NewsItem {
-  
-
-
-
-    postNewsItem(String headline, String content) async {
+  postNewsItem(String headline, String content) async {
     var ms = (new DateTime.now()).millisecondsSinceEpoch;
     var now = ms / 1000;
-
-
 
     FirebaseFirestore.instance.collection('news').add({
       'headline': headline,
