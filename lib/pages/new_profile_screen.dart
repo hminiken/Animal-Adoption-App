@@ -613,8 +613,7 @@ class NewProfileState extends State<NewProfile> {
                                   radius: 80.0,
                                   backgroundImage: !updatePhoto
                                       ? NetworkImage(args.url)
-                                      : FileImage(File(imagePath))
-                                          as ImageProvider,
+                                      : FileImage(image) as ImageProvider,
                                   backgroundColor: Colors.transparent,
                                 )),
                           ),

@@ -188,10 +188,6 @@ class SelectLocationState extends State<SelectLocation> {
                   value: currentVal,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.fromLTRB(10, 20, 10, 20),
-                    // filled: true,
-                    // fillColor: Colors.grey[200],
-                    //  hintText: Localization.of(context).category,
-                    //  errorText: errorSnapshot.data == 0 ? Localization.of(context).categoryEmpty : null),
                   ),
                 )),
             SizedBox(height: 30),
@@ -318,10 +314,6 @@ class SelectLocationState extends State<SelectLocation> {
                     value: currentVal,
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.fromLTRB(10, 20, 10, 20),
-                      // filled: true,
-                      // fillColor: Colors.grey[200],
-                      //  hintText: Localization.of(context).category,
-                      //  errorText: errorSnapshot.data == 0 ? Localization.of(context).categoryEmpty : null),
                     ),
                   )),
               SizedBox(height: 30),

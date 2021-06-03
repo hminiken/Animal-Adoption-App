@@ -68,25 +68,6 @@ class EmailPreferencesState extends State<EmailPreferences> {
                       child: Column(
                           // mainAxisAlignment: MainAxisAlignment.,
                           children: [
-                            // Container(
-                            //   padding: EdgeInsets.all(0),
-                            //   margin: EdgeInsets.all(5),
-                            //   decoration: BoxDecoration(
-                            //     borderRadius: BorderRadius.circular(200),
-                            //     border: Border.all(
-                            //       color: Constants.deepBlue,
-                            //       width: 5,
-                            //     ),
-                            //   ),
-                            //   child: ClipRRect(
-                            //     // borderRadius: BorderRadius.circular(80.0),
-                            //     child: Image.asset(
-                            //       'assets/images/circleLogo.png',
-                            //       height: 125.0,
-                            //       fit: BoxFit.cover,
-                            //     ),
-                            //   ),
-                            // ),
                             Center(
                                 child: Text('Coming Soon...',
                                     style: GoogleFonts.courgette(
