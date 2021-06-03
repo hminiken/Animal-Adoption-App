@@ -93,7 +93,15 @@ void pushAdminEdit(
 //Widget for displaying list of users
 class UsersList extends StatelessWidget {
   final currUser = FirebaseAuth.instance.currentUser!;
-  @override
+
+  deleteUser(users, post) async {
+    FirebaseFirestore.instance.collection('users').doc(post.id).update({
+      'email': 'email@email.com',
+    });
+
+    users.doc(post.id).delete();
+  }
+
   Widget build(BuildContext context) {
     CuddlerUser currentUser = new CuddlerUser(
         userID: '',
@@ -167,7 +175,7 @@ class UsersList extends StatelessWidget {
                         color: Constants.redOrange,
                         onPressed: () {
                           //should we also un-authenticate?
-                          users.doc(post.id).delete();
+                          deleteUser(users, post);
                         },
                       ),
                     ],

@@ -190,6 +190,20 @@ class NewProfileState extends State<NewProfile> {
         NewsItem().postNewsItem(headline, content);
       }
     }
+
+    if (isNewsItem) {
+      String headline =
+          "New " + newAnimal.breed + " posted in " + newAnimal.location + "!";
+      String content = "A " +
+          newAnimal.age.toString() +
+          " year old " +
+          newAnimal.breed +
+          " named " +
+          newAnimal.name +
+          " has been added. Go check them out!";
+      NewsItem().postNewsItem(headline, content);
+    }
+
     Navigator.of(context).pop();
   }
 

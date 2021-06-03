@@ -3,7 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class NewsItem {
   postNewsItem(String headline, String content) async {
     var ms = (new DateTime.now()).millisecondsSinceEpoch;
+<<<<<<< Updated upstream
     var now = ms / 1000;
+=======
+    var now = (ms ~/ 1000);
+>>>>>>> Stashed changes
 
     FirebaseFirestore.instance.collection('news').add({
       'headline': headline,
@@ -19,6 +23,10 @@ class NewsItem {
           documentSnapshot.reference.collection('newsFeed').add({
             'headline': headline,
             'content': content,
+<<<<<<< Updated upstream
+=======
+            'dateAdded': now,
+>>>>>>> Stashed changes
           });
           // documentSnapshot.reference.update({
           //   'newsFeed': FieldValue.arrayUnion([newsItemID])
@@ -26,6 +34,7 @@ class NewsItem {
         });
       });
     });
+<<<<<<< Updated upstream
 
     // var result = await FirebaseFirestore.instance
     //     .collection('news')
@@ -38,5 +47,7 @@ class NewsItem {
     //     content.add(doc["content"]);
     //   });
     // });
+=======
+>>>>>>> Stashed changes
   }
 }
