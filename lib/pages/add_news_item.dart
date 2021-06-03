@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuddler/models/news_item.dart';
 import 'package:flutter/material.dart';
 import '../models/constants.dart';
@@ -16,8 +17,6 @@ class AddNewsItemState extends State<AddNewsItem> {
 
   final formKey = GlobalKey<FormState>();
   String headline = "", content = "";
-<<<<<<< Updated upstream
-=======
   String newsItemID = "";
 
   postNewsItem() async {
@@ -57,7 +56,6 @@ class AddNewsItemState extends State<AddNewsItem> {
     //   });
     // });
   }
->>>>>>> Stashed changes
 
   Widget build(BuildContext context) {
     return Scaffold(
