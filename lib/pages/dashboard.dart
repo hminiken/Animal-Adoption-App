@@ -257,8 +257,7 @@ class DashboardScreenState extends State<Dashboard> {
             children: [
               Expanded(
                 child: LandingButtonNoClick(
-                    displayText: list,
-                    icon: Icons.upload_rounded),
+                    displayText: list, icon: Icons.upload_rounded),
               ),
               Expanded(
                 child: LandingButton(
