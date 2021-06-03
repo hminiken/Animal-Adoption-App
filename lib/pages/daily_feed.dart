@@ -36,23 +36,6 @@ class DailyFeedState extends State<DailyFeed> {
     setState(() {});
   }
 
-  getAllNewsItems() async {
-    var result = await FirebaseFirestore.instance
-        .collection('news')
-        .where("dateAdded", isGreaterThanOrEqualTo: 1620686591)
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        print(doc["headline"]);
-        entries.add(doc["headline"]);
-        content.add(doc["content"]);
-      });
-    });
-
-    print(result);
-    setState(() {});
-  }
-
   void pushViewEntry(BuildContext context) {
     Navigator.of(context)
         .pushNamed(AddNewsItem.routeName)
@@ -89,12 +72,6 @@ class DailyFeedState extends State<DailyFeed> {
   }
 
   void deleteItem(DocumentSnapshot post) {
-    /*
-  By implementing this method, it ensures that upon being dismissed from our widget tree, 
-  the item is removed from our list of items and our list is updated, hence
-  preventing the "Dismissed widget still in widget tree error" when we reload.
-  */
-
     final curUser = FirebaseAuth.instance.currentUser!;
 
     var userNews = FirebaseFirestore.instance
@@ -223,15 +200,6 @@ class DailyFeedState extends State<DailyFeed> {
                           onDismissed: (direction) {
                             deleteItem(post);
                           });
-
-                      // ListTile(
-                      //     title: Text(
-                      //       headline,
-                      //       style: TextStyle(fontSize: 20),
-                      //     ),
-                      //     subtitle: Text(content),
-                      //     isThreeLine: true,
-                      //     trailing: Text("MAY 14"));
                     });
               }
               //If firebase has no data use circular loading picture
@@ -241,91 +209,5 @@ class DailyFeedState extends State<DailyFeed> {
             },
           )
         ]));
-
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     title: Text('Daily Feed'),
-    //     centerTitle: true,
-    //     actions: isAdmin
-    //         ? [
-    //             IconButton(
-    //               onPressed: () {
-    //                 // uploadPets();
-    //                 pushViewEntry(context);
-    //               },
-    //               icon: Icon(Icons.add),
-    //             ),
-    //             IconButton(
-    //               onPressed: () {
-    //                 getAllNewsItems();
-    //               },
-    //               icon:
-    //                   Icon(Icons.refresh), //for testing, get's all new updates
-    //             ),
-    //           ]
-    //         : [],
-    //   ),
-    //   resizeToAvoidBottomInset: false,
-    //   body: Stack(
-    //     children: <Widget>[
-    //       //image code
-    //       fadedBackground(context),
-    //       Padding(
-    //           padding: const EdgeInsets.all(10),
-    //           child: Column(children: [
-    //             SizedBox(height: 10),
-    //             Expanded(
-    //                 child: ListView.builder(
-    //                     itemCount: entries.length,
-    //                     itemBuilder: (context, index) {
-    //                       return buildListItem(context, index);
-    //                     })),
-    //           ]))
-    //     ],
-    //   ),
-    // );
   }
-
-  // Widget buildListItem(BuildContext context, int index) {
-  //   var textTheme = Theme.of(context).textTheme;
-
-  //   return Dismissible(
-  //       key: ObjectKey(entries[index]),
-  //       child: Padding(
-  //           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-  //           child: Container(
-  //               decoration: BoxDecoration(
-  //                 color: Colors.white,
-  //                 borderRadius: BorderRadius.all(Radius.circular(5)),
-  //                 // border: Border(bottom: BorderSide(color: (Colors.grey[300])!))),
-  //                 // border: Border.all(
-  //                 //   color: Colors.grey[200]!,
-  //                 // ),
-  //                 boxShadow: [
-  //                   BoxShadow(
-  //                     blurRadius: 7,
-  //                     color: Colors.grey.withOpacity(0.3),
-  //                     offset: Offset(0, 4),
-  //                     spreadRadius: 3,
-  //                   )
-  //                 ],
-  //               ),
-  //               child: ListTile(
-  //                 title: Text(
-  //                   entries[index] + "\n",
-  //                   style: textTheme.subtitle1,
-  //                 ),
-  //                 subtitle: Text(
-  //                   content[index] + "\n",
-  //                 ),
-  //                 contentPadding: EdgeInsets.all(20),
-
-  //                 trailing: Text("May 14"),
-  //                 // onTap: () => pushViewEntry(context, optionRoute[index]),
-  //               ))),
-  //       onDismissed: (direction) {
-  //         var item = entries.elementAt(index);
-  //         deleteItem(post);
-  //       });
-  // }
 }

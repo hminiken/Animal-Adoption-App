@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cuddler/models/constants.dart';
+import 'package:cuddler/models/news_item.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -80,7 +81,10 @@ class NewProfileState extends State<NewProfile> {
       categoryName: '',
       isUpdate: false);
 
-  bool isGoodAnimals = false, isGoodChildren = false, isMustLeash = false;
+  bool isGoodAnimals = false,
+      isGoodChildren = false,
+      isMustLeash = false,
+      isNewsItem = false;
 
   void isGoodAnimalsChanged(bool value) =>
       setState(() => isGoodAnimals = value);
@@ -89,6 +93,7 @@ class NewProfileState extends State<NewProfile> {
       setState(() => isGoodChildren = value);
 
   void isMustLeashChanged(bool value) => setState(() => isMustLeash = value);
+  void isNewsItemChanged(bool value) => setState(() => isNewsItem = value);
 
   void selectImage() async {
     try {
@@ -172,7 +177,33 @@ class NewProfileState extends State<NewProfile> {
         'dateAdded': DateTime.now().millisecondsSinceEpoch / 1000,
         'location': newAnimal.location,
       });
+
+      //create a news item if the user wants to use that
+      if (isNewsItem) {
+        String headline =
+            "New " + newAnimal.breed + " posted in " + newAnimal.location + "!";
+        String content = "A " +
+            newAnimal.age.toString() +
+            " year old " +
+            newAnimal.breed +
+            " has been added. Go check them out!";
+        NewsItem().postNewsItem(headline, content);
+      }
     }
+
+    if (isNewsItem) {
+      String headline =
+          "New " + newAnimal.breed + " posted in " + newAnimal.location + "!";
+      String content = "A " +
+          newAnimal.age.toString() +
+          " year old " +
+          newAnimal.breed +
+          " named " +
+          newAnimal.name +
+          " has been added. Go check them out!";
+      NewsItem().postNewsItem(headline, content);
+    }
+
     Navigator.of(context).pop();
   }
 
@@ -183,9 +214,7 @@ class NewProfileState extends State<NewProfile> {
     if (args.isUpdate) {
       setState(() {
         categoryCurValue = args.categoryName;
-        if (!updatePhoto) {
-          imagePath = args.url;
-        }
+        imagePath = args.url;
       });
     } else {
       args.url =
@@ -523,57 +552,64 @@ class NewProfileState extends State<NewProfile> {
                                 border: OutlineInputBorder(),
                               )),
                           SizedBox(height: 30),
-                          Row(children: [
-                            ElevatedButton.icon(
-                              label: const Text(
-                                'Upload Photo',
-                                style: TextStyle(fontSize: 20),
-                              ),
-                              icon: const Icon(Icons.photo),
-                              // backgroundColor: colDarkBlue,
-                              onPressed: () {
-                                selectImage();
-                              },
+                          Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ElevatedButton.icon(
+                                  label: FittedBox(
+                                      fit: BoxFit.fitWidth,
+                                      child: Text(
+                                        'Upload Photo',
+                                        // style: TextStyle(fontSize: 20),
+                                      )),
+                                  icon: const Icon(Icons.photo),
+                                  // backgroundColor: colDarkBlue,
+                                  onPressed: () {
+                                    selectImage();
+                                  },
 
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Constants.redOrange), // background
-                                  foregroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.white),
-                                  shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ))),
-                            ),
-                            SizedBox(width: 15),
-                            ElevatedButton.icon(
-                              label: const Text(
-                                'Take Photo',
-                                style: TextStyle(fontSize: 20),
-                              ),
-                              icon: const Icon(Icons.camera_alt),
-                              // backgroundColor: colDarkBlue,
-                              onPressed: () {
-                                selectImage();
-                              },
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              Constants
+                                                  .redOrange), // background
+                                      foregroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              Colors.white),
+                                      shape: MaterialStateProperty.all<
+                                              RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ))),
+                                ),
+                                SizedBox(width: 15),
+                                ElevatedButton.icon(
+                                  label: const Text(
+                                    'Take Photo',
+                                    // style: TextStyle(fontSize: 20),
+                                  ),
+                                  icon: const Icon(Icons.camera_alt),
+                                  // backgroundColor: colDarkBlue,
+                                  onPressed: () {
+                                    selectImage();
+                                  },
 
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Constants.redOrange), // background
-                                  foregroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.white),
-                                  shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ))),
-                            ),
-                          ]),
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              Constants
+                                                  .redOrange), // background
+                                      foregroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              Colors.white),
+                                      shape: MaterialStateProperty.all<
+                                              RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ))),
+                                ),
+                              ]),
                           SizedBox(height: 15),
                           Container(
                             padding: EdgeInsets.all(0),
@@ -591,16 +627,15 @@ class NewProfileState extends State<NewProfile> {
                                   radius: 80.0,
                                   backgroundImage: !updatePhoto
                                       ? NetworkImage(args.url)
-                                      : FileImage(File(imagePath))
-                                          as ImageProvider,
+                                      : FileImage(image) as ImageProvider,
                                   backgroundColor: Colors.transparent,
                                 )),
                           ),
                           SizedBox(height: 15),
                           CheckboxListTile(
-                              value: isGoodAnimals,
-                              onChanged: (bool? value) {
-                                setState(() => isGoodAnimals = value!);
+                              value: isNewsItem,
+                              onChanged: (bool? newsItem) {
+                                setState(() => isNewsItem = newsItem!);
                               },
                               title: new Text("Add to news bulletins?"),
                               controlAffinity: ListTileControlAffinity.leading,

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cuddler/models/news_item.dart';
 import 'package:flutter/material.dart';
 import '../models/constants.dart';
 
@@ -20,7 +21,7 @@ class AddNewsItemState extends State<AddNewsItem> {
 
   postNewsItem() async {
     var ms = (new DateTime.now()).millisecondsSinceEpoch;
-    var now = ms / 1000;
+    var now = ms ~/ 1000;
 
     FirebaseFirestore.instance.collection('news').add({
       'headline': headline,
@@ -69,25 +70,28 @@ class AddNewsItemState extends State<AddNewsItem> {
                   children: [
                     Container(
                       child: Align(
-                        child: RichText(
-                          text: TextSpan(children: [
-                            TextSpan(
-                                text: "Post an Update   ",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 24)),
-                            WidgetSpan(
-                                child: Tooltip(
-                              message:
-                                  'Admins may add to the daily feed by posting an update here. \n\nNote: The update will go to ALL app users!',
-                              child: Icon(
-                                Icons.help_outline_rounded,
-                                color: Colors.white,
-                              ),
-                              padding: const EdgeInsets.all(8.0),
-                              margin: const EdgeInsets.all(20),
-                            ))
-                          ]),
-                        ),
+                        child: FittedBox(
+                            fit: BoxFit.fitHeight,
+                            child: RichText(
+                              text: TextSpan(children: [
+                                TextSpan(
+                                    text: "Post an Update   ",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    )),
+                                WidgetSpan(
+                                    child: Tooltip(
+                                  message:
+                                      'Admins may add to the daily feed by posting an update here. \n\nNote: The update will go to ALL app users!',
+                                  child: Icon(
+                                    Icons.help_outline_rounded,
+                                    color: Colors.white,
+                                  ),
+                                  padding: const EdgeInsets.all(8.0),
+                                  margin: const EdgeInsets.all(20),
+                                ))
+                              ]),
+                            )),
                       ),
 
                       // child: Align(
@@ -144,7 +148,7 @@ class AddNewsItemState extends State<AddNewsItem> {
                             onPressed: () {
                               if (formKey.currentState!.validate()) {
                                 formKey.currentState!.save();
-                                postNewsItem();
+                                NewsItem().postNewsItem(headline, content);
                                 Navigator.of(context).pop();
                               }
                             },
