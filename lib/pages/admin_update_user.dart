@@ -25,14 +25,14 @@ class EditUserInfoState extends State<EditUserViaAdmin> {
     super.initState();
   }
 
-  CuddlerUser currentUser = new CuddlerUser(
-      userID: '',
-      fName: '',
-      email: '',
-      phoneNumber: '',
-      accountType: 1,
-      userLocation: '',
-      profileImgURL: '');
+  // CuddlerUser currentUser = new CuddlerUser(
+  //     userID: '',
+  //     fName: '',
+  //     email: '',
+  //     phoneNumber: '',
+  //     accountType: 1,
+  //     userLocation: '',
+  //     profileImgURL: '');
 
   final editUserFormKey = GlobalKey<FormState>();
   bool isLoading = false;
@@ -64,7 +64,7 @@ class EditUserInfoState extends State<EditUserViaAdmin> {
   bool updateProfileImage = false;
 
   updateUser() async {
-    String url = currentUser.profileImgURL;
+    String url = widget.editUser.profileImgURL;
 
     if (updateProfileImage == true) {
       FirebaseStorage storage = FirebaseStorage.instance;
@@ -80,9 +80,9 @@ class EditUserInfoState extends State<EditUserViaAdmin> {
         .collection('users')
         .doc(widget.editUser.userID)
         .update({
-          'fName': currentUser.fName,
-          'phoneNumber': currentUser.phoneNumber,
-          'userLocation': currentUser.userLocation,
+          'fName': widget.editUser.fName,
+          'phoneNumber': widget.editUser.phoneNumber,
+          'userLocation': widget.editUser.userLocation,
           'profileImgURL': url,
         })
         .then((value) => print("User Updated"))
@@ -92,20 +92,19 @@ class EditUserInfoState extends State<EditUserViaAdmin> {
   }
 
   Widget build(BuildContext context) {
-
-    currentUser.userID = widget.editUser.userID;
-    currentUser.fName = widget.editUser.fName;
-    currentUser.email = widget.editUser.email;
-    currentUser.phoneNumber = widget.editUser.phoneNumber;
-    currentUser.accountType = widget.editUser.accountType;
-    currentUser.userLocation = widget.editUser.userLocation;
-    currentUser.profileImgURL = widget.editUser.profileImgURL;
+    // currentUser.userID = widget.editUser.userID;
+    // currentUser.fName = widget.editUser.fName;
+    // currentUser.email = widget.editUser.email;
+    // currentUser.phoneNumber = widget.editUser.phoneNumber;
+    // currentUser.accountType = widget.editUser.accountType;
+    // currentUser.userLocation = widget.editUser.userLocation;
+    // currentUser.profileImgURL = widget.editUser.profileImgURL;
 
     TextEditingController displayNameController = new TextEditingController();
-    displayNameController.text = currentUser.fName;
+    displayNameController.text = widget.editUser.fName;
 
     TextEditingController phoneController = new TextEditingController();
-    phoneController.text = currentUser.phoneNumber;
+    phoneController.text = widget.editUser.phoneNumber;
 
     return Scaffold(
         appBar: AppBar(
@@ -133,7 +132,7 @@ class EditUserInfoState extends State<EditUserViaAdmin> {
                           subtitle: TextFormField(
                             controller: displayNameController,
                             onSaved: (value) {
-                              currentUser.fName = value!;
+                              widget.editUser.fName = value!;
                               setState(() {});
                             },
                             validator: (value) {
@@ -153,7 +152,7 @@ class EditUserInfoState extends State<EditUserViaAdmin> {
                           subtitle: TextFormField(
                             controller: phoneController,
                             onSaved: (value) {
-                              currentUser.phoneNumber = value!;
+                              widget.editUser.phoneNumber = value!;
                               setState(() {});
                             },
                             validator: (value) {
@@ -184,10 +183,10 @@ class EditUserInfoState extends State<EditUserViaAdmin> {
                             }).toList(),
                             onChanged: (String? newValue) {
                               setState(() {
-                                currentUser.userLocation = newValue!;
+                                widget.editUser.userLocation = newValue!;
                               });
                             },
-                            value: currentUser.userLocation,
+                            value: widget.editUser.userLocation,
                             decoration: InputDecoration(
                               contentPadding:
                                   EdgeInsets.fromLTRB(10, 20, 10, 20),

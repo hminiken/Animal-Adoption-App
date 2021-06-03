@@ -149,7 +149,7 @@ class NewProfileState extends State<NewProfile> {
         'favorite': newAnimal.favorite,
         'uid': user.uid,
         'status': newAnimal.status,
-        'dateAdded': DateTime.now().millisecondsSinceEpoch * 1000,
+        'dateAdded': DateTime.now().millisecondsSinceEpoch / 1000,
         'location': newAnimal.location,
       });
     } else {
@@ -169,7 +169,7 @@ class NewProfileState extends State<NewProfile> {
         'favorite': newAnimal.favorite,
         'uid': user.uid,
         'status': "Available",
-        'dateAdded': 1234,
+        'dateAdded': DateTime.now().millisecondsSinceEpoch / 1000,
         'location': newAnimal.location,
       });
     }

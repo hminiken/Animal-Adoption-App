@@ -96,13 +96,13 @@ class UsersList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     CuddlerUser currentUser = new CuddlerUser(
-      userID: '',
-      fName: '',
-      email: '',
-      phoneNumber: '',
-      accountType: 1,
-      userLocation: '',
-      profileImgURL: '');
+        userID: '',
+        fName: '',
+        email: '',
+        phoneNumber: '',
+        accountType: 1,
+        userLocation: '',
+        profileImgURL: '');
     //Grab the collection from firebase
     CollectionReference users = FirebaseFirestore.instance.collection('users');
     return StreamBuilder<QuerySnapshot>(
@@ -142,7 +142,9 @@ class UsersList extends StatelessWidget {
                         icon: Icon(Icons.edit),
                         color: Constants.deepBlue,
                         onPressed: () {
-                          currentUser.userID = users.doc(post.id).toString();
+                          print(post.data());
+                          // currentUser.userID = users.doc(post.id).toString();
+                          currentUser.userID = post.id;
                           currentUser.fName = username;
                           currentUser.email = email;
                           currentUser.phoneNumber = post['phoneNumber'];
@@ -152,7 +154,9 @@ class UsersList extends StatelessWidget {
                           //navigate to edit user screen
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => EditUserViaAdmin(editUser: currentUser)),
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    EditUserViaAdmin(editUser: currentUser)),
                           );
                           // pushAdminEdit(
                           //     context, EditUserViaAdmin.routeName, currentUser);

@@ -53,10 +53,11 @@ class Login extends StatelessWidget {
       'fName': loginData.name,
       'email': loginData.name,
       'password': loginData.password,
+      'phoneNumber': '555-555-5555',
       'accountType': 1,
       'profileImgURL': '''
 https://firebasestorage.googleapis.com/v0/b/cuddler-bd524.appspot.com/o/blank_profile.png?alt=media&token=a67b63b3-8711-4874-b7f3-74548b545536''',
-      'userLocation': null
+      'userLocation': 'Alabama'
     }).then((_) {
       print("success!");
     });
